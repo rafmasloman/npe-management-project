@@ -9,6 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/server": "^11.11.0",
+    "@mantine/core": "^6.0.20",
+    "@mantine/form": "^6.0.20",
+    "@mantine/hooks": "^6.0.20",
+    "@mantine/next": "^6.0.20",
+    "@tabler/icons-react": "^2.34.0",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -17,6 +24,9 @@
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.2.2"
+    "sweetalert2": "^11.7.27",
+    "sweetalert2-react-content": "^5.0.7",
+    "typescript": "5.2.2",
+    "yup": "^1.2.0"
   }
 }
