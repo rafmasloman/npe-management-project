@@ -24,37 +24,42 @@ import TeamCard from '@/src/components/card/team-card.component';
 import { useRouter } from 'next/router';
 import TaskCard from '@/src/components/card/task-card.component';
 import MilestoneCard from '@/src/components/card/milestone-card.component';
+import HeaderPage from '@/src/components/header/header-page.component';
+import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
 
 const DashboardAdmin = () => {
   const { pathname } = useRouter();
 
-  const role = pathname.split('/')[1];
-  console.log(role);
   return (
     <MainLayout>
       <SEO title="Dashboard" description="dashboard npe management projects" />
 
-      <Group position="apart" px={50}>
-        <Text fw={600} fz={'1.25rem'}>
-          Dashboard
-        </Text>
-        <MenuComp button={<UserProfile name="Rafly Masloman" role="admin" />} />
-      </Group>
+      <HeaderPage
+        pageTitle={getCurrentPage(pathname)}
+        role={getCurrentRole(pathname)}
+      />
 
-      <Space h={70} />
+      <Space h={40} />
 
       <Group mx={50} position="apart">
         <DashboardCard name="Rafly" />
         <Stack w={300} spacing={'lg'}>
-          <HeaderTitle href={`/${role}/members`} title="Team Member" />
+          <HeaderTitle
+            href={`/${getCurrentRole(pathname)}/members`}
+            title="Team Member"
+          />
           <TeamCard name="Richard Enrico" position="Front-End" />
           <TeamCard name="Richard Enrico" position="Front-End" />
         </Stack>
       </Group>
-      <Space h={50} />
+
+      <Space h={20} />
 
       <Box w={600} mx={50}>
-        <HeaderTitle href={`/${role}/projects`} title="Projects" />
+        <HeaderTitle
+          href={`/${getCurrentRole(pathname)}/projects`}
+          title="Projects"
+        />
 
         <Space h={30} />
 
@@ -82,7 +87,10 @@ const DashboardAdmin = () => {
 
       <SimpleGrid cols={2} mx={50} spacing={70}>
         <Box>
-          <HeaderTitle href={`/${role}/milestone`} title="Milestone" />
+          <HeaderTitle
+            href={`/${getCurrentRole(pathname)}/milestone`}
+            title="Milestone"
+          />
           <Space h={'xl'} />
 
           <Group>
@@ -97,7 +105,10 @@ const DashboardAdmin = () => {
           </Group>
         </Box>
         <Box>
-          <HeaderTitle href={`/${role}/tasks`} title="Task" />
+          <HeaderTitle
+            href={`/${getCurrentRole(pathname)}/tasks`}
+            title="Task"
+          />
           <Space h={'xl'} />
 
           <Group>

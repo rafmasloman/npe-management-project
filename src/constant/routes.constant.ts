@@ -2,7 +2,7 @@ export const ROUTES = {
   LOGIN: '/login',
 
   // ADMIN ROUTES
-  ADMIN_DASHBOARD: '/admin/dasboard',
+  ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_CLIENT: '/admin/client',
   ADMIN_MEMBER: '/admin/member',
   ADMIN_CALENDER: '/admin/calender',
