@@ -1,57 +1,93 @@
-import { Card, Group, Progress, Stack, Text } from '@mantine/core';
-import Image from 'next/image';
-import KartjisLogo from '@/src/assets/illustration/kartjis.png';
+import {
+  ActionIcon,
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Menu,
+  Space,
+  Text,
+  Tooltip,
+  rem,
+} from '@mantine/core';
+import { IconClockCheck, IconDots } from '@tabler/icons-react';
+import MenuComp from '../menu/menu.component';
 import { COLORS } from '@/src/constant/colors.constant';
+import { useState } from 'react';
+import { useDrag } from 'react-dnd';
 
 interface ITaskCardProps {
-  title: string;
-  projectName: string;
-  progressValue: number;
+  badge: string;
+  member: IMemberTaskCardProps;
+  text: string;
+  deadline: string;
+  badgeStyles?: {
+    color: string;
+    backgroundColor: string;
+  };
 }
-const TaskCard = ({ title, progressValue, projectName }: ITaskCardProps) => {
-  return (
-    <Card
-      w={'100%'}
-      radius={'md'}
-      style={{
-        borderStyle: 'solid',
-        borderWidth: '0 0 0 10px',
-        borderColor: COLORS.SECONDARY,
-      }}
-    >
-      <Group position="apart">
-        <Stack>
-          <Text>{title}</Text>
-          <Group>
-            <Image
-              src={KartjisLogo.src}
-              alt={KartjisLogo.blurDataURL!}
-              width={25}
-              height={25}
-            />
-            <Text fz={'0.875rem'} fw={700}>
-              {projectName}
-            </Text>
-          </Group>
-        </Stack>
 
-        <Stack>
-          <Group position="apart">
-            <Text fw={600} fz={'0.75rem'} color={COLORS.PRIMARY}>
-              Progress
-            </Text>
-            <Text fw={600} fz={'0.75rem'} color={COLORS.PRIMARY}>
-              {progressValue}%
-            </Text>
-          </Group>
-          <Progress
-            w={250}
-            value={progressValue}
-            label={progressValue.toString()!}
-            size="lg"
-            radius="xl"
-          />
-        </Stack>
+interface IMemberTaskCardProps {
+  id: number;
+  name: string;
+  image: string;
+}
+
+const TaskCard = ({
+  badge,
+  member,
+  text,
+  deadline,
+  badgeStyles,
+}: ITaskCardProps) => {
+  const [{ opacity }, dragRef] = useDrag(() => ({
+    type: 'task',
+    // item: { text },
+    collect: (monitor) => ({
+      opacity: !!monitor.isDragging(),
+    }),
+  }));
+
+  console.log('dnd ', opacity);
+  return (
+    <Card radius={'md'} shadow="md" ref={dragRef}>
+      <Group position="apart">
+        <Badge style={badgeStyles}>{badge}</Badge>
+
+        <ActionIcon color={COLORS.GRAY}>
+          <IconDots color={COLORS.GRAY} />
+        </ActionIcon>
+      </Group>
+
+      <Space h={rem(16)} />
+
+      <Group>
+        <Text fw={500}>{text}</Text>
+      </Group>
+
+      <Space h={rem(10)} />
+
+      <Group position="apart">
+        <Group spacing={'xs'}>
+          <IconClockCheck size={rem(14)} color={COLORS.DANGER} />
+          <Text fz={rem(12)}>{deadline}</Text>
+        </Group>
+        <Avatar.Group>
+          <Tooltip
+            label={member.name}
+            withArrow
+            color={COLORS.LIGHTBLUE}
+            styles={{
+              tooltip: {
+                color: COLORS.DEEPBLUE,
+                fontWeight: 600,
+              },
+            }}
+          >
+            <Avatar radius={'xl'} />
+          </Tooltip>
+        </Avatar.Group>
       </Group>
     </Card>
   );

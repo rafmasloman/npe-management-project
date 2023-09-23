@@ -1,4 +1,4 @@
-import { AppShell, Navbar, Space } from '@mantine/core';
+import { AppShell, Box, Navbar, Space } from '@mantine/core';
 import React, { ReactNode, useState } from 'react';
 import NavList from '../components/navbar/navbar-list.component';
 import Image from 'next/image';
@@ -17,20 +17,23 @@ const MainLayout = ({ children }: IMainLayout) => {
       navbar={
         <Navbar
           width={{ sm: '100%', lg: 300 }}
+          height={'100%'}
           pt={50}
           pl={30}
           hidden={!opened}
         >
-          <Image
-            src={NPEProLogo}
-            width={100}
-            height={50}
-            alt="NPE Management Project Logo"
-            quality={100}
-          />
-          <Space h={50} />
+          <Box>
+            <Image
+              src={NPEProLogo}
+              width={100}
+              height={50}
+              alt="NPE Management Project Logo"
+              quality={100}
+            />
+            <Space h={50} />
 
-          <NavList />
+            <NavList />
+          </Box>
         </Navbar>
       }
       styles={(theme) => ({

@@ -22,16 +22,26 @@ import HeaderTitle from '@/src/components/header/header-title.component';
 import DashboardCard from '@/src/components/card/dashboard-card.component';
 import TeamCard from '@/src/components/card/team-card.component';
 import { useRouter } from 'next/router';
-import TaskCard from '@/src/components/card/task-card.component';
+import TaskCard from '@/src/components/card/task-progress-card.component';
 import MilestoneCard from '@/src/components/card/milestone-card.component';
 import HeaderPage from '@/src/components/header/header-page.component';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
+import PageLoading from '@/src/components/loading/page-loading.component';
+import useRouteLoader from '@/src/utils/routes.event';
+import { projects } from '@/pages/api/dummy/project.dummy.api';
 
 const DashboardAdmin = () => {
   const { pathname } = useRouter();
+  const isLoading = useRouteLoader();
+
+  const recentProjects = projects.filter((project) => {
+    return project.id <= 2;
+  });
 
   return (
     <MainLayout>
+      {isLoading && <PageLoading />}
+
       <SEO title="Dashboard" description="dashboard npe management projects" />
 
       <HeaderPage
@@ -64,22 +74,16 @@ const DashboardAdmin = () => {
         <Space h={30} />
 
         <Flex justify={'space-between'} wrap="nowrap" w={'100%'}>
-          <ProjectCard
-            // member={members}
-            tag={platformService}
-            projectName="Kartjis"
-            deadline="12 Desember 2023"
-            taskComplete={2}
-            tasks={tasks}
-          />
-          <ProjectCard
-            // member={members}
-            tag={platformService}
-            projectName="Kartjis"
-            deadline="12 Desember 2023"
-            taskComplete={2}
-            tasks={tasks}
-          />
+          {recentProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              tag={platformService}
+              projectName={project.projectName}
+              deadline="12 Desember 2023"
+              taskComplete={2}
+              tasks={project.tasks.length}
+            />
+          ))}
         </Flex>
       </Box>
 
