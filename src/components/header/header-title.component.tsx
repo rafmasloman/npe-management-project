@@ -8,7 +8,7 @@ interface IHeaderTitle {
 }
 const HeaderTitle = ({ title, href }: IHeaderTitle) => {
   return (
-    <Group position="apart" w={'100%'}>
+    <Group position="apart" className="w-full">
       <Text fw={700}>{title}</Text>
       <Link
         href={href}
