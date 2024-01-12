@@ -1,6 +1,6 @@
 import { IconInterfaceProps } from '@/src/interfaces/icon.interface';
 
-export const IClients = ({ width, height }: IconInterfaceProps) => {
+export const ICUser = ({ width, height }: IconInterfaceProps) => {
   return (
     <svg
       width={width}

@@ -8,11 +8,13 @@ interface ITeamCardProps {
 
 const TeamCard = ({ name, position }: ITeamCardProps) => {
   return (
-    <Card radius={'lg'}>
+    <Card radius={'lg'} className="w-full md:w-3/4">
       <Group>
         <Avatar size={45} radius={'xl'} />
         <Stack spacing={0}>
-          <Text fw={600}>{name}</Text>
+          <Text fw={500} className="">
+            {name}
+          </Text>
           <Text fw={500} color={COLORS.GRAY} fz={'0.875rem'}>
             {position}
           </Text>
