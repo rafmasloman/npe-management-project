@@ -1,4 +1,14 @@
-import { Box, rem, Group, Space, Stack, Text, Loader } from '@mantine/core';
+import {
+  Box,
+  rem,
+  Group,
+  Space,
+  Stack,
+  Text,
+  Loader,
+  Flex,
+  Card,
+} from '@mantine/core';
 import PersonCard from '../components/card/person-card.component';
 import SubDetail from '../components/project/project-sub-detail.component';
 import { COLORS } from '../constant/colors.constant';
@@ -10,6 +20,8 @@ import { ITaskProps } from '../interfaces/task.interface';
 import { IMemberProps } from '../interfaces/member.interface';
 import { IPlatformService } from '../interfaces/platform.interface';
 import { useEffect, useState } from 'react';
+import ModalForm from '../components/modal/modal-form.component';
+import PayrollForm from '../components/form/payroll.form.component';
 
 interface IProjectDetailResponse {
   id: number;
@@ -26,17 +38,17 @@ interface IProjectDetailResponse {
 }
 
 const ProjectOverview = (projectDetail: any) => {
-  const {
-    projectName,
-    client,
-    platform,
-    endDate,
-    description,
-    members,
-    priceDeals,
-  } = projectDetail.projectDetail;
+  const { platform, endDate, member, price, task } =
+    projectDetail?.projectDetail;
 
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log(task);
+
+  const platformServices = platform
+    .slice(1, -1)
+    .split(', ')
+    .map((item: any) => item.replace(/'/g, ''));
 
   useEffect(() => {
     if (projectDetail === undefined) {
@@ -45,14 +57,14 @@ const ProjectOverview = (projectDetail: any) => {
   }, []);
 
   return (
-    <Box
-      bg={'white'}
-      p={rem(30)}
-      style={{
-        borderRadius: '10px',
-      }}
-    >
-      {/* <Group spacing={'xl'}>
+    <>
+      {/* <ModalForm btnText="Invite Member" title="Invite Member to Project">
+        <PayrollForm />
+      </ModalForm> */}
+
+      <Space h={'xl'} />
+      <Card withBorder radius={'lg'} shadow="sm" bg={'white'} p={rem(30)}>
+        {/* <Group spacing={'xl'}>
         <Image
           src={KartjisLogo.src}
           alt={'Project Showcase'}
@@ -72,59 +84,73 @@ const ProjectOverview = (projectDetail: any) => {
         </Text>
       </Group> */}
 
-      {/* <Space h={50} /> */}
+        {/* <Space h={50} /> */}
 
-      <Stack spacing={'30px'}>
-        <SubDetail title="Member">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            members?.map((member: IMemberProps) => {
-              //   console.log('member' + member);
+        <Flex direction={'column'} gap={30}>
+          <SubDetail title="Member">
+            {isLoading ? (
+              <Loader />
+            ) : (
+              member?.map((member: any) => {
+                return (
+                  <PersonCard
+                    key={member.id}
+                    name={member.user?.fullname!}
+                    image={`${
+                      process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
+                    }/members/${member.profilePicture!}`}
+                  />
+                );
+              })
+            )}
+            <ModalForm
+              btnText="Invite Member"
+              title="Invite Member to Project"
+              variant="outline"
+              colorBtn={'transparant'}
+            >
+              <PayrollForm />
+            </ModalForm>
+          </SubDetail>
+
+          {/* <SubDetail title="Client">
+            {client?.map((client: { name: string }) => {
+              return <PersonCard key={client.name} name={client.name} />;
+            })}
+          </SubDetail> */}
+
+          <SubDetail title="Platform">
+            {platformServices?.map((platform: any, index: number) => {
               return (
-                <PersonCard key={member.id} name={member.name.split(' ')[0]} />
+                <Text
+                  key={platform}
+                  fz={'0.75rem'}
+                  bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
+                  px={10}
+                  py={4}
+                  color="white"
+                  style={{
+                    borderRadius: '7px',
+                  }}
+                >
+                  {platform}
+                </Text>
               );
-            })
-          )}
-        </SubDetail>
+            })}
+          </SubDetail>
 
-        <SubDetail title="Client">
-          {client?.map((client: { name: string }) => {
-            return <PersonCard key={client.name} name={client.name} />;
-          })}
-        </SubDetail>
+          <SubDetail title="Deadline">
+            <Text color={COLORS.DANGER} fw={600}>
+              {endDate}
+            </Text>
+          </SubDetail>
 
-        <SubDetail title="Platform">
-          {platform?.map((platform: IPlatformService, index: number) => {
-            return (
-              <Text
-                key={platform.id}
-                fz={'0.75rem'}
-                bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
-                px={10}
-                py={4}
-                color="white"
-                style={{
-                  borderRadius: '7px',
-                }}
-              >
-                {platform.name.split(' ')[0]}
-              </Text>
-            );
-          })}
-        </SubDetail>
-
-        <SubDetail title="Deadline">
-          <Text color={COLORS.DANGER} fw={600}>
-            {endDate}
-          </Text>
-        </SubDetail>
-
-        <SubDetail title="Project Price">
-          <Text fw={600}>Rp {priceDeals.toLocaleString('id-ID')}</Text>
-        </SubDetail>
-      </Stack>
-    </Box>
+          <SubDetail title="Project Price">
+            <Text fw={600}>Rp {price?.toLocaleString('id-ID')}</Text>
+          </SubDetail>
+        </Flex>
+      </Card>
+    </>
   );
 };
 

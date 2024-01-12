@@ -17,6 +17,7 @@ const MenuComp = ({ button, children }: IMenuProps) => {
       styles={{
         item: {},
       }}
+      zIndex={99}
     >
       <Menu.Target>{button}</Menu.Target>
 

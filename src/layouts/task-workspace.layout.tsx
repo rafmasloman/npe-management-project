@@ -12,15 +12,22 @@ import { COLORS } from '../constant/colors.constant';
 import TaskCard from '../components/card/task-card.component';
 import { useDrop } from 'react-dnd';
 
-const TaskWorkSpace = (projectDetail: any) => {
+const TaskWorkSpace = ({ todos }: any) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'task',
     // item: { text },
     drop: () => console.log('drop '),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
+    collect: (monitor) => (
+      console.log(monitor),
+      {
+        isOver: !!monitor.isOver(),
+      }
+    ),
   }));
+
+  
+
+  const todo = todos?.todo?.filter((t: any) => t.status.includes('To Do'));
 
   return (
     <Box>
@@ -42,7 +49,21 @@ const TaskWorkSpace = (projectDetail: any) => {
             text="To Do"
           />
 
-          <TaskCard
+          {todo.map((t: any) => {
+            return (
+              <TaskCard
+                key={t.id}
+                id={t.id}
+                badge="Front End"
+                deadline={t.endDate!}
+                member={t.member}
+                text={t.name}
+                comment={t.comment}
+              />
+            );
+          })}
+
+          {/* <TaskCard
             badge="Front End"
             deadline={projectDetail?.endDate!}
             member={{ id: 1, image: '', name: 'Richard Enrico' }}
@@ -58,15 +79,15 @@ const TaskWorkSpace = (projectDetail: any) => {
               color: 'white',
               backgroundColor: COLORS.THIRD,
             }}
-          />
+          /> */}
 
-          <Menu withArrow zIndex={10} width={'120px'} opened={true}>
+          {/* <Menu withArrow zIndex={10} width={'120px'} opened={true}>
             <Menu.Dropdown>
               <Menu.Label>Opsi</Menu.Label>
               <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
               <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
             </Menu.Dropdown>
-          </Menu>
+          </Menu> */}
         </Stack>
 
         <Stack ref={drop}>
@@ -80,7 +101,7 @@ const TaskWorkSpace = (projectDetail: any) => {
             }
           />
 
-          <TaskCard
+          {/* <TaskCard
             badge="UI/UX"
             deadline={projectDetail?.endDate!}
             member={{ id: 1, image: '', name: 'Richard Enrico' }}
@@ -89,15 +110,15 @@ const TaskWorkSpace = (projectDetail: any) => {
               color: 'white',
               backgroundColor: COLORS.THIRD,
             }}
-          />
+          /> */}
 
-          <Menu withArrow zIndex={10} width={'120px'} opened={true}>
+          {/* <Menu withArrow zIndex={10} width={'120px'} opened={true}>
             <Menu.Dropdown>
               <Menu.Label>Opsi</Menu.Label>
               <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
               <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
             </Menu.Dropdown>
-          </Menu>
+          </Menu> */}
         </Stack>
 
         <Stack>
@@ -111,7 +132,7 @@ const TaskWorkSpace = (projectDetail: any) => {
             }
           />
 
-          <TaskCard
+          {/* <TaskCard
             badge="Front End"
             deadline={projectDetail?.endDate!}
             member={{ id: 1, image: '', name: 'Richard Enrico' }}
@@ -120,15 +141,15 @@ const TaskWorkSpace = (projectDetail: any) => {
               color: COLORS.DEEPBLUE,
               backgroundColor: COLORS.LIGHTBLUE,
             }}
-          />
+          /> */}
 
-          <Menu withArrow zIndex={10} width={'120px'} opened={true}>
+          {/* <Menu withArrow zIndex={10} width={'120px'} opened={true}>
             <Menu.Dropdown>
               <Menu.Label>Opsi</Menu.Label>
               <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
               <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
             </Menu.Dropdown>
-          </Menu>
+          </Menu> */}
         </Stack>
       </SimpleGrid>
     </Box>

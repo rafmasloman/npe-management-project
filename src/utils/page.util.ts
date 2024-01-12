@@ -4,6 +4,7 @@ export const getCurrentRole = (pathname: string) => {
 };
 
 export const getCurrentPage = (pathname: string) => {
-  const pageTitle = pathname.split('/')[2];
+  const pageTitle = pathname.split('/')[1];
+
   return pageTitle;
 };

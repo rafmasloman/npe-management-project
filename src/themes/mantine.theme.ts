@@ -7,6 +7,8 @@ import {
   SelectItemProps,
   TextareaProps,
   MultiSelectProps,
+  NumberInputProps,
+  FileInputProps,
 } from '@mantine/core';
 import { SelectItemsStylesNames } from '@mantine/core/lib/Select/SelectItems/SelectItems';
 import { DateInputProps } from '@mantine/dates';
@@ -78,6 +80,29 @@ export const MultiSelectInputStyles: Partial<MultiSelectProps> = {
     },
     input: {
       padding: 12,
+    },
+  },
+};
+
+export const NumberInputStyles: Partial<NumberInputProps> = {
+  styles: {
+    label: {
+      marginBottom: '10px',
+    },
+    input: {
+      padding: 24,
+    },
+  },
+};
+
+export const FileInputStyles: Partial<FileInputProps> = {
+  styles: {
+    label: {
+      marginBottom: 10,
+    },
+    input: {
+      padding: 13,
+      borderRadius: 10,
     },
   },
 };

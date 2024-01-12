@@ -25,6 +25,7 @@ const ItemValue = ({
           alignItems: 'center',
           backgroundColor:
             theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+
           border: `${rem(1)} solid ${
             theme.colorScheme === 'dark'
               ? theme.colors.dark[7]

@@ -6,8 +6,8 @@ import {
   Menu,
   UnstyledButton,
   Stack,
-  MediaQuery,
   TextInput,
+  MediaQuery,
 } from '@mantine/core';
 import { IUserProfileBadgeProps } from '@/src/interfaces/user.interface';
 
@@ -25,8 +25,8 @@ const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
       <Group>
         <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
           <Group>
-            <Avatar radius="xl" size={'lg'} />
-            <Stack spacing={'0'}>
+            <Avatar radius="xl" size={'md'} />
+            <Stack spacing={0}>
               <Text>{name}</Text>
               <Text>{role}</Text>
             </Stack>
@@ -36,12 +36,20 @@ const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
         <MediaQuery largerThan={'sm'} styles={{ display: 'none' }}>
           <Group>
             <Avatar radius="xl" size={'md'} />
-            <Stack spacing={'0'}>
+            <Stack spacing={0}>
               <Text fz={'0.825rem'}>{name}</Text>
               <Text fz={'0.825rem'}>{role}</Text>
             </Stack>
           </Group>
         </MediaQuery>
+
+        {/* <Group>
+          <Avatar radius="xl" size={'lg'} />
+          <Stack gap={0}>
+            <Text>{name}</Text>
+            <Text>{role}</Text>
+          </Stack>
+        </Group> */}
 
         {/* <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
           <TextInput size="xl" />

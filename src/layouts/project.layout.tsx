@@ -1,4 +1,4 @@
-import { Space } from '@mantine/core';
+import { Container, Space } from '@mantine/core';
 import SEO from '../components/SEO/seo.component';
 import HeaderPage from '../components/header/header-page.component';
 import { getCurrentPage, getCurrentRole } from '../utils/page.util';
@@ -10,21 +10,21 @@ const ProjectLayout = ({ pathname, children }: ILayoutProps) => {
     <>
       <SEO title="projects" description="client page for npe pro" />
 
-      <HeaderPage
-        pageTitle={getCurrentPage(pathname)}
-        role={getCurrentRole(pathname)}
-      />
+      <Container size={'xl'} className="px-4 md:px-10 lg:px-16">
+        <HeaderPage
+          pageTitle={getCurrentPage(pathname)}
+          role={getCurrentRole(pathname)}
+        />
 
-      <Space h={50} />
+        <Space h={50} />
 
-      <ButtonNavigate
-        icon={<IconPlus />}
-        url={`/${getCurrentRole(pathname)}/${getCurrentPage(
-          pathname,
-        )}/add-project`}
-      >
-        Add Project
-      </ButtonNavigate>
+        <ButtonNavigate
+          icon={<IconPlus />}
+          url={`/${getCurrentPage(pathname)}/add-project`}
+        >
+          Add Project
+        </ButtonNavigate>
+      </Container>
       {children}
     </>
   );

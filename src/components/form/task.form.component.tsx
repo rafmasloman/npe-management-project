@@ -124,10 +124,10 @@ const TaskForm = () => {
               value: member.name,
               position: member.position,
             }))}
-            itemComponent={ItemSelect}
+            // itemComponent={ItemSelect}
             label="Tugaskan ke-"
             placeholder="Tambahkan tugas ke member"
-            valueComponent={ItemValue}
+            // valueComponent={ItemValue}
           />
         </Grid.Col>
 

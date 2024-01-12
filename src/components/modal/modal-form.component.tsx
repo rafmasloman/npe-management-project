@@ -8,9 +8,19 @@ interface IModalFormProps {
   title: string;
   btnText: string;
   children: React.ReactNode;
+  radiusBtn?: string;
+  variant?: string;
+  colorBtn?: string;
 }
 
-const ModalForm = ({ title, children, btnText }: IModalFormProps) => {
+const ModalForm = ({
+  title,
+  children,
+  btnText,
+  variant,
+  radiusBtn,
+  colorBtn,
+}: IModalFormProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
   return (
@@ -43,7 +53,14 @@ const ModalForm = ({ title, children, btnText }: IModalFormProps) => {
       </Modal>
 
       <Group>
-        <Button onClick={open} leftIcon={<IconPlus />} bg={COLORS.PRIMARY}>
+        <Button
+          onClick={open}
+          leftIcon={<IconPlus />}
+          color={colorBtn || COLORS.PRIMARY}
+          bg={colorBtn || COLORS.PRIMARY}
+          radius={radiusBtn}
+          variant={variant}
+        >
           {btnText}
         </Button>
       </Group>

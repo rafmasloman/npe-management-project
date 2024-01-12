@@ -6,7 +6,9 @@ interface IPersonCardProps {
   name: string;
 }
 
-const PersonCard = ({ name }: IPersonCardProps) => {
+const PersonCard = ({ name, image }: IPersonCardProps) => {
+  console.log(image);
+
   return (
     <Group
       px={'1rem'}
@@ -21,8 +23,8 @@ const PersonCard = ({ name }: IPersonCardProps) => {
       }}
       spacing={'xs'}
     >
-      <Avatar radius={'lg'} size={'md'} />
-      <Text fz={'0.825rem'}>{name}</Text>
+      <Avatar radius={'xl'} size={30} src={image} />
+      <Text className="text-xs">{name}</Text>
     </Group>
   );
 };

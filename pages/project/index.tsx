@@ -7,6 +7,8 @@ import ProjectCard from '@/src/components/card/project-card.component';
 import HeaderPage from '@/src/components/header/header-page.component';
 import PageLoading from '@/src/components/loading/page-loading.component';
 import { COLORS } from '@/src/constant/colors.constant';
+import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
+import { IProjectCardProps } from '@/src/interfaces/project.interface';
 import MainLayout from '@/src/layouts/main.layout';
 import ProjectLayout from '@/src/layouts/project.layout';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
@@ -14,19 +16,18 @@ import useRouteLoader from '@/src/utils/routes.event';
 import { Button, Loader, SimpleGrid, Space } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Suspense, useEffect, useState } from 'react';
-
-// const runData = async () => {
-//   const result = await getProjects();
-//   // return result;
-//   console.log(result);
-// };
+import DownloadFileAPI from '../api/file/file-query';
 
 const ProjectAdmin = () => {
   const { pathname } = useRouter();
   const largeScreen = useMediaQuery('(min-width: 60em)');
+  const [iconFilename, setIconFilename] = useState('');
+
+  const { data: getProjects } = useGetProjectQuery();
 
   return (
     <MainLayout>
@@ -35,34 +36,31 @@ const ProjectAdmin = () => {
 
         <Suspense fallback={<Loader size={60} color={COLORS.PRIMARY} />}>
           <SimpleGrid
-            cols={3}
-            mx={largeScreen ? 50 : '1rem'}
-            spacing={'xl'}
             breakpoints={[
               {
-                maxWidth: 'sm',
+                minWidth: 'sm',
                 cols: 1,
-                spacing: 'md',
               },
               {
-                maxWidth: 'md',
+                minWidth: 'lg',
                 cols: 3,
-                spacing: 'xl',
               },
             ]}
+            mx={largeScreen ? 50 : '1rem'}
+            spacing={'xl'}
           >
-            {projects.map((project) => (
+            {getProjects?.data?.map((project: any) => (
               <ProjectCard
                 key={project.id}
                 width={340}
                 height={340}
-                // member={members}
-                tag={platformService}
+                member={project.member}
+                platform={project.platform}
                 projectName={project.projectName}
-                deadline="12 Desember 2023"
-                taskComplete={2}
-                tasks={project.tasks.length}
+                deadline={project.endDate}
                 description={project.description}
+                projectIcon={project.projectIcon}
+                task={project.task}
               />
             ))}
           </SimpleGrid>

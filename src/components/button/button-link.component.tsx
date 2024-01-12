@@ -14,23 +14,16 @@ const ButtonNavigate = ({ children, url, icon }: IButtonNavigate) => {
 
   return (
     <Link href={url}>
-      <div
-        style={{
-          marginLeft: largeScreen ? 50 : '1rem',
-          marginRight: largeScreen ? 50 : '1rem',
-        }}
+      <Button
+        rel="noopener noreferrer"
+        leftIcon={icon}
+        bg={COLORS.PRIMARY}
+        radius={'md'}
+        // mx={largeScreen ? 50 : '1.25rem'}
+        // w={'100%'}
       >
-        <Button
-          rel="noopener noreferrer"
-          leftIcon={icon}
-          bg={COLORS.PRIMARY}
-          radius={'md'}
-          // mx={largeScreen ? 50 : '1.25rem'}
-          // w={'100%'}
-        >
-          {children}
-        </Button>
-      </div>
+        {children}
+      </Button>
     </Link>
   );
 };

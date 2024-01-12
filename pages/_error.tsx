@@ -5,8 +5,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 
 function Error(statusCode: { statusCode: number }) {
-  // console.log(statusCode.statusCode);
-
   return (
     <>
       <Head>
