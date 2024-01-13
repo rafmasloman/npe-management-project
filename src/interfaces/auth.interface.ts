@@ -1,4 +1,4 @@
-import { IApiGetAllRoleQueryResponse } from './role/role-api.interface';
+import { IApiGetAllRoleQueryResponse } from './api/role/role-api.interface';
 
 export interface IAuthLoginParams {
   email: string;

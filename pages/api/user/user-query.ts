@@ -1,8 +1,8 @@
 import { API_ROUTES } from '@/src/constant/api-routes.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { IApiBaseResponse } from '@/src/interfaces/base-response.interface';
-import { IApiGetAllRoleQueryResponse } from '@/src/interfaces/role/role-api.interface';
-import { IApiGetUserQueryResponse } from '@/src/interfaces/user/user-api.interface';
+import { IApiGetAllRoleQueryResponse } from '@/src/interfaces/api/role/role-api.interface';
+import { IApiGetUserQueryResponse } from '@/src/interfaces/api/user/user-api.interface';
 import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
 
 class UserQueryApi {

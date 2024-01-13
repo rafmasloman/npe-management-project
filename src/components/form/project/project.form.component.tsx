@@ -1,4 +1,3 @@
-import * as yup from 'yup';
 import { useForm, yupResolver } from '@mantine/form';
 import { IProjectDataParams } from '@/src/interfaces/project.interface';
 import {
@@ -18,24 +17,6 @@ import { COLORS } from '@/src/constant/colors.constant';
 import { IconFileTypeSvg, IconPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { usePostProject } from '@/src/hooks/project/usePostProjectMutation';
-
-const schema = yup.object().shape({
-  projectName: yup.string().required('Nama Project tidak boleh kosong'),
-  client: yup.string().required('Mohon Pilih Client'),
-  platform: yup.string().required('Mohon Pilih Tag'),
-  startedDate: yup.string().required('Silahkan Pilih tanggal terlebih dulu'),
-  endDate: yup.string().required('Silahkan Pilih tanggal terlebih dulu'),
-  description: yup.string().required('Mohon masukkan deskripsi'),
-  price: yup.number().required('Harga Project harus diisi'),
-  image: yup
-    .mixed()
-
-    .required('Mohon pilih file gambar'),
-  projectIcon: yup
-    .mixed()
-
-    .required('Mohon pilih icon'),
-});
 
 interface IProjectFormProps {
   initValue?: IProjectDataParams;

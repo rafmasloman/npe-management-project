@@ -5,8 +5,10 @@ import { notifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/src/constant/routes.constant';
 import Notifications from '@/src/components/notifications/notification.component';
+import MilestoneMutationAPI from '@/pages/api/milestone/milestone-mutation';
+import { IApiCreatePostMilestoneMutationParams } from '@/src/interfaces/api/milestone/milestone-api.interface';
 
-export const usePostUser = (option?: {
+export const usePostMilestone = (option?: {
   onSuccess: () => void;
   onError: () => void;
   onNavigate: () => void;
@@ -15,27 +17,25 @@ export const usePostUser = (option?: {
   const { replace } = useRouter();
 
   return useMutation({
-    mutationKey: ['post-create-user-id-key'],
-    mutationFn: (params: IApiCreatePostUserMutationParams) =>
-      UserMutationApi.createPostUserMutation(params),
+    mutationKey: ['post-milestone-id-key'],
+    mutationFn: (params: IApiCreatePostMilestoneMutationParams) =>
+      MilestoneMutationAPI.createMilestone(params),
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({ queryKey: ['user-get-all-query'] });
+      //   queryClient.invalidateQueries({ queryKey: ['post-milestone-id-key'] });
 
       Notifications({
-        title: 'User ditambah',
-        message: 'Berhasil menambah data user',
+        title: 'Milestone ditambah',
+        message: 'Berhasil menambah milestone',
         status: 'SUCCESS',
       });
-
-      replace(ROUTES.USER);
 
       if (!!option?.onSuccess) {
       }
     },
     onError(error, variables, context) {
       Notifications({
-        title: 'User gagal ditambah',
-        message: 'Gagal menambah data user',
+        title: 'Milestone gagal ditambah',
+        message: 'Gagal menambah data milestone',
         status: 'FAILED',
       });
     },

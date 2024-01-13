@@ -5,7 +5,7 @@ import {
   IApiCreatePostUserMutationParams,
   IApiCreatePostUserMutationResponse,
   IApiGetUserQueryResponse,
-} from '@/src/interfaces/user/user-api.interface';
+} from '@/src/interfaces/api/user/user-api.interface';
 import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
 
 class UserMutationApi {

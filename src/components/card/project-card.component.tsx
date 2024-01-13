@@ -42,7 +42,7 @@ const ProjectCard = ({
     (task) => task.status.toLowerCase() === 'Completed'.toLowerCase(),
   );
 
-  console.log('member : ', member);
+  console.log('projectId : ', projectId);
 
   const { pathname } = useRouter();
 

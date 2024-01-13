@@ -21,54 +21,18 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Suspense, useEffect, useState } from 'react';
 import DownloadFileAPI from '../api/file/file-query';
+import MilestoneLayout from '@/src/layouts/milestone.layout';
 
-const ProjectAdmin = () => {
+const MilestonePages = () => {
   const { pathname } = useRouter();
-  const largeScreen = useMediaQuery('(min-width: 60em)');
-  const [iconFilename, setIconFilename] = useState('');
-
-  const { data: getProjects } = useGetProjectQuery();
 
   return (
     <MainLayout>
-      <ProjectLayout pathname={pathname}>
-        <Space h={50} />
-
-        <Suspense fallback={<Loader size={60} color={COLORS.PRIMARY} />}>
-          <SimpleGrid
-            breakpoints={[
-              {
-                minWidth: 'sm',
-                cols: 1,
-              },
-              {
-                minWidth: 'lg',
-                cols: 3,
-              },
-            ]}
-            mx={largeScreen ? 50 : '1rem'}
-            spacing={'xl'}
-          >
-            {getProjects?.data?.map((project: any) => (
-              <ProjectCard
-                key={project.id}
-                width={340}
-                height={340}
-                member={project.member}
-                platform={project.platform}
-                projectName={project.projectName}
-                deadline={project.endDate}
-                description={project.description}
-                projectIcon={project.projectIcon}
-                task={project.task}
-                projectId={project.id}
-              />
-            ))}
-          </SimpleGrid>
-        </Suspense>
-      </ProjectLayout>
+      <MilestoneLayout pathname={pathname}>
+        <div>Milestone pages</div>
+      </MilestoneLayout>
     </MainLayout>
   );
 };
 
-export default ProjectAdmin;
+export default MilestonePages;

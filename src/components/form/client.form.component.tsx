@@ -16,7 +16,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import UserQueryApi from '@/pages/api/user/user-query';
 import UserMutationApi from '@/pages/api/user/user-mutation';
 import { useState } from 'react';
-import { IApiCreatePostUserMutationParams } from '@/src/interfaces/user/user-api.interface';
+import { IApiCreatePostUserMutationParams } from '@/src/interfaces/api/user/user-api.interface';
 import { usePostUser } from '@/src/hooks/user/usePostUser';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/src/constant/routes.constant';
