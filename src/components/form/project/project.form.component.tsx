@@ -5,6 +5,7 @@ import {
   FileInput,
   Grid,
   Group,
+  MultiSelect,
   NumberInput,
   Select,
   Text,
@@ -15,8 +16,9 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { DateInput } from '@mantine/dates';
 import { COLORS } from '@/src/constant/colors.constant';
 import { IconFileTypeSvg, IconPlus } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePostProject } from '@/src/hooks/project/usePostProjectMutation';
+import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
 
 interface IProjectFormProps {
   initValue?: IProjectDataParams;
@@ -24,8 +26,12 @@ interface IProjectFormProps {
 
 const ProjectForm = ({ initValue }: IProjectFormProps) => {
   const [files, setFiles] = useState<FileWithPath[]>([]);
+  const [membersData, setMembersData] = useState([]);
 
   const { mutate: createProject } = usePostProject();
+  const { data: members } = useGetMemberQuery();
+
+  console.log('members : ', members);
 
   const form = useForm({
     // validate: yupResolver(schema),
@@ -37,27 +43,52 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
       endDate: initValue?.endDate || '',
       description: initValue?.description || '',
       projectIcon: initValue?.projectIcon || '',
+      member: '',
       image: '',
       price: 0,
     },
   });
 
   const handleSubmit = form.onSubmit((values) => {
-    let formData = new FormData();
+    const formData = new FormData();
 
-    formData.append('projectName', values.projectName);
+    // const payload = Object.entries(values).map(([key, value]) => ({
+    //   key,
+    //   value,
+    // }));
 
-    const payload = Object.entries(values).map(([key, value]) => ({
-      key,
-      value,
-    }));
+    // payload.map((data) => {
+    //   formData.append(data.key, data.value);
+    // });
 
-    payload.map((data) => {
-      formData.append(data.key, data.value);
-    });
+    // console.log('form data : ', formData);
+
+    formData.set('projectName', values.projectName);
+    formData.set('member', values.member);
+    formData.set('description', values.description);
+    formData.set('client', values.client);
+    formData.set('platform', values.platform);
+    formData.set('startedDate', values.startedDate as string);
+    formData.set('endDate', values.endDate as string);
+    formData.set('projectIcon', values.projectIcon);
+    formData.set('price', values.price.toString());
+
+    console.log('payload members : ', formData.get('member'));
 
     createProject(formData);
   });
+
+  useEffect(() => {
+    if (members?.data && members?.data.length > 0) {
+      const selectProject = members?.data?.map((member: any) => {
+        return {
+          value: member.id,
+          label: member.user?.fullname,
+        };
+      });
+      setMembersData(selectProject);
+    }
+  }, [members]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -103,6 +134,15 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
             label="Platform"
             withAsterisk
             {...form.getInputProps('platform')}
+          />
+        </Grid.Col>
+        <Grid.Col lg={6} md={1}>
+          <MultiSelect
+            data={membersData}
+            placeholder="Pilih Member"
+            label="Member"
+            withAsterisk
+            {...form.getInputProps('member')}
           />
         </Grid.Col>
         <Grid.Col lg={6} md={1}>

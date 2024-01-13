@@ -18,7 +18,7 @@ const AddMilestone = () => {
         <FormLayout
           pathname={pathname}
           title="Add Milestone"
-          pageTitle="Tambah Project"
+          pageTitle="Tambah Milestone"
         >
           <MilestoneForm />
         </FormLayout>

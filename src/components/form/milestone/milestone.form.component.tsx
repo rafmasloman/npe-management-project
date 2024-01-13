@@ -17,7 +17,6 @@ import { DateInput } from '@mantine/dates';
 import { COLORS } from '@/src/constant/colors.constant';
 import { IconFileTypeSvg, IconPlus } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { usePostProject } from '@/src/hooks/project/usePostProjectMutation';
 import { IMilestoneDataParams } from '@/src/interfaces/milestone.interface';
 import { schema } from './milestone.schema';
 import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';

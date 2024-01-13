@@ -8,7 +8,7 @@ export const ROUTES = {
   // ADMIN ROUTES
   DASHBOARD: '/dashboard',
   CLIENT: '/client',
-  USER: '/user-management',
+  USER: '/admin/user-management',
   MEMBER: '/member',
   CALENDER: '/calender',
   TASK: '/task',

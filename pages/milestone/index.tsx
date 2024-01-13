@@ -22,9 +22,14 @@ import { useRouter } from 'next/router';
 import { Suspense, useEffect, useState } from 'react';
 import DownloadFileAPI from '../api/file/file-query';
 import MilestoneLayout from '@/src/layouts/milestone.layout';
+import { useGetAllMilestone } from '@/src/hooks/milestone/useGetAllMilestones';
 
 const MilestonePages = () => {
   const { pathname } = useRouter();
+
+  const { data: milestones } = useGetAllMilestone();
+
+  console.log('milestones : ', milestones);
 
   return (
     <MainLayout>

@@ -11,15 +11,18 @@ class ProjectMutationApi {
       const response = await fetch(this.routesName, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json',
           Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
         },
         body: payload,
       });
 
+      console.log('payload mutation : ', response);
+
       const data = await response.json();
       return data;
-    } catch (error) {
+    } catch (error: any) {
+      console.log('error : ', error);
+
       throw error;
     }
   }

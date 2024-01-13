@@ -14,14 +14,12 @@ export const usePostProject = () => {
     mutationFn: (payload: FormData) =>
       ProjectMutationApi.createProject(payload),
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({ queryKey: ['post-project-id-key'] });
-
+      // queryClient.invalidateQueries({ queryKey: ['post-project-id-key'] });
       //   Notifications({
       //     title: 'User ditambah',
       //     message: 'Berhasil menambah data user',
       //     status: 'SUCCESS',
       //   });
-
       //   replace(ROUTES.ADMIN_PROJECTS);
     },
   });

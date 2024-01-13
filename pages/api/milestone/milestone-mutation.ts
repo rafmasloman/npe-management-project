@@ -26,7 +26,25 @@ class MilestoneMutationAPI {
 
       const data = await response.json();
 
-      console.log(data);
+      return data;
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    }
+  }
+
+  static async getAllMilestone() {
+    try {
+      const response = await fetch(this.routesName, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+        },
+      });
+
+      const data = await response.json();
 
       return data;
     } catch (error) {
