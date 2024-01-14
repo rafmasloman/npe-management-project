@@ -50,7 +50,7 @@ const DashboardAdmin = () => {
   const { replace, push } = useRouter();
   const { logout } = useAuth();
 
-  const { data: getProjects } = useGetProjectQuery();
+  const { data: getProjects } = useGetProjectQuery(String(3));
   const { data: getMembers } = useGetMemberQuery(2);
 
   console.log('members : ', getMembers);
