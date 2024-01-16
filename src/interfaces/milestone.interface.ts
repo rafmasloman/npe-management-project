@@ -18,6 +18,7 @@ export interface IMilestoneCardProps {
 export interface IMilestoneDataParams {
   milestoneName: string;
   projectId: string;
-  startedDate: string;
-  endDate: string;
+  startedDate: Date;
+  endDate: Date;
+  status: string;
 }

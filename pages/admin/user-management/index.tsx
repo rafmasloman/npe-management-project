@@ -70,7 +70,6 @@ const UserAdmin = () => {
 
   const { mutate: deleteUser } = useDeleteUser();
 
-
   const userData = readAllUsers?.data;
 
   const handleConfirm = (userId: string) => {
@@ -179,7 +178,7 @@ const UserAdmin = () => {
           tableHead={tableHead}
           tableRow={userData?.map((user) => {
             return (
-              <tr key={user.id} className=" border-b border-red-700">
+              <tr key={user.id} className="">
                 <td className="px-6 py-4 text-center">
                   {user.fullname.split(' ')[0]}
                 </td>

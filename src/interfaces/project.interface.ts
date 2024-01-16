@@ -23,4 +23,6 @@ export interface IProjectDataParams {
   endDate: Date;
   description: string;
   projectIcon: File | any;
+  members: any[];
+  price: number;
 }

@@ -30,7 +30,6 @@ import { IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
 
-
 const ProjectCard = ({
   platform,
   projectName,
@@ -47,11 +46,14 @@ const ProjectCard = ({
 
   const { mutate: deleteProject } = useDeleteProject();
   const [opened, { open, close }] = useDisclosure(false);
+  const { pathname } = useRouter();
 
-  const platformServices = platform
-    .slice(1, -1)
-    .split(', ')
-    .map((item) => item.replace(/'/g, ''));
+  console.log(platform);
+
+  // const platformServices = platform
+  //   ?.slice(1, -1)
+  //   .split(', ')
+  //   .map((item) => item.replace(/'/g, ''));
 
   const completedTask = task?.filter(
     (task) => task.status.toLowerCase() === 'Completed'.toLowerCase(),
@@ -66,10 +68,6 @@ const ProjectCard = ({
 
     close();
   };
-
-  console.log('projectId : ', projectId);
-
-  const { pathname } = useRouter();
 
   return (
     <div className="relative  w-fit">
@@ -107,8 +105,6 @@ const ProjectCard = ({
         </Group>
       </ModalAction>
 
-
-
       <div className="absolute z-10 right-6 top-2.5 cursor-pointer">
         <ProjectMenu opened={isProjectMenuOpen} setOpened={setProjectMenuOpen}>
           <Menu.Item
@@ -122,6 +118,8 @@ const ProjectCard = ({
           <Menu.Item
             icon={<IconPencil size={20} color={COLORS.SECONDARY} />}
             className="text-blue-950"
+            component="a"
+            href={`/project/edit-project/${projectId}`}
           >
             Edit
           </Menu.Item>
@@ -151,7 +149,7 @@ const ProjectCard = ({
                 height={60}
               />
 
-              <Group mt={10}>
+              {/* <Group mt={10}>
                 {platformServices.map((platform, index) => {
                   return (
                     <Text
@@ -169,7 +167,7 @@ const ProjectCard = ({
                     </Text>
                   );
                 })}
-              </Group>
+              </Group> */}
             </Group>
             <Stack>
               <Text fz={'1.75rem'} fw={600}>

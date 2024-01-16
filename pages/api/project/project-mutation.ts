@@ -32,7 +32,6 @@ class ProjectMutationApi {
       const response = await fetch(`${this.routesName}/${projectId}`, {
         method: 'PUT',
         headers: {
-          'Content-type': 'application/json',
           Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
         },
         body: payload,

@@ -79,7 +79,7 @@ export const MultiSelectInputStyles: Partial<MultiSelectProps> = {
       marginBottom: '10px',
     },
     input: {
-      padding: 12,
+      padding: 10,
     },
   },
 };

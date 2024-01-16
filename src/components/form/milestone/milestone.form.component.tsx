@@ -21,6 +21,8 @@ import { IMilestoneDataParams } from '@/src/interfaces/milestone.interface';
 import { schema } from './milestone.schema';
 import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
 import { usePostMilestone } from '@/src/hooks/milestone/usePostMilestone';
+import { usePutMilestone } from '@/src/hooks/milestone/usePutMilestone';
+import { useRouter } from 'next/router';
 
 interface IMilestoneFormProps {
   initValue?: IMilestoneDataParams;
@@ -31,6 +33,11 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
 
   const { data: projects } = useGetProjectQuery();
   const { mutate: createMilestone } = usePostMilestone();
+  const { mutate: updateMilestone } = usePutMilestone();
+
+  const { query } = useRouter();
+
+  console.log(query.milestoneId);
 
   const form = useForm({
     // validate: yupResolver(schema),
@@ -39,6 +46,7 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       projectId: initValue?.projectId || '',
       startedDate: initValue?.startedDate || '',
       endDate: initValue?.endDate || '',
+      status: initValue?.status || 'TO DO',
     },
   });
 
@@ -58,13 +66,18 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
     const payload = {
       milestoneName: values.milestoneName,
       projectId: values.projectId,
-      startedDate: values.startedDate,
-      endDate: values.endDate,
+      startedDate: values.startedDate as string,
+      endDate: values.endDate as string,
+      status: values.status,
     };
 
-    console.log('milestone : ', payload);
+    console.log(payload);
 
-    createMilestone(payload);
+    if (!initValue) {
+      createMilestone(payload);
+    } else if (!!initValue) {
+      updateMilestone({ milestoneId: query.milestoneId, payload });
+    }
   });
 
   return (
@@ -109,18 +122,40 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
             <DateInput
               label="Tanggal Mulai"
               placeholder="Pilih tanggal mulai"
-              w={'48%'}
+              w={'49%'}
               withAsterisk
               {...form.getInputProps('startedDate')}
             />
             <DateInput
               label="Tanggal Selesai"
               placeholder="Pilih tanggal selesai"
-              w={'48%'}
+              w={'49%'}
               withAsterisk
               {...form.getInputProps('endDate')}
             />
           </Group>
+        </Grid.Col>
+
+        <Grid.Col lg={12} md={1}>
+          <Select
+            withAsterisk
+            placeholder="Pilih Status"
+            label="Status"
+            radius={'md'}
+            // data={projects?.data}
+            data={[
+              { value: 'TODO', label: 'To Do' },
+              { value: 'ON_PROGRESS', label: 'On_Progress' },
+              { value: 'COMPLETED', label: 'Completed' },
+            ]}
+            styles={{
+              input: {
+                padding: 24,
+                marginTop: 10,
+              },
+            }}
+            {...form.getInputProps('status')}
+          />
         </Grid.Col>
 
         <Grid.Col span={12} mt={30}>

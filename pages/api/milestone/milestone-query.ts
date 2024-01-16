@@ -1,7 +1,10 @@
 import { API_ROUTES } from '@/src/constant/api-routes.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { IProjectDataParams } from '@/src/interfaces/project.interface';
-import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
+import {
+  __getBrowserAuthCookie,
+  __getSSRAuthCookie,
+} from '@/src/utils/cookie.util';
 
 interface IMilestonePayload {
   milestoneName: string;
@@ -10,21 +13,18 @@ interface IMilestonePayload {
   endDate: string;
 }
 
-class MilestoneMutationAPI {
+class MilestoneQueryAPI {
   private static routesName = `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/${API_ROUTES.MILESTONE}`;
 
-  static async createMilestone(payload: IMilestonePayload) {
+  static async getAllMilestone() {
     try {
       const response = await fetch(this.routesName, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-type': 'application/json',
           Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
         },
-        body: JSON.stringify(payload),
       });
-
-      console.log('create : ', response);
 
       const data = await response.json();
 
@@ -36,43 +36,19 @@ class MilestoneMutationAPI {
     }
   }
 
-  static async updateMilestone(
-    milestoneId: string,
-    payload: IMilestonePayload,
-  ) {
+  static async getDetailMilestone(milestoneId: string) {
     try {
       const response = await fetch(`${this.routesName}/${milestoneId}`, {
-        method: 'PUT',
+        method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      console.log(data);
-
-      return data;
-    } catch (error) {
-      console.log(error);
-
-      throw error;
-    }
-  }
-
-  static async deleteMilestone(milestoneId: string) {
-    try {
-      const response = await fetch(`${this.routesName}/${milestoneId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
         },
       });
 
       const data = await response.json();
-      console.log(data);
 
       return data;
     } catch (error) {
@@ -83,4 +59,4 @@ class MilestoneMutationAPI {
   }
 }
 
-export default MilestoneMutationAPI;
+export default MilestoneQueryAPI;
