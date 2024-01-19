@@ -37,7 +37,7 @@ const HeaderStatus = ({
               : 'bg-green-700'
           } rounded-full w-[23px] h-[23px] flex justify-center items-center`}
         >
-          <Text className="text-sm text-white">{totalTask}</Text>
+          <Text className="text-xs text-white">{totalTask}</Text>
         </div>
       </Group>
     </Group>

@@ -81,7 +81,7 @@ const TaskWorkSpace = ({ todos }: any) => {
           </div>
 
           <div
-            className={`w-full p-1.5  h-screen space-y-[30px] ${
+            className={`w-full p-1  h-screen space-y-[30px] ${
               isOver
                 ? 'border-2 border-dashed border-gray-300 rounded-lg'
                 : 'border-2 border-solid border-transparent'
