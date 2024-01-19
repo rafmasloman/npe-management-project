@@ -17,7 +17,6 @@ export const UserContext = createContext<IUserContextProps>({ user: null });
 
 export function UserCredential({ children }: IUserProviderProps) {
   const [user, setUser] = useState<IUserContextProps | null>(null);
-  const token = __getBrowserAuthCookie(TOKEN_NAME);
 
   const { data: userCredential, isLoading } = useQuery({
     queryKey: ['user-credentials-id-key'],

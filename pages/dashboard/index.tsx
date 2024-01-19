@@ -34,17 +34,38 @@ import { projects } from '@/pages/api/dummy/project.dummy.api';
 import { useAuth } from '@/src/hooks/useAuth';
 import { ROUTES } from '@/src/constant/routes.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
-import { __deleteBrowserCookie } from '@/src/utils/cookie.util';
+import {
+  __deleteBrowserCookie,
+  __setSSRAuthCookie,
+} from '@/src/utils/cookie.util';
 import { UserContext } from '@/src/context/user-credential.context';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
 import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
+import { useGetQueryUserProjects } from '@/src/hooks/user/useGetUserProjectQuery';
+import { GetServerSidePropsContext } from 'next';
+import cookie from 'cookie';
+import UserQueryApi from '../api/user/user-query';
+import { IAuthUserCredentialQuery } from '../api/auth/auth-query';
 
-const DashboardAdmin = () => {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { req } = ctx;
+
+  const cookieToken = cookie.parse(req.headers.cookie!) as any;
+
+  __setSSRAuthCookie(cookieToken?.token);
+
+  const userCredential = await IAuthUserCredentialQuery();
+
+  return { props: { userCredential } };
+}
+
+const DashboardAdmin = ({ userCredential }: any) => {
   const { pathname } = useRouter();
   const user = useContext(UserContext);
 
-  console.log('user : ', user);
+  const userDetail = userCredential.user;
+  const [userProject, setUserProject] = useState<any>([]);
 
   const isLoading = useRouteLoader();
   const { replace, push } = useRouter();
@@ -52,8 +73,9 @@ const DashboardAdmin = () => {
 
   const { data: getProjects } = useGetProjectQuery(String(3));
   const { data: getMembers } = useGetMemberQuery(2);
-
-  console.log('members : ', getMembers);
+  const { data: userProjects, isSuccess } = useGetQueryUserProjects(
+    user.user?.id!,
+  );
 
   const handleLogout = () => {
     __deleteBrowserCookie(TOKEN_NAME);
@@ -61,10 +83,16 @@ const DashboardAdmin = () => {
     replace(ROUTES.LOGIN);
   };
 
+  useEffect(() => {
+    if (userProjects?.data) {
+      setUserProject(userProjects?.data?.member);
+    }
+  }, [isSuccess, userProjects?.data]);
+
+  console.log(userProject);
+
   return (
     <MainLayout>
-      {/* {isLoading && <PageLoading />} */}
-
       <SEO title="Dashboard" description="dashboard npe management projects" />
 
       <Container size={'xl'} className="px-4 mt-0 md:px-12 lg:-mt-16">
@@ -112,16 +140,13 @@ const DashboardAdmin = () => {
         <Space h={30} />
 
         <Box className="w-full md:w-4/5 lg:w-full">
-          <HeaderTitle
-            href={`/${getCurrentRole(pathname)}/projects`}
-            title="Projects"
-          />
+          <HeaderTitle href={`/project`} title="Projects" />
 
           <Space h={30} />
 
           {/* <ScrollArea className="w-screen sm:w-full"> */}
           <div className="w-full  flex flex-col md:flex-row md:justify-between">
-            {getProjects?.data?.map((project: any) => (
+            {userProject?.project?.map((project: any) => (
               <ProjectCard
                 key={project.id}
                 projectId={project.id}
@@ -156,10 +181,7 @@ const DashboardAdmin = () => {
           spacing={70}
         >
           <Box>
-            <HeaderTitle
-              href={`/${getCurrentRole(pathname)}/milestone`}
-              title="Milestone"
-            />
+            <HeaderTitle href={`/milestone`} title="Milestone" />
             <Space h={'xl'} />
 
             <Group>
@@ -181,7 +203,7 @@ const DashboardAdmin = () => {
             <Space h={'xl'} />
 
             <Group>
-              <TaskCard
+              {/* <TaskCard
                 title="Slicing Homepage"
                 progressValue={56}
                 projectName="Kartjis"
@@ -190,7 +212,18 @@ const DashboardAdmin = () => {
                 title="Slicing Homepage"
                 progressValue={56}
                 projectName="Kartjis"
-              />
+              /> */}
+              {userProject?.task?.map((task: any) => {
+                return (
+                  <TaskCard
+                    key={task.name}
+                    title={task.name}
+                    progressValue={56}
+                    projectName={task.project.projectName}
+                    projectIcon={task.project.projectIcon}
+                  />
+                );
+              })}
             </Group>
           </Box>
         </SimpleGrid>

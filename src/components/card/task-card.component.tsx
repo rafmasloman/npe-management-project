@@ -1,13 +1,13 @@
 import {
   ActionIcon,
   Avatar,
-  Badge,
   Button,
   Card,
   Drawer,
   Grid,
   Group,
   Menu,
+  Modal,
   ScrollArea,
   Space,
   Stack,
@@ -20,6 +20,7 @@ import {
   IconClockCheck,
   IconDots,
   IconMessage,
+  IconPencil,
   IconSend,
 } from '@tabler/icons-react';
 import MenuComp from '../menu/menu.component';
@@ -32,10 +33,15 @@ import CommentChat from '../chat/comment-chat.component';
 import { UserContext } from '@/src/context/user-credential.context';
 import { usePostComment } from '@/src/hooks/comment/usePostComment';
 import { useForm } from '@mantine/form';
+import { countingDeadline, formattedDate } from '@/src/utils/date.util';
+import ActionMenu from '../menu/action-menu.component';
+import { IconTrash } from '@tabler/icons-react';
+import { useDeleteTask } from '@/src/hooks/task/useDeleteTaskMutation';
+import ModalAction from '../modal/modal-action.component';
+import TaskForm from '../form/task.form.component';
 
 interface ITaskCardProps {
   id?: string;
-  badge: string;
   member: IMemberTaskCardProps[];
   text: string;
   deadline: string;
@@ -44,6 +50,7 @@ interface ITaskCardProps {
     backgroundColor: string;
   };
   comment?: any;
+  status: string;
 }
 
 interface IMemberTaskCardProps {
@@ -59,26 +66,36 @@ interface IUserMemberTaskCardProps {
 
 const TaskCard = ({
   id,
-  badge,
   member,
   text,
   deadline,
   badgeStyles,
   comment,
+  status,
 }: ITaskCardProps) => {
-  const [{ opacity }, dragRef] = useDrag(() => ({
+  const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'task',
-    // item: { text },
+
+    item: { id, text, status },
+
     collect: (monitor) => ({
-      opacity: !!monitor.isDragging(),
+      isDragging: !!monitor.isDragging(),
     }),
   }));
 
   const [taskId, setTaskId] = useState<number | null>(null);
+  const [isProjectMenuOpen, setProjectMenuOpen] = useState(false);
 
   const [opened, { open, close }] = useDisclosure(false);
+  const [openedConfirmation, { open: openModal, close: closeModal }] =
+    useDisclosure(false);
+
+  const [openedModalEdit, { open: openedEdit, close: closeEdit }] =
+    useDisclosure(false);
 
   const { data: commentData } = useGetCommentByTask(Number(id!));
+  const { mutate: deleteTask } = useDeleteTask();
+  const { mutate } = usePostComment(Number(id!));
 
   const userAccount = useContext(UserContext);
 
@@ -88,12 +105,24 @@ const TaskCard = ({
     },
   });
 
-  const { mutate } = usePostComment(Number(id!));
-
   const handleOpenDrawer = () => {
     setTaskId(Number(id!));
 
     open();
+  };
+
+  const handleDeleteTask = () => {
+    deleteTask(id!);
+
+    close();
+  };
+
+  const openModalTaskForm = () => {
+    openedEdit();
+  };
+
+  const openModalConfirmationDelete = () => {
+    openModal();
   };
 
   const handleSubmitCommentMessage = commentForm.onSubmit((values) => {
@@ -106,9 +135,69 @@ const TaskCard = ({
     mutate(payload);
   });
 
-  console.log('drawer id : ', commentData);
   return (
-    <Card radius={'md'} shadow="md" withBorder ref={dragRef}>
+    <Card
+      radius={'md'}
+      shadow="md"
+      withBorder
+      ref={dragRef}
+      className={`${
+        isDragging ? 'opacity-40 ' : 'opacity-100 '
+      } w-full cursor-grab`}
+    >
+      <ModalAction
+        headerText="Hapus Data Task?"
+        message="Data yang telah dihapus tidak dapat dikembalikan"
+        type="delete"
+        opened={openedConfirmation}
+        close={closeModal}
+      >
+        <Group mt={20}>
+          <Button
+            variant=""
+            onClick={() => handleDeleteTask()}
+            w={'48%'}
+            // loading={isLoading}
+            radius={'md'}
+            c={'white'}
+            bg={COLORS.DANGER}
+            // disabled={disableNoButton}
+          >
+            Hapus
+          </Button>
+          <Button
+            // loading={isLoading}
+            onClick={close}
+            variant="outline"
+            w={'48%'}
+            radius={'md'}
+            c={'red'}
+            color="red"
+          >
+            Batal
+          </Button>
+        </Group>
+      </ModalAction>
+
+      <Modal
+        opened={openedModalEdit}
+        onClose={closeEdit}
+        radius={'lg'}
+        padding={25}
+        title="Edit Task"
+        size={'md'}
+        styles={{
+          title: {
+            width: '100%',
+            textAlign: 'center',
+            fontSize: '1.25rem',
+            fontWeight: 600,
+          },
+        }}
+      >
+        <TaskForm />
+      </Modal>
+
       <Drawer
         opened={opened}
         onClose={close}
@@ -194,12 +283,36 @@ const TaskCard = ({
         </div>
       </Drawer>
 
-      <Group position={'apart'}>
-        <Badge style={badgeStyles}>{badge}</Badge>
-
+      {/* <Group position={'apart'}>
         <ActionIcon color={COLORS.GRAY}>
           <IconDots color={COLORS.GRAY} />
         </ActionIcon>
+      </Group> */}
+
+      <Group position="apart">
+        <ActionMenu
+          position="right"
+          opened={isProjectMenuOpen}
+          setOpened={setProjectMenuOpen}
+        >
+          <Menu.Item
+            icon={<IconTrash size={14} color={COLORS.DANGER} />}
+            className="text-red-500 text-sm"
+            onClick={openModalConfirmationDelete}
+          >
+            Hapus
+          </Menu.Item>
+
+          <Menu.Item
+            icon={<IconPencil size={14} color={COLORS.SECONDARY} />}
+            className="text-blue-950 text-sm"
+            component="a"
+            // href={`/project/edit-project/${id}`}
+            onClick={openModalTaskForm}
+          >
+            Edit
+          </Menu.Item>
+        </ActionMenu>
       </Group>
 
       <Space h={rem(16)} />
@@ -214,23 +327,21 @@ const TaskCard = ({
         <Group spacing="xs">
           <Group spacing={5}>
             <IconClockCheck size={rem(14)} color={COLORS.DANGER} />
-            <Text fz={rem(12)}>{deadline}</Text>
+            <Text fz={rem(12)}>{countingDeadline(deadline)}</Text>
           </Group>
 
           <Group spacing={5} onClick={handleOpenDrawer}>
             <IconMessage
               size={rem(14)}
-              className="text-gray-400 hover:text-primary"
+              className="text-gray-400 hover:text-primary cursor-pointer"
             />
             <Text fz={rem(12)} c={COLORS.GRAY}>
               {commentData?.data?.length}
             </Text>
           </Group>
         </Group>
-        <Avatar.Group>
+        <Avatar.Group className="cursor-default">
           {member.map((m) => {
-            console.log('profile pic : ', m.profilePicture);
-
             return (
               <Tooltip
                 key={m.user?.fullname}

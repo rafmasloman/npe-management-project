@@ -1,4 +1,4 @@
-import { Box, Space, SimpleGrid, rem, Stack, Menu } from '@mantine/core';
+import { Box, Space, SimpleGrid, rem, Stack, Menu, Group } from '@mantine/core';
 import {
   IconCircle,
   IconCircle0Filled,
@@ -11,23 +11,56 @@ import ModalForm from '../components/modal/modal-form.component';
 import { COLORS } from '../constant/colors.constant';
 import TaskCard from '../components/card/task-card.component';
 import { useDrop } from 'react-dnd';
+import { usePutStatusTask } from '../hooks/task/usePutStatusTaskMutation';
+import { useState } from 'react';
 
 const TaskWorkSpace = ({ todos }: any) => {
-  const [{ isOver }, drop] = useDrop(() => ({
+  const { mutate: updateStatus } = usePutStatusTask();
+
+  const handleOnDrop = (taskName: string, taskId: number, status: string) => {
+    console.log('handle drop : ', taskName);
+
+    updateStatus({ taskId, status });
+  };
+
+  const [{ isOver }, dropTodo] = useDrop(() => ({
     accept: 'task',
     // item: { text },
-    drop: () => console.log('drop '),
-    collect: (monitor) => (
-      console.log(monitor),
-      {
-        isOver: !!monitor.isOver(),
-      }
-    ),
+    drop: (item: any) => handleOnDrop(item.text, item.id, 'TODO'),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
   }));
 
-  
+  const [{ isOverProgress }, dropOnProgress] = useDrop(() => ({
+    accept: 'task',
+    // item: { text },
+    drop: (item: any) => handleOnDrop(item.text, item.id, 'ON_PROGRESS'),
+    collect: (monitor) => ({
+      isOverProgress: !!monitor.isOver(),
+    }),
+  }));
 
-  const todo = todos?.todo?.filter((t: any) => t.status.includes('To Do'));
+  const [{ isOverCompleted }, dropOnCompleted] = useDrop(() => ({
+    accept: 'task',
+    // item: { text },
+    drop: (item: any) => handleOnDrop(item.text, item.id, 'COMPLETED'),
+    collect: (monitor) => ({
+      isOverCompleted: !!monitor.isOver(),
+    }),
+  }));
+
+  const todo = todos?.todo?.filter((t: any) =>
+    t.status.toLowerCase().includes('todo'),
+  );
+
+  const on_progress = todos?.onprogress?.filter((t: any) =>
+    t.status.toLowerCase().includes('on_progress'),
+  );
+
+  const completed = todos?.completed?.filter((t: any) =>
+    t.status.toLowerCase().includes('completed'),
+  );
 
   return (
     <Box>
@@ -35,121 +68,99 @@ const TaskWorkSpace = ({ todos }: any) => {
         <TaskForm />
       </ModalForm>
 
-      <Space h={30} />
+      <Space h={50} />
 
       <SimpleGrid cols={3} spacing={rem(50)}>
-        <Stack>
-          <HeaderStatus
-            icon={
-              <IconCircleFilled
-                size={rem(16)}
-                style={{ color: COLORS.THIRD }}
-              />
-            }
-            text="To Do"
-          />
+        <Stack ref={dropTodo} className={`relative `} spacing={20}>
+          <div className="">
+            <HeaderStatus
+              headerColor={COLORS.THIRD}
+              text="To Do"
+              totalTask={todo?.length}
+            />
+          </div>
 
-          {todo.map((t: any) => {
-            return (
-              <TaskCard
-                key={t.id}
-                id={t.id}
-                badge="Front End"
-                deadline={t.endDate!}
-                member={t.member}
-                text={t.name}
-                comment={t.comment}
-              />
-            );
-          })}
-
-          {/* <TaskCard
-            badge="Front End"
-            deadline={projectDetail?.endDate!}
-            member={{ id: 1, image: '', name: 'Richard Enrico' }}
-            text="Slicing Homepage"
-          />
-
-          <TaskCard
-            badge="UI/UX"
-            deadline={projectDetail?.endDate!}
-            member={{ id: 1, image: '', name: 'Richard Enrico' }}
-            text="Mendesain halaman dashboard dengan fitur progress task dan milestone"
-            badgeStyles={{
-              color: 'white',
-              backgroundColor: COLORS.THIRD,
-            }}
-          /> */}
-
-          {/* <Menu withArrow zIndex={10} width={'120px'} opened={true}>
-            <Menu.Dropdown>
-              <Menu.Label>Opsi</Menu.Label>
-              <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
-              <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
-            </Menu.Dropdown>
-          </Menu> */}
+          <div
+            className={`w-full p-1.5  h-screen space-y-[30px] ${
+              isOver
+                ? 'border-2 border-dashed border-gray-300 rounded-lg'
+                : 'border-2 border-solid border-transparent'
+            }`}
+          >
+            {todo?.map((t: any) => {
+              return (
+                <TaskCard
+                  key={t.id}
+                  id={t.id}
+                  deadline={t.endDate!}
+                  member={t.member}
+                  text={t.name}
+                  comment={t.comment}
+                  status={t.status}
+                />
+              );
+            })}
+          </div>
         </Stack>
 
-        <Stack ref={drop}>
+        <Stack ref={dropOnProgress} spacing={20}>
           <HeaderStatus
             text="On Progress"
-            icon={
-              <IconCircleFilled
-                size={rem(16)}
-                style={{ color: COLORS.DEEPBLUE }}
-              />
-            }
+            headerColor={COLORS.DEEPBLUE}
+            totalTask={on_progress?.length}
           />
 
-          {/* <TaskCard
-            badge="UI/UX"
-            deadline={projectDetail?.endDate!}
-            member={{ id: 1, image: '', name: 'Richard Enrico' }}
-            text="Mendesain halaman dashboard dengan fitur progress task dan milestone"
-            badgeStyles={{
-              color: 'white',
-              backgroundColor: COLORS.THIRD,
-            }}
-          /> */}
-
-          {/* <Menu withArrow zIndex={10} width={'120px'} opened={true}>
-            <Menu.Dropdown>
-              <Menu.Label>Opsi</Menu.Label>
-              <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
-              <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
-            </Menu.Dropdown>
-          </Menu> */}
+          <div
+            className={`w-full p-2.5 h-screen space-y-[30px] ${
+              isOverProgress
+                ? 'border-2 border-dashed border-gray-300 rounded-lg'
+                : 'border-2 border-solid border-transparent'
+            }`}
+          >
+            {on_progress?.map((t: any) => {
+              return (
+                <TaskCard
+                  key={t.id}
+                  id={t.id}
+                  deadline={t.endDate!}
+                  member={t.member}
+                  text={t.name}
+                  comment={t.comment}
+                  status={t.status}
+                />
+              );
+            })}
+          </div>
         </Stack>
 
-        <Stack>
+        <Stack ref={dropOnCompleted} spacing={20}>
           <HeaderStatus
             text="Completed"
-            icon={
-              <IconCircleFilled
-                size={rem(16)}
-                style={{ color: COLORS.SUCCESS }}
-              />
-            }
+            headerColor={COLORS.SUCCESS}
+            totalTask={completed?.length}
           />
 
-          {/* <TaskCard
-            badge="Front End"
-            deadline={projectDetail?.endDate!}
-            member={{ id: 1, image: '', name: 'Richard Enrico' }}
-            text="Slicing Homepage"
-            badgeStyles={{
-              color: COLORS.DEEPBLUE,
-              backgroundColor: COLORS.LIGHTBLUE,
-            }}
-          /> */}
-
-          {/* <Menu withArrow zIndex={10} width={'120px'} opened={true}>
-            <Menu.Dropdown>
-              <Menu.Label>Opsi</Menu.Label>
-              <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
-              <Menu.Item icon={<IconTrash size={rem(14)} />}>Test</Menu.Item>
-            </Menu.Dropdown>
-          </Menu> */}
+          <div
+            className={`w-full p-2.5 h-screen space-y-[30px] ${
+              isOverCompleted
+                ? 'border-2 border-dashed border-gray-300 rounded-lg'
+                : 'border-2 border-solid border-transparent'
+            }`}
+          >
+            {completed?.map((t: any) => {
+              return (
+                <TaskCard
+                  key={t.id}
+                  id={t.id}
+                  deadline={t.endDate!}
+                  member={t.member}
+                  text={t.name}
+                  comment={t.comment}
+                  status={t.status}
+                />
+              );
+            })}
+          </div>
         </Stack>
       </SimpleGrid>
     </Box>

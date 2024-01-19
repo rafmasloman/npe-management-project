@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools /> */}
+        <ReactQueryDevtools />
         <DndProvider backend={HTML5Backend}>
           <UserCredential>
             <Notifications />

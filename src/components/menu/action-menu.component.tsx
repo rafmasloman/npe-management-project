@@ -1,22 +1,34 @@
 import { COLORS } from '@/src/constant/colors.constant';
 import { Menu } from '@mantine/core';
+import { FloatingPosition } from '@mantine/core/lib/Floating';
 import { IconDots, IconPencil, IconTrash } from '@tabler/icons-react';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
-interface IProjectMenuProps {
+interface IActionMenuProps {
   buttonMenu?: ReactNode;
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
   children?: ReactNode;
+  position: FloatingPosition;
 }
-const ProjectMenu = ({
+const ActionMenu = ({
   buttonMenu,
   opened,
   setOpened,
   children,
-}: IProjectMenuProps) => {
+  position,
+}: IActionMenuProps) => {
   return (
-    <Menu position="top" opened={opened} onChange={setOpened}>
+    <Menu
+      position={position}
+      opened={opened}
+      onChange={setOpened}
+      styles={{
+        item: {
+          padding: 5,
+        },
+      }}
+    >
       <Menu.Target>
         <IconDots className="text-gray-400 hover:text-blue-400" size={27} />
       </Menu.Target>
@@ -26,4 +38,4 @@ const ProjectMenu = ({
   );
 };
 
-export default ProjectMenu;
+export default ActionMenu;

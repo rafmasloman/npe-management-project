@@ -70,6 +70,27 @@ class UserQueryApi {
       throw error;
     }
   }
+
+  static async getUserProjects(userId: string) {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/project/member/${userId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default UserQueryApi;

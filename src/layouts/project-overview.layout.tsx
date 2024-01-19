@@ -38,14 +38,11 @@ interface IProjectDetailResponse {
 }
 
 const ProjectOverview = (projectDetail: any) => {
-  const { platform, endDate, member, price, task } =
-    projectDetail?.projectDetail;
-
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(task);
+  console.log(projectDetail?.projectDetail?.platform);
 
-  const platformServices = platform
+  const platformServices = projectDetail?.projectDetail?.platform
     .slice(1, -1)
     .split(', ')
     .map((item: any) => item.replace(/'/g, ''));
@@ -91,7 +88,7 @@ const ProjectOverview = (projectDetail: any) => {
             {isLoading ? (
               <Loader />
             ) : (
-              member?.map((member: any) => {
+              projectDetail?.projectDetail?.member?.map((member: any) => {
                 return (
                   <PersonCard
                     key={member.id}
@@ -141,12 +138,14 @@ const ProjectOverview = (projectDetail: any) => {
 
           <SubDetail title="Deadline">
             <Text color={COLORS.DANGER} fw={600}>
-              {endDate}
+              {projectDetail?.projectDetail?.endDate}
             </Text>
           </SubDetail>
 
           <SubDetail title="Project Price">
-            <Text fw={600}>Rp {price?.toLocaleString('id-ID')}</Text>
+            <Text fw={600}>
+              Rp {projectDetail?.projectDetail?.price?.toLocaleString('id-ID')}
+            </Text>
           </SubDetail>
         </Flex>
       </Card>

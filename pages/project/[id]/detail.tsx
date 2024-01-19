@@ -67,10 +67,10 @@ const ProjectDetail = ({ projectDetail }: any) => {
   const { query, pathname } = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
 
-  // const { data: project } = useGetProjectDetailQuery(query.id as string);
+  const { data: projects } = useGetProjectDetailQuery(query.id as string);
 
-  const project = projectDetail!.data!.project;
-  console.log('project detail : ', project);
+  const project = projects?.data?.project!;
+
   return (
     <MainLayout>
       <SEO title="detail project" description="" />
@@ -163,11 +163,11 @@ const ProjectDetail = ({ projectDetail }: any) => {
           </Tabs.List>
 
           <Tabs.Panel value="overview" pt={rem(50)}>
-            <ProjectOverview projectDetail={project || {}} />
+            <ProjectOverview projectDetail={project} />
           </Tabs.Panel>
 
           <Tabs.Panel value="tasks" pt={rem(50)}>
-            <TaskWorkSpace todos={projectDetail?.data?.todos} />
+            <TaskWorkSpace todos={projects?.data?.todos} />
           </Tabs.Panel>
 
           <Tabs.Panel value="payroll" pt={rem(50)}>

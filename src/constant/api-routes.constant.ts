@@ -5,4 +5,5 @@ export const API_ROUTES = {
   MEMBER: 'member',
   COMMENT: 'comment',
   MILESTONE: 'milestone',
+  TASK: 'task',
 };

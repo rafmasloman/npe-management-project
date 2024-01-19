@@ -6,12 +6,14 @@ import { COLORS } from '@/src/constant/colors.constant';
 interface ITaskProgressProps {
   title: string;
   projectName: string;
-  progressValue: number;
+  progressValue?: number;
+  projectIcon: string;
 }
 const TaskProgress = ({
   title,
   progressValue,
   projectName,
+  projectIcon,
 }: ITaskProgressProps) => {
   return (
     <Card
@@ -24,11 +26,15 @@ const TaskProgress = ({
       }}
     >
       <Group position="apart">
-        <Stack>
-          <Text>{title}</Text>
+        <Stack className="w-full">
+          <div className="w-8/12 ">
+            <Text>{title}</Text>
+          </div>
           <Group>
             <Image
-              src={KartjisLogo.src}
+              src={`${
+                process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
+              }/projects/${projectIcon!}`}
               alt={KartjisLogo.blurDataURL!}
               width={25}
               height={25}
@@ -37,24 +43,6 @@ const TaskProgress = ({
               {projectName}
             </Text>
           </Group>
-        </Stack>
-
-        <Stack>
-          <Group position="apart">
-            <Text fw={600} fz={'0.75rem'} color={COLORS.PRIMARY}>
-              Progress
-            </Text>
-            <Text fw={600} fz={'0.75rem'} color={COLORS.PRIMARY}>
-              {progressValue}%
-            </Text>
-          </Group>
-          <Progress
-            w={250}
-            value={progressValue}
-            label={progressValue.toString()!}
-            size="lg"
-            radius="xl"
-          />
         </Stack>
       </Group>
     </Card>

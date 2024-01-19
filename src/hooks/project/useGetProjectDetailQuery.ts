@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useGetProjectDetailQuery = (projectId?: string) => {
   return useQuery({
-    queryKey: ['get-projects-id-key'],
+    queryKey: ['get-project-detail-id-key', projectId],
     queryFn: () => ProjectsQueryApi.getDetailProject(projectId!),
   });
 };

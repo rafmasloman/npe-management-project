@@ -23,6 +23,10 @@ const ModalForm = ({
 }: IModalFormProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
+
+  const handleConfirmation = () => {
+    open();
+  };
   return (
     <>
       <Modal
@@ -54,7 +58,7 @@ const ModalForm = ({
 
       <Group>
         <Button
-          onClick={open}
+          onClick={handleConfirmation}
           leftIcon={<IconPlus />}
           color={colorBtn || COLORS.PRIMARY}
           bg={colorBtn || COLORS.PRIMARY}

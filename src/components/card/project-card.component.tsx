@@ -22,13 +22,14 @@ import Link from 'next/link';
 import { ListStyleDefaultTheme } from '@/src/themes/general.theme';
 import { useRouter } from 'next/router';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
-import ProjectMenu from '../menu/project-menu.component';
+import ProjectMenu from '../menu/action-menu.component';
 import { useState } from 'react';
 import ModalAction from '../modal/modal-action.component';
 import { useDeleteProject } from '@/src/hooks/project/useDeleteProjectMutation';
 import { IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
+import ActionMenu from '../menu/action-menu.component';
 
 const ProjectCard = ({
   platform,
@@ -106,7 +107,11 @@ const ProjectCard = ({
       </ModalAction>
 
       <div className="absolute z-10 right-6 top-2.5 cursor-pointer">
-        <ProjectMenu opened={isProjectMenuOpen} setOpened={setProjectMenuOpen}>
+        <ActionMenu
+          position="top"
+          opened={isProjectMenuOpen}
+          setOpened={setProjectMenuOpen}
+        >
           <Menu.Item
             icon={<IconTrash size={20} color={COLORS.DANGER} />}
             className="text-red-500"
@@ -123,7 +128,7 @@ const ProjectCard = ({
           >
             Edit
           </Menu.Item>
-        </ProjectMenu>
+        </ActionMenu>
       </div>
 
       <Link

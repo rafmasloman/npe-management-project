@@ -1,6 +1,9 @@
 import { API_ROUTES } from '@/src/constant/api-routes.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
-import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
+import {
+  __getBrowserAuthCookie,
+  __getSSRAuthCookie,
+} from '@/src/utils/cookie.util';
 
 export async function IAuthUserCredentialQuery() {
   try {
@@ -10,7 +13,9 @@ export async function IAuthUserCredentialQuery() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
         },
       },
     );

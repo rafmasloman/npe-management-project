@@ -24,8 +24,6 @@ class CommentQueryAPI {
   }
 
   static async getCommentByTask(taskId: number) {
-    console.log('task Id : ', taskId);
-
     try {
       const response = await fetch(`${this.routesName}/task?taskId=${taskId}`, {
         method: 'GET',
