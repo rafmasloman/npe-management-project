@@ -34,7 +34,7 @@ const HeaderStatus = ({
               ? 'bg-amber-500'
               : text.toLowerCase().includes('on progress')
               ? 'bg-cyan-600'
-              : 'bg-green-700'
+              : 'bg-green-600'
           } rounded-full w-[23px] h-[23px] flex justify-center items-center`}
         >
           <Text className="text-xs text-white">{totalTask}</Text>

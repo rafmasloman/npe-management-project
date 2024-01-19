@@ -81,9 +81,9 @@ const TaskWorkSpace = ({ todos }: any) => {
           </div>
 
           <div
-            className={`w-full p-1  h-screen space-y-[30px] ${
+            className={`w-full p-1.5 h-screen space-y-[30px] ${
               isOver
-                ? 'border-2 border-dashed border-gray-300 rounded-lg'
+                ? 'border-2 border-dashed border-opacity-40  border-amber-500 rounded-lg'
                 : 'border-2 border-solid border-transparent'
             }`}
           >
@@ -111,9 +111,9 @@ const TaskWorkSpace = ({ todos }: any) => {
           />
 
           <div
-            className={`w-full p-2.5 h-screen space-y-[30px] ${
+            className={`w-full p-1.5 h-screen space-y-[30px] ${
               isOverProgress
-                ? 'border-2 border-dashed border-gray-300 rounded-lg'
+                ? 'border-2 border-dashed border-opacity-40  border-cyan-600 rounded-lg'
                 : 'border-2 border-solid border-transparent'
             }`}
           >
@@ -141,9 +141,9 @@ const TaskWorkSpace = ({ todos }: any) => {
           />
 
           <div
-            className={`w-full p-2.5 h-screen space-y-[30px] ${
+            className={`w-full p-1.5 h-screen space-y-[30px] ${
               isOverCompleted
-                ? 'border-2 border-dashed border-gray-300 rounded-lg'
+                ? 'border-2 border-dashed border-opacity-40  border-green-600  rounded-lg'
                 : 'border-2 border-solid border-transparent'
             }`}
           >
