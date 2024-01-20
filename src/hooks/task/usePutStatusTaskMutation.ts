@@ -10,8 +10,8 @@ export const usePutStatusTask = () => {
 
   return useMutation({
     mutationKey: ['put-status-task-id-key'],
-    mutationFn: ({ taskId, status }: any) =>
-      TaskMutationAPI.updateStatusTask(taskId, { status }),
+    mutationFn: ({ id, status }: any) =>
+      TaskMutationAPI.updateStatusTask(id, { status }),
     onSuccess(data, variables, context) {
       queryClient.invalidateQueries({
         queryKey: ['get-project-detail-id-key'],

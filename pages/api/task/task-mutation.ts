@@ -47,12 +47,12 @@ class TaskMutationAPI {
     }
   }
 
-  static async updateStatusTask(taskId: string, status: any) {
-    console.log('task id : ', taskId);
+  static async updateStatusTask(id: string, status: any) {
+    console.log('task id : ', id);
     console.log('status : ', status);
 
     try {
-      const response = await fetch(`${this.routesName}/status/${taskId}`, {
+      const response = await fetch(`${this.routesName}/status/${id}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',

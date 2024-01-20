@@ -13,42 +13,31 @@ import TaskCard from '../components/card/task-card.component';
 import { useDrop } from 'react-dnd';
 import { usePutStatusTask } from '../hooks/task/usePutStatusTaskMutation';
 import { useState } from 'react';
+import { useDropItem } from '../hooks/common/drop/useDropItem';
 
 const TaskWorkSpace = ({ todos }: any) => {
   const { mutate: updateStatus } = usePutStatusTask();
 
-  const handleOnDrop = (taskName: string, taskId: number, status: string) => {
-    console.log('handle drop : ', taskName);
+  const handleOnDrop = (text: string, id: number, status: string) => {
+    console.log('task id : ', id);
 
-    updateStatus({ taskId, status });
+    updateStatus({ id, status });
   };
 
-  const [{ isOver }, dropTodo] = useDrop(() => ({
-    accept: 'task',
-    // item: { text },
-    drop: (item: any) => handleOnDrop(item.text, item.id, 'TODO'),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
+  const { isOver, dropRef: dropTodo } = useDropItem(
+    { acceptType: 'task', dropType: 'TODO' },
+    handleOnDrop,
+  );
 
-  const [{ isOverProgress }, dropOnProgress] = useDrop(() => ({
-    accept: 'task',
-    // item: { text },
-    drop: (item: any) => handleOnDrop(item.text, item.id, 'ON_PROGRESS'),
-    collect: (monitor) => ({
-      isOverProgress: !!monitor.isOver(),
-    }),
-  }));
+  const { isOver: isOverProgress, dropRef: dropOnProgress } = useDropItem(
+    { acceptType: 'task', dropType: 'ON_PROGRESS' },
+    handleOnDrop,
+  );
 
-  const [{ isOverCompleted }, dropOnCompleted] = useDrop(() => ({
-    accept: 'task',
-    // item: { text },
-    drop: (item: any) => handleOnDrop(item.text, item.id, 'COMPLETED'),
-    collect: (monitor) => ({
-      isOverCompleted: !!monitor.isOver(),
-    }),
-  }));
+  const { isOver: isOverCompleted, dropRef: dropOnCompleted } = useDropItem(
+    { acceptType: 'task', dropType: 'COMPLETED' },
+    handleOnDrop,
+  );
 
   const todo = todos?.todo?.filter((t: any) =>
     t.status.toLowerCase().includes('todo'),
@@ -71,7 +60,7 @@ const TaskWorkSpace = ({ todos }: any) => {
       <Space h={50} />
 
       <SimpleGrid cols={3} spacing={rem(50)}>
-        <Stack ref={dropTodo} className={`relative `} spacing={20}>
+        <Stack ref={dropTodo} className={`relative w-full`} spacing={20}>
           <div className="">
             <HeaderStatus
               headerColor={COLORS.THIRD}
@@ -81,9 +70,9 @@ const TaskWorkSpace = ({ todos }: any) => {
           </div>
 
           <div
-            className={`w-full p-1.5 h-screen space-y-[30px] ${
+            className={`w-full p-1.5 h-screen space-y-[30px]  ${
               isOver
-                ? 'border-2 border-dashed border-opacity-40  border-amber-500 rounded-lg'
+                ? 'border-2 border-dashed border-opacity-75  border-amber-500 rounded-lg transition duration-700'
                 : 'border-2 border-solid border-transparent'
             }`}
           >
@@ -113,7 +102,7 @@ const TaskWorkSpace = ({ todos }: any) => {
           <div
             className={`w-full p-1.5 h-screen space-y-[30px] ${
               isOverProgress
-                ? 'border-2 border-dashed border-opacity-40  border-cyan-600 rounded-lg'
+                ? 'border-2 border-dashed border-opacity-75  border-cyan-600 rounded-lg transition duration-700'
                 : 'border-2 border-solid border-transparent'
             }`}
           >
@@ -143,7 +132,7 @@ const TaskWorkSpace = ({ todos }: any) => {
           <div
             className={`w-full p-1.5 h-screen space-y-[30px] ${
               isOverCompleted
-                ? 'border-2 border-dashed border-opacity-40  border-green-600  rounded-lg'
+                ? 'border-2 border-dashed border-opacity-75  border-green-600  rounded-lg transition duration-700'
                 : 'border-2 border-solid border-transparent'
             }`}
           >

@@ -28,36 +28,36 @@ export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({});
 
   return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      theme={{
-        fontFamily: poppins.style.fontFamily,
-        components: {
-          Button: { defaultProps: ButtonStyles },
-          TextInput: { defaultProps: TextInputStyles },
-          PasswordInput: { defaultProps: PasswordInputStyles },
-          DateInput: { defaultProps: DateInputStyles },
-          Select: { defaultProps: SelectInputStyles },
-          Textarea: { defaultProps: TextareaInputStyles },
-          MultiSelect: { defaultProps: MultiSelectInputStyles },
-          NumberInput: { defaultProps: NumberInputStyles },
-          FileInput: { defaultProps: FileInputStyles },
-        },
-        colors: {
-          danger: [COLORS.DANGER],
-        },
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={HTML5Backend}>
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          fontFamily: poppins.style.fontFamily,
+          components: {
+            Button: { defaultProps: ButtonStyles },
+            TextInput: { defaultProps: TextInputStyles },
+            PasswordInput: { defaultProps: PasswordInputStyles },
+            DateInput: { defaultProps: DateInputStyles },
+            Select: { defaultProps: SelectInputStyles },
+            Textarea: { defaultProps: TextareaInputStyles },
+            MultiSelect: { defaultProps: MultiSelectInputStyles },
+            NumberInput: { defaultProps: NumberInputStyles },
+            FileInput: { defaultProps: FileInputStyles },
+          },
+          colors: {
+            danger: [COLORS.DANGER],
+          },
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools />
           <UserCredential>
             <Notifications />
             <Component {...pageProps} />
           </UserCredential>
-        </DndProvider>
-      </QueryClientProvider>
-    </MantineProvider>
+        </QueryClientProvider>
+      </MantineProvider>
+    </DndProvider>
   );
 }

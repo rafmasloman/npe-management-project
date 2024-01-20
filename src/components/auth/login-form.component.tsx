@@ -62,7 +62,7 @@ const LoginForm = () => {
     >
       <form onSubmit={handleSubmit}>
         <Stack h={'100%'} spacing={'50px'}>
-          <Text fz={'1.25rem'} fw={700} ta="center">
+          <Text fz={'1.25rem'} fw={700} ta="left">
             Login
           </Text>
           <Stack w={'100%'}>

@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   Card,
+  Divider,
   Drawer,
   Grid,
   Group,
@@ -26,7 +27,7 @@ import {
 import MenuComp from '../menu/menu.component';
 import { COLORS } from '@/src/constant/colors.constant';
 import { useContext, useEffect, useState } from 'react';
-import { useDrag } from 'react-dnd';
+import { useDrag, useDragLayer } from 'react-dnd';
 import { useGetCommentByTask } from '@/src/hooks/comment/useGetCommentByTask';
 import { useDisclosure } from '@mantine/hooks';
 import CommentChat from '../chat/comment-chat.component';
@@ -39,6 +40,7 @@ import { IconTrash } from '@tabler/icons-react';
 import { useDeleteTask } from '@/src/hooks/task/useDeleteTaskMutation';
 import ModalAction from '../modal/modal-action.component';
 import TaskForm from '../form/task.form.component';
+import { useDragItem } from '@/src/hooks/common/drag/useDragTask';
 
 interface ITaskCardProps {
   id?: string;
@@ -73,15 +75,26 @@ const TaskCard = ({
   comment,
   status,
 }: ITaskCardProps) => {
-  const [{ isDragging }, dragRef] = useDrag(() => ({
-    type: 'task',
+  const { item, itemType, isDraggingLayer, initialOffset, currentOffset } =
+    useDragLayer((monitor) => ({
+      item: monitor.getItem(),
+      itemType: monitor.getItemType(),
+      isDraggingLayer: monitor.isDragging(),
+      initialOffset: monitor.getInitialSourceClientOffset(),
+      currentOffset: monitor.getSourceClientOffset(),
+    }));
 
-    item: { id, text, status },
+  // const [{ isDragging }, dragRef] = useDrag(() => ({
+  //   type: 'task',
 
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
+  //   item: { id, text, status },
+
+  //   collect: (monitor) => ({
+  //     isDragging: !!monitor.isDragging(),
+  //   }),
+  // }));
+
+  const { isDragging, dragRef } = useDragItem('task', { id, text, status });
 
   const [taskId, setTaskId] = useState<number | null>(null);
   const [isProjectMenuOpen, setProjectMenuOpen] = useState(false);
@@ -138,12 +151,18 @@ const TaskCard = ({
   return (
     <Card
       radius={'md'}
-      shadow="md"
-      withBorder
+      // shadow="md"
+      // withBorder
       ref={dragRef}
+      bg={'dark'}
       className={`${
-        isDragging ? 'opacity-40 ' : 'opacity-100 '
-      } w-full cursor-grab`}
+        isDragging
+          ? 'opacity-50 border-dashed border-2 border-gray-500 cursor-move sacle'
+          : 'opacity-100 bg-opacity-100 text-opacity-100 border-solid border-2 border-white'
+      } w-full h-fit bg-white `}
+      style={{
+        backfaceVisibility: 'hidden',
+      }}
     >
       <ModalAction
         headerText="Hapus Data Task?"
@@ -289,41 +308,70 @@ const TaskCard = ({
         </ActionIcon>
       </Group> */}
 
-      <Group position="apart">
-        <ActionMenu
-          position="right"
-          opened={isProjectMenuOpen}
-          setOpened={setProjectMenuOpen}
-        >
-          <Menu.Item
-            icon={<IconTrash size={14} color={COLORS.DANGER} />}
-            className="text-red-500 text-sm"
-            onClick={openModalConfirmationDelete}
-          >
-            Hapus
-          </Menu.Item>
+      <Group position="apart" className="w-full">
+        <Avatar.Group className="cursor-default">
+          {member.map((m, index) => {
+            return (
+              <Tooltip
+                key={index}
+                label={m.user?.fullname}
+                withArrow
+                color={COLORS.LIGHTBLUE}
+                styles={{
+                  tooltip: {
+                    color: COLORS.DEEPBLUE,
+                    fontWeight: 600,
+                  },
+                }}
+              >
+                <Avatar
+                  radius={'xl'}
+                  src={`${
+                    process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
+                  }/members/${m.profilePicture!}`}
+                  size={27}
+                />
+              </Tooltip>
+            );
+          })}
+        </Avatar.Group>
 
-          <Menu.Item
-            icon={<IconPencil size={14} color={COLORS.SECONDARY} />}
-            className="text-blue-950 text-sm"
-            component="a"
-            // href={`/project/edit-project/${id}`}
-            onClick={openModalTaskForm}
+        <Group position="apart" className="cursor-default" bg={'white'}>
+          <ActionMenu
+            position="right"
+            opened={isProjectMenuOpen}
+            setOpened={setProjectMenuOpen}
           >
-            Edit
-          </Menu.Item>
-        </ActionMenu>
+            <Menu.Item
+              icon={<IconTrash size={14} color={COLORS.DANGER} />}
+              className="text-red-500 text-sm"
+              onClick={openModalConfirmationDelete}
+            >
+              Hapus
+            </Menu.Item>
+
+            <Menu.Item
+              icon={<IconPencil size={14} color={COLORS.SECONDARY} />}
+              className="text-blue-950 text-sm"
+              component="a"
+              // href={`/project/edit-project/${id}`}
+              onClick={openModalTaskForm}
+            >
+              Edit
+            </Menu.Item>
+          </ActionMenu>
+        </Group>
       </Group>
 
       <Space h={rem(16)} />
 
-      <Group>
+      <Group className="w-fit">
         <Text fw={500}>{text}</Text>
       </Group>
 
-      <Space h={rem(10)} />
+      <Space h={rem(16)} />
 
-      <Group position="apart">
+      <Group position="apart" className="w-fit">
         <Group spacing="xs">
           <Group spacing={5}>
             <IconClockCheck size={rem(14)} color={COLORS.DANGER} />
@@ -340,32 +388,6 @@ const TaskCard = ({
             </Text>
           </Group>
         </Group>
-        <Avatar.Group className="cursor-default">
-          {member.map((m) => {
-            return (
-              <Tooltip
-                key={m.user?.fullname}
-                label={m.user?.fullname}
-                withArrow
-                color={COLORS.LIGHTBLUE}
-                styles={{
-                  tooltip: {
-                    color: COLORS.DEEPBLUE,
-                    fontWeight: 600,
-                  },
-                }}
-              >
-                <Avatar
-                  radius={'xl'}
-                  src={`${
-                    process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
-                  }/members/${m.profilePicture!}`}
-                  size={30}
-                />
-              </Tooltip>
-            );
-          })}
-        </Avatar.Group>
       </Group>
     </Card>
   );
