@@ -18,6 +18,7 @@ import { useForm } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { usePostTask } from '@/src/hooks/task/usePostTaskMutation';
 import { useEffect, useState } from 'react';
+import { useGetMilestonesByProject } from '@/src/hooks/milestone/useGetMilestoneByProject';
 
 const TaskForm = () => {
   // const queryMembers = members.map((member) => ({
@@ -28,9 +29,9 @@ const TaskForm = () => {
   const [milestoneOption, setMilestoneOption] = useState([]);
 
   const { query } = useRouter();
-  console.log(query.id);
+  console.log('project id : ', query.id);
 
-  const { data: milestones } = useGetAllMilestone();
+  const { data: milestones } = useGetMilestonesByProject(query.id as string);
   const { data: members } = useGetMemberQuery();
   const { mutate: createTask } = usePostTask();
 
@@ -69,8 +70,6 @@ const TaskForm = () => {
       setMilestoneOption(selectedMilestone);
     }
   }, [members, milestones]);
-
-  console.log(memberOption);
 
   const handleSubmit = form.onSubmit((values) => {
     const payload = {

@@ -45,12 +45,12 @@ export const navbarLink = [
     label: 'Milestone',
     href: ROUTES.MILESTONE,
   },
-  // {
-  //   id: 7,
-  //   icon: ICTeams,
-  //   label: 'Teams',
-  //   href: ROUTES.TEAMS,
-  // },
+  {
+    id: 7,
+    icon: ICTeams,
+    label: 'Client',
+    href: ROUTES.CLIENT,
+  },
   {
     id: 8,
     icon: ICProject,

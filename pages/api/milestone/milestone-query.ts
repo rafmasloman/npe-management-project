@@ -57,6 +57,28 @@ class MilestoneQueryAPI {
       throw error;
     }
   }
+
+  static async getMilestonesByProject(projectId: string) {
+    try {
+      const response = await fetch(`${this.routesName}/project/${projectId}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
+        },
+      });
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    }
+  }
 }
 
 export default MilestoneQueryAPI;
