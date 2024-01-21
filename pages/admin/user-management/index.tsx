@@ -71,6 +71,7 @@ const UserAdmin = () => {
   const { mutate: deleteUser } = useDeleteUser();
 
   const userData = readAllUsers?.data;
+  console.log(userData);
 
   const handleConfirm = (userId: string) => {
     setUserDeleteId(userId);
@@ -176,7 +177,7 @@ const UserAdmin = () => {
 
         <Table
           tableHead={tableHead}
-          tableRow={userData?.map((user) => {
+          tableRow={userData?.map((user: any) => {
             return (
               <tr key={user.id} className="">
                 <td className="px-6 py-4 text-center">

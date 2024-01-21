@@ -4,6 +4,7 @@ import React, { ReactNode, useContext } from 'react';
 import KartjisLogo from '@/src/assets/illustration/kartjis.png';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/src/hooks/useAuth';
+import { UserContext } from '@/src/context/user-credential.context';
 interface INavItem {
   label: string;
   href: string;

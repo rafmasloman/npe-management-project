@@ -7,6 +7,7 @@ import {
   Navbar,
   Space,
   Image,
+  ScrollArea,
 } from '@mantine/core';
 import React, { ReactNode, useState } from 'react';
 import NavList from '../components/navbar/navbar-list.component';
@@ -31,13 +32,14 @@ const MainLayout = ({ children }: IMainLayout) => {
       navbar={
         <Navbar
           width={{ sm: 200, lg: 300 }}
-          // height={'100%'}
+          // height={'100vh'}
           pt={50}
           pl={30}
           hiddenBreakpoint={'sm'}
           style={{ borderWidth: 0 }}
           hidden={!opened}
-          className="overflow-auto "
+          className="overflow-y-scroll no-scrollbar"
+          styles={{}}
         >
           <NavList />
         </Navbar>

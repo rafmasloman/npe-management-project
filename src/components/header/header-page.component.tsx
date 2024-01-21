@@ -114,7 +114,12 @@ const HeaderPage = ({ pageTitle, role, onClick }: IHeaderPageProps) => {
           />
         }
       >
-        <Menu.Item icon={<IconUser size={14} />} style={{ width: '180px' }}>
+        <Menu.Item
+          icon={<IconUser size={14} />}
+          component="a"
+          href="/"
+          style={{ width: '180px' }}
+        >
           Profile
         </Menu.Item>
         <Menu.Item onClick={onClick} icon={<IconLogout size={14} />}>

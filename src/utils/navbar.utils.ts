@@ -59,7 +59,4 @@ export const navbarLink = [
   },
 ];
 
-export const navbarMainLink = [
-  { id: 1, label: 'Homepage', href: ROUTES.HOMEPAGE },
-  { id: 2, label: 'Contact Us', href: ROUTES.CONTACT_US },
-];
+export const navbarMainLink = [{ id: 1, label: 'Login', href: ROUTES.LOGIN }];

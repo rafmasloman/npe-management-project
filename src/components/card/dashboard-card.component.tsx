@@ -23,14 +23,14 @@ const DashboardCard = ({ name }: IDashboardCad) => {
           width={150}
           height={150}
         />
-        <div>
+        <>
           <Text fz={'1.25rem'} fw={500} color="white">
             Hi, {name}
           </Text>
           <Text fz={'1.25rem'} color="white" mt={5}>
             You can easily manage your <br /> projects and teams with us
           </Text>
-        </div>
+        </>
       </Group>
     </Card>
   );

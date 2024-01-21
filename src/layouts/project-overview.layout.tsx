@@ -22,6 +22,7 @@ import { IPlatformService } from '../interfaces/platform.interface';
 import { useEffect, useState } from 'react';
 import ModalForm from '../components/modal/modal-form.component';
 import PayrollForm from '../components/form/payroll.form.component';
+import { formattedDate } from '../utils/date.util';
 
 interface IProjectDetailResponse {
   id: number;
@@ -40,10 +41,8 @@ interface IProjectDetailResponse {
 const ProjectOverview = (projectDetail: any) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(projectDetail?.projectDetail?.platform);
-
   const platformServices = projectDetail?.projectDetail?.platform
-    .slice(1, -1)
+    .slice(0, -1)
     .split(', ')
     .map((item: any) => item.replace(/'/g, ''));
 
@@ -138,7 +137,7 @@ const ProjectOverview = (projectDetail: any) => {
 
           <SubDetail title="Deadline">
             <Text color={COLORS.DANGER} fw={600}>
-              {projectDetail?.projectDetail?.endDate}
+              {formattedDate(projectDetail?.projectDetail?.endDate)}
             </Text>
           </SubDetail>
 

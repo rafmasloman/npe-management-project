@@ -8,9 +8,7 @@ import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
 class UserQueryApi {
   private static routesName = `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/${API_ROUTES.USER}`;
 
-  static async getAllUsersQuery(): Promise<
-    IApiBaseResponse<IApiGetUserQueryResponse[]>
-  > {
+  static async getAllUsersQuery() {
     try {
       const response = await fetch(this.routesName, {
         method: 'GET',
@@ -20,11 +18,14 @@ class UserQueryApi {
         },
       });
 
-      const data: IApiBaseResponse<IApiGetUserQueryResponse[]> =
-        await response.json();
+      console.log(response);
+
+      const data = await response.json();
 
       return data;
     } catch (error) {
+      console.log(error);
+
       throw error;
     }
   }

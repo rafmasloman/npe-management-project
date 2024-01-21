@@ -21,16 +21,14 @@ const DragCard = ({ name }: any) => {
         height: 400,
       }}
     >
-      <div>
-        <Image
-          src={
-            'https://source.unsplash.com/man-in-black-jacket-and-brown-cap-YUu9UAcOKZ4'
-          }
-          width={50}
-          height={50}
-          alt="Images"
-        />
-      </div>
+      <Image
+        src={
+          'https://source.unsplash.com/man-in-black-jacket-and-brown-cap-YUu9UAcOKZ4'
+        }
+        width={50}
+        height={50}
+        alt="Images"
+      />
       <p>{name}</p>
     </Card>
   );

@@ -24,7 +24,7 @@ export const useAuth = () => {
     const token = __getBrowserAuthCookie(TOKEN_NAME);
 
     if (token?.length! > 0) {
-      push('/admin/dashboard');
+      push('/dashboard');
     }
   };
 
