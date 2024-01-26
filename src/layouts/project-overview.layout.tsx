@@ -91,7 +91,8 @@ const ProjectOverview = (projectDetail: any) => {
                 return (
                   <PersonCard
                     key={member.id}
-                    name={member.user?.fullname!}
+                    name={`${member.user?.firstname!} ${member.user
+                      ?.lastname!}`}
                     image={`${
                       process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
                     }/members/${member.profilePicture!}`}

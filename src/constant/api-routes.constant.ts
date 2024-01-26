@@ -6,4 +6,5 @@ export const API_ROUTES = {
   COMMENT: 'comment',
   MILESTONE: 'milestone',
   TASK: 'task',
+  CLIENT: 'client',
 };

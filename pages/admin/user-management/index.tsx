@@ -180,9 +180,7 @@ const UserAdmin = () => {
           tableRow={userData?.map((user: any) => {
             return (
               <tr key={user.id} className="">
-                <td className="px-6 py-4 text-center">
-                  {user.fullname.split(' ')[0]}
-                </td>
+                <td className="px-6 py-4 text-center">{`${user.firstname} ${user.lastname}`}</td>
                 <td className="px-6 py-4 text-center">{user.email}</td>
                 <td className="px-6 py-4 text-center">{user.role}</td>
                 <td className="px-6 py-4">

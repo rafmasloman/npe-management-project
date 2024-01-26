@@ -63,7 +63,8 @@ interface IMemberTaskCardProps {
 }
 
 interface IUserMemberTaskCardProps {
-  fullname: string;
+  firstname: string;
+  lastname: string;
 }
 
 const TaskCard = ({
@@ -314,7 +315,7 @@ const TaskCard = ({
             return (
               <Tooltip
                 key={index}
-                label={m.user?.fullname}
+                label={`${m.user?.firstname} ${m.user?.lastname}`}
                 withArrow
                 color={COLORS.LIGHTBLUE}
                 styles={{

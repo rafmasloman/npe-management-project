@@ -13,22 +13,50 @@ import MainLayout from '@/src/layouts/main.layout';
 import ProjectLayout from '@/src/layouts/project.layout';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
 import useRouteLoader from '@/src/utils/routes.event';
-import { Button, Loader, SimpleGrid, Space } from '@mantine/core';
+import { Button, Loader, SimpleGrid, Space, TextInput } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { IconPlus } from '@tabler/icons-react';
+import { IconPlus, IconSearch } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Suspense, useEffect, useState } from 'react';
 import DownloadFileAPI from '../api/file/file-query';
+import { GetServerSidePropsContext } from 'next';
+import { __setSSRAuthCookie } from '@/src/utils/cookie.util';
+import ProjectsQueryApi from '../api/project/project-query';
 
-const ProjectAdmin = () => {
+import cookie from 'cookie';
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { req, query } = ctx;
+
+  const cookieToken = cookie.parse(req.headers.cookie!) as any;
+  console.log('token : ', query);
+
+  __setSSRAuthCookie(cookieToken?.token!);
+
+  const projects = await ProjectsQueryApi.getAllProjects(
+    undefined,
+    (query.q as string) || '',
+  );
+
+  return { props: { projects } };
+}
+
+const ProjectAdmin = ({ projects }: any) => {
   const { pathname } = useRouter();
   const largeScreen = useMediaQuery('(min-width: 60em)');
   const [iconFilename, setIconFilename] = useState('');
 
-  const { data: getProjects } = useGetProjectQuery();
+  const [project, setProject] = useState([]);
 
+  const { data: getProjects, isSuccess } = useGetProjectQuery(undefined, '');
+
+  useEffect(() => {
+    setProject(projects.data);
+  }, [projects]);
+
+  console.log('projects : ', project);
   return (
     <MainLayout>
       <ProjectLayout pathname={pathname}>
@@ -46,10 +74,10 @@ const ProjectAdmin = () => {
                 cols: 3,
               },
             ]}
-            mx={largeScreen ? 50 : '1rem'}
+            mx={largeScreen ? 0 : '1rem'}
             spacing={'xl'}
           >
-            {getProjects?.data?.map((project: any) => (
+            {project.map((project: any) => (
               <ProjectCard
                 key={project.id}
                 width={340}

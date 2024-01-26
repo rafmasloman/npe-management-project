@@ -16,16 +16,22 @@ interface IUserProviderProps {
 export const UserContext = createContext<IUserContextProps>({ user: null });
 
 export function UserCredential({ children }: IUserProviderProps) {
-  const [user, setUser] = useState<IUserContextProps | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const token = __getBrowserAuthCookie(TOKEN_NAME);
 
-  const { data: userCredential, isLoading } = useQuery({
-    queryKey: ['user-credentials-id-key'],
+  const {
+    data: userCredential,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['user-credentials-id-key', token],
     queryFn: IAuthUserCredentialQuery,
   });
 
   useEffect(() => {
     setUser(userCredential);
-  }, [userCredential]);
+  }, [userCredential, isSuccess]);
+
 
   return (
     <UserContext.Provider value={{ user: user?.user! }}>

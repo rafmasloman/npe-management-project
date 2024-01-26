@@ -10,7 +10,7 @@ export const ROUTES = {
   CLIENT: '/client',
   USER: '/admin/user-management',
   MEMBER: '/member',
-  CALENDER: '/calender',
+  INVOICES: '/invoices',
   TASK: '/task',
   MILESTONE: '/milestone',
   TEAMS: '/teams',

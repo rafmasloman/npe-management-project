@@ -102,7 +102,7 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
       const selectMembers = members?.data?.map((member: any) => {
         return {
           value: member.id,
-          label: member.user?.fullname,
+          label: `${member.user?.firstname} ${member.user?.lastname}`,
         };
       });
 

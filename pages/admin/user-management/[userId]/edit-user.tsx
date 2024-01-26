@@ -1,5 +1,5 @@
 import UserQueryApi from '@/pages/api/user/user-query';
-import UserForm from '@/src/components/form/client.form.component';
+import UserForm from '@/src/components/form/client/client.form.component';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import FormLayout from '@/src/layouts/form/form.layout';
 import MainLayout from '@/src/layouts/main.layout';

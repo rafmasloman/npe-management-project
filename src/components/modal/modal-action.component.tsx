@@ -36,7 +36,7 @@ const ModalAction = ({
       case 'delete':
         return <ICAlert width={30} height={30} />;
 
-      case 'updated':
+      case 'confirmation':
         return <ICQuestion width={30} height={30} />;
 
       default:

@@ -71,7 +71,7 @@ const ProjectCard = ({
   };
 
   return (
-    <div className="relative  w-fit">
+    <div className="relative  w-full ">
       <ModalAction
         headerText="Hapus Data Project?"
         message="Data yang telah dihapus tidak dapat dikembalikan"
@@ -136,7 +136,7 @@ const ProjectCard = ({
         style={ListStyleDefaultTheme.default}
       >
         <Card
-          className="w-[300px] mb-10 lg:md-0 "
+          className="w-full mb-10 lg:md-0 "
           // w={300}
           h={height}
           radius={'lg'}
@@ -203,7 +203,10 @@ const ProjectCard = ({
                 {member?.map((m, index) => {
                   index *= 3;
                   return (
-                    <Tooltip key={m.id} label={m.user?.fullname}>
+                    <Tooltip
+                      key={m.id}
+                      label={`${m.user?.firstname} ${m.user?.lastname}`}
+                    >
                       <Avatar
                         style={{ zIndex: index }}
                         radius={'xl'}

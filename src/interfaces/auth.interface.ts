@@ -11,8 +11,17 @@ export interface IAuthCredentialResponse {
   username: string;
   password: string;
   email: string;
-  fullname: string;
+  firstname: string;
+  lastname: string;
   role: string;
   memberId?: string;
   clientId?: string;
+}
+
+export interface IAuthRegisterParams {
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  username: string;
 }

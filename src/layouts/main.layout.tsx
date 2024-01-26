@@ -8,11 +8,14 @@ import {
   Space,
   Image,
   ScrollArea,
+  Group,
+  Stack,
+  Text,
 } from '@mantine/core';
 import React, { ReactNode, useState } from 'react';
 import NavList from '../components/navbar/navbar-list.component';
 // import Image from 'next/image';
-import NPEProLogo from '../assets/images/npe_pm_logo.png';
+import NPEProLogo from '../assets/images/npe_logo.png';
 import { COLORS } from '../constant/colors.constant';
 import HeaderPage from '../components/header/header-page.component';
 import { useRouter } from 'next/router';
@@ -62,12 +65,19 @@ const MainLayout = ({ children }: IMainLayout) => {
             />
           </MediaQuery>
           <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
-            <Image
-              src={NPEProLogo.src}
-              width={180}
-              height={42}
-              alt="NPE Management Project Logo"
-            />
+            <Group spacing={10}>
+              <Image
+                src={NPEProLogo.src}
+                width={50}
+                height={50}
+                alt="NPE Management Project Logo"
+              />
+
+              <Stack spacing={0}>
+                <Text className="font-bold text-primary text-xl">NPE</Text>
+                <Text className="font-bold text-primary text-xl">Simplify</Text>
+              </Stack>
+            </Group>
           </MediaQuery>
         </Header>
       }

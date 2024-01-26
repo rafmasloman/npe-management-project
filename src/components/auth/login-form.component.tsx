@@ -16,7 +16,6 @@ import { IAuthLoginParams } from '@/src/interfaces/auth.interface';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useMutation } from '@tanstack/react-query';
-import { AuthLoginApiMutation } from '@/pages/api/auth/auth-mutation';
 import { usePostLogin } from '@/src/hooks/auth/usePostLogin';
 import { IApiBaseResponse } from '@/src/interfaces/base-response.interface';
 import { notifications } from '@mantine/notifications';
@@ -51,14 +50,10 @@ const LoginForm = () => {
   return (
     <Box
       maw={400}
-      h={450}
       bg={'white'}
       mx={'auto'}
-      pt={42}
-      px={20}
-      style={{
-        borderRadius: '1.25rem',
-      }}
+      // pt={42}
+      className=" "
     >
       <form onSubmit={handleSubmit}>
         <Stack h={'100%'} spacing={'50px'}>

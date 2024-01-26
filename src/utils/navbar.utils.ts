@@ -1,6 +1,7 @@
 import { ICalender } from '../assets/icons/nav-icon/calender.icon';
 
 import ICDashboard from '../assets/icons/nav-icon/dashboard.icon';
+import { ICInvoices } from '../assets/icons/nav-icon/invoices.icon';
 import { ICMilestone } from '../assets/icons/nav-icon/milestone.icon';
 import { ICProject } from '../assets/icons/nav-icon/project.icon';
 import { ICTask } from '../assets/icons/nav-icon/task.icon';
@@ -8,7 +9,7 @@ import { ICTeams } from '../assets/icons/nav-icon/teams.icon';
 import { ICUser } from '../assets/icons/nav-icon/user.icon';
 import { ROUTES } from '../constant/routes.constant';
 
-export const navbarLink = [
+export const navbarAdminLink = [
   {
     id: 1,
     icon: ICDashboard,
@@ -29,9 +30,9 @@ export const navbarLink = [
   // },
   {
     id: 4,
-    icon: ICalender,
-    label: 'Calender',
-    href: ROUTES.CALENDER,
+    icon: ICInvoices,
+    label: 'Invoices',
+    href: ROUTES.INVOICES,
   },
   // {
   //   id: 5,
@@ -56,6 +57,33 @@ export const navbarLink = [
     icon: ICProject,
     label: 'Project',
     href: ROUTES.PROJECTS,
+  },
+];
+
+export const navbarStaffLink = [
+  {
+    id: 1,
+    icon: ICDashboard,
+    label: 'Dashboard',
+    href: ROUTES.DASHBOARD,
+  },
+  {
+    id: 2,
+    icon: ICProject,
+    label: 'Projects',
+    href: ROUTES.PROJECTS,
+  },
+  {
+    id: 3,
+    icon: ICTask,
+    label: 'My Task',
+    href: ROUTES.TASK,
+  },
+  {
+    id: 4,
+    icon: ICMilestone,
+    label: 'Milestones',
+    href: ROUTES.MILESTONE,
   },
 ];
 

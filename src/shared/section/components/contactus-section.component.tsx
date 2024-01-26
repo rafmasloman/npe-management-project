@@ -33,8 +33,8 @@ const ContactUsSection = () => {
             rightIcon={<ICLaunch width={25} height={25} />}
             variant="outline"
             className="bg-white  text-blue-950  rounded-lg  font-medium w-fit h-[40px] lg:text-lg lg:h-[60px]"
-            // component="a"
-            // href={!token ? ROUTES.LOGIN : ROUTES.DASHBOARD}
+            component="a"
+            href={!token ? ROUTES.LOGIN : ROUTES.DASHBOARD}
           >
             Launch Project
           </Button>

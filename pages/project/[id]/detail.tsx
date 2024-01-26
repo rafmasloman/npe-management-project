@@ -45,6 +45,7 @@ import {
   __getSSRAuthCookie,
   __setSSRAuthCookie,
 } from '@/src/utils/cookie.util';
+import { UserContext } from '@/src/context/user-credential.context';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { params, req } = ctx;
@@ -70,6 +71,10 @@ const ProjectDetail = ({ projectDetail }: any) => {
   const { data: projects } = useGetProjectDetailQuery(query.id as string);
 
   const project = projects?.data?.project!;
+
+  const user = React.useContext(UserContext);
+
+  console.log('user : ', user.user?.role);
 
   return (
     <MainLayout>
@@ -148,18 +153,20 @@ const ProjectDetail = ({ projectDetail }: any) => {
               Milestone
             </Tabs.Tab>
 
-            <Tabs.Tab
-              fz={rem(16)}
-              mr={rem(50)}
-              pb={rem(20)}
-              pl={0}
-              value="payroll"
-              style={{
-                borderWidth: 3,
-              }}
-            >
-              Payroll
-            </Tabs.Tab>
+            {user.user?.role === 'STAFF' ? null : (
+              <Tabs.Tab
+                fz={rem(16)}
+                mr={rem(50)}
+                pb={rem(20)}
+                pl={0}
+                value="payroll"
+                style={{
+                  borderWidth: 3,
+                }}
+              >
+                Payroll
+              </Tabs.Tab>
+            )}
           </Tabs.List>
 
           <Tabs.Panel value="overview" pt={rem(50)}>
@@ -170,9 +177,11 @@ const ProjectDetail = ({ projectDetail }: any) => {
             <TaskWorkSpace todos={projects?.data?.todos} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="payroll" pt={rem(50)}>
-            <PayrollSpace projectPrice={projectDetail?.priceDeals!} />
-          </Tabs.Panel>
+          {user.user?.role === 'STAFF' ? null : (
+            <Tabs.Panel value="payroll" pt={rem(50)}>
+              <PayrollSpace projectPrice={projectDetail?.priceDeals!} />
+            </Tabs.Panel>
+          )}
         </Tabs>
 
         <Space h={50} />

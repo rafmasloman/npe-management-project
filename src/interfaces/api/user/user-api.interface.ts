@@ -4,7 +4,8 @@ export interface IApiCreatePostUserMutationParams {
   email: string;
   username: string;
   password: string;
-  fullname: string;
+  firstname: string;
+  lastname: string;
   role: string;
 }
 
@@ -13,7 +14,8 @@ export interface IApiCreatePostUserMutationResponse {
   email: string;
   username: string;
   password: string;
-  fullname: string;
+  firstname: string;
+  lastname: string;
   roleId: number;
   memberId: string;
   clientId: string;
@@ -22,6 +24,7 @@ export interface IApiCreatePostUserMutationResponse {
 export interface IApiGetUserQueryResponse {
   id: string;
   email: string;
-  fullname: string;
+  firstname: string;
+  lastname: string;
   role: 'STAFF' | 'ADMIN' | 'PROJECT_MANAGER';
 }

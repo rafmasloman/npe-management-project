@@ -12,7 +12,8 @@ interface ICommentChatProps {
 }
 
 interface IUserCommentChatProps {
-  fullname: string;
+  firstname: string;
+  lastname: string;
   member: IMemberCommentChatProps;
 }
 
@@ -49,7 +50,9 @@ const CommentChat = ({
       <div className="flex justify-between items-end flex-1">
         <div>
           <Text className="text-sm text-gray-500">
-            {userAccount.user?.id! === userId ? 'You' : user.fullname}
+            {userAccount.user?.id! === userId
+              ? 'You'
+              : `${user.firstname} ${user.lastname}`}
           </Text>
           <Text className="text-[0.875rem]">{message}</Text>
         </div>

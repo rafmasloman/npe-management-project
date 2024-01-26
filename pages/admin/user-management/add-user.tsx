@@ -1,4 +1,4 @@
-import UserForm from '@/src/components/form/client.form.component';
+import UserForm from '@/src/components/form/client/client.form.component';
 import PageLoading from '@/src/components/loading/page-loading.component';
 import { COLORS } from '@/src/constant/colors.constant';
 import FormLayout from '@/src/layouts/form/form.layout';

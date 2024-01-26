@@ -4,6 +4,7 @@ import {
   FileInput,
   Grid,
   Group,
+  MultiSelect,
   NumberInput,
   PasswordInput,
   Select,
@@ -15,51 +16,85 @@ import * as Yup from 'yup';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import UserQueryApi from '@/pages/api/user/user-query';
 import UserMutationApi from '@/pages/api/user/user-mutation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IApiCreatePostUserMutationParams } from '@/src/interfaces/api/user/user-api.interface';
 import { usePostUser } from '@/src/hooks/user/usePostUser';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/src/constant/routes.constant';
+import { clientSchema } from './client.schema';
+import { usePostClientMutation } from '@/src/hooks/client/usePostClient';
+import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
+import { IClientInitialValuesParams } from '@/src/interfaces/client.interface';
+import { usePutClientMutation } from '@/src/hooks/client/usePutClient';
 
-const schema = Yup.object().shape({
-  fullname: Yup.string().required('Mohon isi nama lengkap anda'),
-  email: Yup.string().required('Mohon isi email anda'),
-  username: Yup.string().required('Mohon isi username anda'),
-  password: Yup.string().required('Mohon isi password anda'),
-  role: Yup.string().required('Mohon pilih role terlebih dahulu'),
-});
+interface IClientInitialValueParams {
+  initialValues?: IClientInitialValuesParams;
+}
 
-const UserForm = () => {
-  const { data: readRoles } = useQuery({
-    queryKey: ['role-id-key'],
-    queryFn: () => UserQueryApi.getAllRoleQuery(),
-  });
+interface IClientOptionValueTypes {
+  value: string;
+  label: string;
+}
 
-  const { mutate: createUser, isPending } = usePostUser();
+const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
+  const { mutate: createClient, isPending } = usePostClientMutation();
+  const {
+    mutate: updateClient,
+    isSuccess: isSuccessUpdate,
+    isPending: isPendingUpdate,
+  } = usePutClientMutation();
+  const { data: projects, isSuccess } = useGetProjectQuery(undefined, '');
 
-  const roles = readRoles?.data!;
+  const [projectsOption, setProjectsOption] = useState<
+    IClientOptionValueTypes[]
+  >([]);
+
+  const { query } = useRouter();
 
   const form = useForm({
-    validate: yupResolver(schema),
+    validate: yupResolver(clientSchema),
     initialValues: {
-      fullname: '',
-      email: '',
-      username: '',
-      password: '',
-      role: '',
+      name: initialValues?.name || '',
+      phoneNumber: initialValues?.phoneNumber || '',
+      address: initialValues?.address || '',
+      email: initialValues?.email || '',
+      project: initialValues?.project.id || '',
     },
   });
 
+  useEffect(() => {
+    if (!isSuccess) {
+      setProjectsOption([]);
+    } else {
+      const project = projects?.data?.map((project: any) => {
+        return {
+          value: project.id,
+          label: project.projectName,
+        };
+      });
+      setProjectsOption(project);
+    }
+  }, [projects, isSuccess]);
+
   const handleSubmit = form.onSubmit((values) => {
     const params = {
-      fullname: values.fullname,
+      name: values.name,
       email: values.email,
-      username: values.username,
-      password: values.password,
-      role: Number(values.role),
+      phoneNumber: values.phoneNumber,
+      address: values.address,
+      project: values.project,
     };
 
-    // createUser(params);
+    console.log('params : ', params);
+
+    if (!initialValues) {
+      console.log('success create : ');
+
+      createClient(params);
+    } else if (!!initialValues) {
+      console.log('success update : ');
+      updateClient({ clientId: query.id as string, payload: params });
+    }
   });
 
   return (
@@ -68,10 +103,10 @@ const UserForm = () => {
         <Grid.Col span={6}>
           <TextInput
             withAsterisk
-            placeholder="Masukkan Nama User"
-            label="Nama Lengkap"
+            placeholder="Masukkan Nama Client"
+            label="Nama Client"
             radius={'md'}
-            {...form.getInputProps('fullname')}
+            {...form.getInputProps('name')}
             styles={{
               input: {
                 padding: 24,
@@ -94,24 +129,10 @@ const UserForm = () => {
               },
             }}
           /> */}
+
           <TextInput
             withAsterisk
-            placeholder="Masukkan username"
-            label="Username"
-            radius={'md'}
-            {...form.getInputProps('username')}
-            styles={{
-              input: {
-                padding: 24,
-                marginTop: 10,
-              },
-            }}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <TextInput
-            withAsterisk
-            placeholder="Masukkan Email User"
+            placeholder="Masukkan Email Client"
             label="Email"
             radius={'md'}
             {...form.getInputProps('email')}
@@ -124,32 +145,42 @@ const UserForm = () => {
           />
         </Grid.Col>
         <Grid.Col span={6}>
-          <PasswordInput
+          <TextInput
             withAsterisk
-            placeholder="Masukkan Password"
-            label="Password"
+            placeholder="Masukkan No. Telp Client"
+            label="Nomor Telepon"
             radius={'md'}
-            {...form.getInputProps('password')}
+            type="number"
+            {...form.getInputProps('phoneNumber')}
             styles={{
               input: {
                 padding: 24,
                 marginTop: 10,
-                display: 'flex',
-                justifyItems: 'center',
-                alignItems: 'center',
               },
-              innerInput: {
-                paddingTop: 14,
+            }}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <TextInput
+            withAsterisk
+            placeholder="Masukkan Alamat Tempat tinggal"
+            label="Alamat"
+            radius={'md'}
+            {...form.getInputProps('address')}
+            styles={{
+              input: {
+                padding: 24,
+                marginTop: 10,
               },
             }}
           />
         </Grid.Col>
         <Grid.Col span={6}>
           <Select
-            label="Pilih Role"
-            placeholder="Pilih salah satu"
-            data={['STAFF', 'ADMIN', 'PROJECT MANAGEMENT']}
-            {...form.getInputProps('role')}
+            label="Projects"
+            placeholder="Pilih Project"
+            data={projectsOption}
+            {...form.getInputProps('project')}
           />
         </Grid.Col>
 
@@ -161,7 +192,7 @@ const UserForm = () => {
               bg={COLORS.PRIMARY}
               leftIcon={<IconPlus />}
             >
-              Tambah
+              {!query.id ? 'Tambah Client' : 'Update Client'}
             </Button>
           </Group>
         </Grid.Col>
@@ -170,4 +201,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default ClientForm;

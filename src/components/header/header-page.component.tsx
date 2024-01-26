@@ -26,21 +26,32 @@ import { COLORS } from '@/src/constant/colors.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { UserContext } from '@/src/context/user-credential.context';
 import { useContext } from 'react';
+import ModalAction from '../modal/modal-action.component';
 
 interface IHeaderPageProps {
+  userId?: string;
   pageTitle: string;
   role: string;
   onClick?: () => void;
 }
 
-const HeaderPage = ({ pageTitle, role, onClick }: IHeaderPageProps) => {
+const HeaderPage = ({ userId, pageTitle, role, onClick }: IHeaderPageProps) => {
+  const [opened, { close, open }] = useDisclosure(false);
+
   const largeScreen = useMediaQuery('(min-width: 60em)');
+  console.log('userId : ', userId);
+
   // const [opened, { open, close }] = useDisclosure(false);
   // const theme = useMantineTheme();
 
   // const token = __getBrowserAuthCookie(TOKEN_NAME);
 
   const user = useContext(UserContext);
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const firstLetterToUpperCase = (text?: string) => {
     const newText =
@@ -63,6 +74,40 @@ const HeaderPage = ({ pageTitle, role, onClick }: IHeaderPageProps) => {
         borderColor: COLORS.DEEPGRAY,
       }}
     >
+      <ModalAction
+        headerText="Anda ingin keluar?"
+        opened={opened}
+        close={close}
+        message="Jika keluar anda masih bisa login kembali"
+        type="confirmation"
+      >
+        <Group mt={20}>
+          <Button
+            variant=""
+            onClick={handleLogout}
+            w={'48%'}
+            // loading={isLoading}
+            radius={'md'}
+            c={'white'}
+            bg={COLORS.PRIMARY}
+            // disabled={disableNoButton}
+          >
+            Keluar
+          </Button>
+          <Button
+            // loading={isLoading}
+            onClick={close}
+            variant="outline"
+            w={'48%'}
+            radius={'md'}
+            c={COLORS.PRIMARY}
+            color={COLORS.PRIMARY}
+          >
+            Batal
+          </Button>
+        </Group>
+      </ModalAction>
+
       {/* <Modal
         opened={opened}
         onClose={close}
@@ -109,7 +154,7 @@ const HeaderPage = ({ pageTitle, role, onClick }: IHeaderPageProps) => {
       <MenuComp
         button={
           <UserProfile
-            name={user.user?.fullname!}
+            name={`${user.user?.firstname!} ${user.user?.lastname!}`}
             role={user.user?.role.toLowerCase()!}
           />
         }
@@ -122,7 +167,7 @@ const HeaderPage = ({ pageTitle, role, onClick }: IHeaderPageProps) => {
         >
           Profile
         </Menu.Item>
-        <Menu.Item onClick={onClick} icon={<IconLogout size={14} />}>
+        <Menu.Item onClick={open} icon={<IconLogout size={14} />}>
           Logout
         </Menu.Item>
       </MenuComp>

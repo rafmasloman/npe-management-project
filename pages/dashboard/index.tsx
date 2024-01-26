@@ -5,6 +5,7 @@ import {
   Box,
   Container,
   Flex,
+  Grid,
   Group,
   ScrollArea,
   SimpleGrid,
@@ -64,24 +65,14 @@ const DashboardAdmin = ({ userCredential }: any) => {
   const { pathname } = useRouter();
   const user = useContext(UserContext);
 
-  const userDetail = userCredential.user;
+  console.log('user : ', user);
+
   const [userProject, setUserProject] = useState<any>([]);
 
-  const isLoading = useRouteLoader();
-  const { replace, push } = useRouter();
-  const { logout } = useAuth();
-
-  const { data: getProjects } = useGetProjectQuery(String(3));
   const { data: getMembers } = useGetMemberQuery(2);
   const { data: userProjects, isSuccess } = useGetQueryUserProjects(
     user.user?.id!,
   );
-
-  const handleLogout = () => {
-    __deleteBrowserCookie(TOKEN_NAME);
-
-    replace(ROUTES.LOGIN);
-  };
 
   useEffect(() => {
     if (userProjects?.data) {
@@ -89,53 +80,46 @@ const DashboardAdmin = ({ userCredential }: any) => {
     }
   }, [isSuccess, userProjects?.data]);
 
-  console.log(userProject);
-
   return (
     <MainLayout>
       <SEO title="Dashboard" description="dashboard npe management projects" />
 
       <Container size={'xl'} className="px-4 mt-0 md:px-12 lg:-mt-16">
         <HeaderPage
+          userId={user.user?.id!}
           pageTitle={getCurrentPage(pathname)}
           role={getCurrentRole(pathname)}
-          onClick={handleLogout}
         />
 
         <Space h={40} />
 
-        <SimpleGrid
-          breakpoints={[
-            {
-              minWidth: 'sm',
-              cols: 1,
-            },
-            {
-              minWidth: 'md',
-              cols: 2,
-            },
-          ]}
-          spacing={50}
-        >
-          <DashboardCard name={user.user?.fullname!.split(' ')[0]!} />
-          <Stack className="w-full " align="start" spacing={'lg'}>
-            <HeaderTitle
-              href={`/${getCurrentRole(pathname)}/members`}
-              title="Team Member"
-            />
-            {getMembers?.data?.map((member: any) => {
-              return (
-                <TeamCard
-                  key={member.id}
-                  name={
-                    !member.user?.fullname ? 'Noname' : member.user?.fullname
-                  }
-                  position={member.position}
-                />
-              );
-            })}
-          </Stack>
-        </SimpleGrid>
+        <Grid grow gutter={50}>
+          <Grid.Col lg={7}>
+            <DashboardCard name={user.user?.firstname!} />
+          </Grid.Col>
+
+          <Grid.Col lg={5}>
+            <Stack className="w-full " align="start" spacing={'lg'}>
+              <HeaderTitle
+                href={`/${getCurrentRole(pathname)}/members`}
+                title="Team Member"
+              />
+              {getMembers?.data?.map((member: any) => {
+                return (
+                  <TeamCard
+                    key={member.id}
+                    name={
+                      !member.user?.firstname || !member.user?.lastname
+                        ? 'Noname'
+                        : `${member.user?.firstname} ${member.user?.lastname}`
+                    }
+                    position={member.position}
+                  />
+                );
+              })}
+            </Stack>
+          </Grid.Col>
+        </Grid>
 
         <Space h={30} />
 

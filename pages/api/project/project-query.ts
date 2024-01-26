@@ -8,15 +8,20 @@ import {
 class ProjectsQueryApi {
   private static routesName = `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/${API_ROUTES.PROJECT}`;
 
-  static async getAllProjects(limit?: string) {
+  static async getAllProjects(limit?: string, projectName?: string) {
     try {
-      const response = await fetch(`${this.routesName}?limit=${limit}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+      const response = await fetch(
+        `${this.routesName}?limit=${limit}&projectName=${projectName}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${
+              __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+            }`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
 

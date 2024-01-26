@@ -10,9 +10,10 @@ import { IApiBaseResponse } from '../interfaces/base-response.interface';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { TOKEN_NAME } from '../constant/variables.constant';
+import { ROUTES } from '../constant/routes.constant';
 
 export const useAuth = () => {
-  const { push } = useRouter();
+  const { push, replace } = useRouter();
 
   const handleSucces = (data: IApiBaseResponse<any>) => {
     if (data.statusCode !== 200) {
@@ -36,6 +37,8 @@ export const useAuth = () => {
 
   const logout = () => {
     __deleteBrowserCookie(TOKEN_NAME);
+
+    replace(ROUTES.HOMEPAGE);
   };
 
   return { login, logout, isPending };

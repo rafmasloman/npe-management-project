@@ -8,16 +8,20 @@ interface ITableProps {
 }
 
 const Table = ({ tableHead, tableRow }: ITableProps) => {
-  const { data: tes } = useQuery({
-    queryKey: [''],
-  });
-
   const ths = (
-    <tr>
+    <tr className="">
       {tableHead.map((th, index) => {
         return (
-          <th key={index} className="px-6 py-2.5 ">
-            <Text className="text-white" fw={600}>
+          <th
+            key={index}
+            className={` ${index === 0 ? 'rounded-tl-lg' : ''} ${
+              index === tableHead.length - 1 ? 'rounded-tr-lg' : ''
+            }`}
+          >
+            <Text
+              className="text-slate-700 font-medium text-sm text-center "
+              fw={600}
+            >
               {th.title}
             </Text>
           </th>
@@ -31,10 +35,15 @@ const Table = ({ tableHead, tableRow }: ITableProps) => {
   // });
 
   return (
-    <table className="table-auto border-collapse  w-full py-2 rounded-t-lg">
-      <thead className=" bg-primary ">{ths}</thead>
+    <TableMantine
+      align="right"
+      className="table-auto border-collapse  w-full py-2 rounded-t-lg"
+      verticalSpacing={'lg'}
+      horizontalSpacing={'md'}
+    >
+      <thead className="bg-blue-200 ">{ths}</thead>
       <tbody className="bg-white">{tableRow}</tbody>
-    </table>
+    </TableMantine>
   );
 };
 
