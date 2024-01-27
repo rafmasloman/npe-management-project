@@ -7,4 +7,5 @@ export const API_ROUTES = {
   MILESTONE: 'milestone',
   TASK: 'task',
   CLIENT: 'client',
+  INVOICE: 'invoice',
 };

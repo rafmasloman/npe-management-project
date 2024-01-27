@@ -1,4 +1,5 @@
 import ClientForm from '@/src/components/form/client/client.form.component';
+import InvoiceForm from '@/src/components/form/invoice/invoice.form';
 import ProjectForm from '@/src/components/form/project/project.form.component';
 import PageLoading from '@/src/components/loading/page-loading.component';
 import FormLayout from '@/src/layouts/form/form.layout';
@@ -7,10 +8,14 @@ import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
 import useRouteLoader from '@/src/utils/routes.event';
 import { useRouter } from 'next/router';
 
-const AddClientPage = () => {
+const AddInvoicePage = () => {
   const { pathname } = useRouter();
 
   const isLoading = useRouteLoader();
+
+  const token = __getBrowserAuthCookie('token');
+
+  console.log('token : ', token);
 
   return (
     <MainLayout>
@@ -19,14 +24,14 @@ const AddClientPage = () => {
       ) : (
         <FormLayout
           pathname={pathname}
-          title="Halaman Tambah Client"
-          pageTitle="Tambah "
+          title="Halaman Tambah Invoice"
+          pageTitle="Tambah Invoice"
         >
-          <ClientForm />
+          <InvoiceForm />
         </FormLayout>
       )}
     </MainLayout>
   );
 };
 
-export default AddClientPage;
+export default AddInvoicePage;
