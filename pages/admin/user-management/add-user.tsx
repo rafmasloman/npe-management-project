@@ -16,7 +16,7 @@ const AddUser = () => {
       <Suspense fallback={<Loader size={100} color={COLORS.PRIMARY} />}>
         <FormLayout
           pathname={pathname}
-          title="Add User"
+          title="Tambah User"
           pageTitle="Tambah User"
         >
           <UserForm />

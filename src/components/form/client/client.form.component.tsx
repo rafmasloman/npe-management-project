@@ -85,14 +85,11 @@ const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
       project: values.project,
     };
 
-    console.log('params : ', params);
 
     if (!initialValues) {
-      console.log('success create : ');
 
       createClient(params);
     } else if (!!initialValues) {
-      console.log('success update : ');
       updateClient({ clientId: query.id as string, payload: params });
     }
   });

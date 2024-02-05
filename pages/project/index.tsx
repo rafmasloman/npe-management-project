@@ -31,7 +31,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req, query } = ctx;
 
   const cookieToken = cookie.parse(req.headers.cookie!) as any;
-  console.log('token : ', query);
 
   __setSSRAuthCookie(cookieToken?.token!);
 
@@ -56,7 +55,6 @@ const ProjectAdmin = ({ projects }: any) => {
     setProject(projects.data);
   }, [projects]);
 
-  console.log('projects : ', project);
   return (
     <MainLayout>
       <ProjectLayout pathname={pathname}>

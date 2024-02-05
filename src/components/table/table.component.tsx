@@ -17,6 +17,7 @@ const Table = ({ tableHead, tableRow }: ITableProps) => {
             className={` ${index === 0 ? 'rounded-tl-lg' : ''} ${
               index === tableHead.length - 1 ? 'rounded-tr-lg' : ''
             }`}
+            // colSpan={th.title === 'Project' ? 1 : 0}
           >
             <Text
               className="text-slate-700 font-medium text-sm text-center "

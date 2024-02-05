@@ -29,7 +29,6 @@ const TaskForm = () => {
   const [milestoneOption, setMilestoneOption] = useState([]);
 
   const { query } = useRouter();
-  console.log('project id : ', query.id);
 
   const { data: milestones } = useGetMilestonesByProject(query.id as string);
   const { data: members } = useGetMemberQuery();
@@ -83,7 +82,6 @@ const TaskForm = () => {
 
     createTask(payload);
 
-    console.log(payload);
   });
 
   return (

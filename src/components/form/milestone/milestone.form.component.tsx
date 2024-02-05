@@ -37,8 +37,6 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
 
   const { query } = useRouter();
 
-  console.log(query.milestoneId);
-
   const form = useForm({
     // validate: yupResolver(schema),
     initialValues: {
@@ -70,8 +68,6 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       endDate: values.endDate as string,
       status: values.status,
     };
-
-    console.log(payload);
 
     if (!initValue) {
       createMilestone(payload);
@@ -160,7 +156,7 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
 
         <Grid.Col span={12} mt={30}>
           <Button type="submit" bg={COLORS.PRIMARY} leftIcon={<IconPlus />}>
-            Tambah
+            {!query.milestoneId ? 'Tambah' : 'Simpan'}
           </Button>
         </Grid.Col>
       </Grid>

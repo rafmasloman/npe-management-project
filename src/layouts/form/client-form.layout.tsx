@@ -6,7 +6,7 @@ import { Space } from '@mantine/core';
 const ClientFormLayout = ({ children, pathname }: ILayoutProps) => {
   return (
     <>
-      <SEO title="Add Client" description="" />
+      <SEO title="Tambah Client" description="" />
 
       <HeaderPage pageTitle="Create Client" role={getCurrentRole(pathname)} />
 

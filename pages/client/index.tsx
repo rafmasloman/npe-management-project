@@ -51,6 +51,8 @@ import { IconPlaneDeparture } from '@tabler/icons-react';
 import { useDeleteClient } from '@/src/hooks/client/useDeleteClient';
 import ModalAction from '@/src/components/modal/modal-action.component';
 import Image from 'next/image';
+import NoDataCard from '@/src/components/card/no_data-card.component';
+import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
 
 const Client = () => {
   const { pathname, push, replace } = useRouter();
@@ -64,6 +66,8 @@ const Client = () => {
 
   const { data: clients } = useGetClientsQuery();
   const { mutate: deleteClient, isSuccess, isPending } = useDeleteClient();
+
+  console.log('clients : ', !clients?.data);
 
   const searchForm = useForm({
     initialValues: {
@@ -90,6 +94,7 @@ const Client = () => {
     {
       title: 'Project',
     },
+
     {
       title: 'Invoice',
     },
@@ -176,114 +181,132 @@ const Client = () => {
           role={getCurrentRole(pathname)}
         />
 
-        <Space h={50} />
-
-        <Group position="apart" className="">
-          {user.user?.role.includes('STAFF') ? null : (
-            <ButtonNavigate
-              icon={<IconPlus />}
-              url={`/${getCurrentPage(pathname)}/add-client`}
+        {clients?.data?.length <= 0 ? (
+          <div className="flex  w-full justify-center mt-[70px]">
+            <NoDataCard
+              icon={<ICTeams width={50} height={50} />}
+              description="Untuk membesarkan perusahaan tentu anda butuh client, tambah client sekarang"
+              title="Client"
             >
-              Add Client
-            </ButtonNavigate>
-          )}
-          <form onSubmit={handleSearchSubmit} className="lg:w-fit w-full">
-            <Group className="w-full " position="right">
-              <TextInput
-                placeholder="Cari Client"
-                radius={'md'}
-                className="w-full lg:w-[320px]"
-                {...searchForm.getInputProps('searchValue')}
-                styles={{
-                  input: {
-                    height: 40,
-                  },
-                }}
-              />
-
-              <button
-                type="submit"
-                className="bg-primary shadow-sm border-0 w-[40px] h-[40px] flex items-center justify-center rounded-lg"
+              <ButtonNavigate
+                icon={<IconPlus />}
+                url={`/${getCurrentPage(pathname)}/add-client`}
               >
-                <IconSearch size={21} color={'white'} />
-              </button>
-            </Group>
-          </form>
-        </Group>
+                Tambah Client
+              </ButtonNavigate>
+            </NoDataCard>
+          </div>
+        ) : (
+          <>
+            <Space h={50} />
 
-        <Space h={50} />
-
-        <Table
-          tableHead={tableHead}
-          tableRow={clients?.data?.map((client: any, index: number) => {
-            return (
-              <tr key={client.id}>
-                <td className="text-center text-xs">{`${index + 1}`}</td>
-                <td className="  text-center text-xs">{`${client.name} `}</td>
-                <td className="  text-center text-xs">{`${client.email} `}</td>
-                <td className="   text-center text-xs">{`${client.address} `}</td>
-                <td className=" text-center text-xs">{`${client.phoneNumber} `}</td>
-                <td className=" text-center text-xs">
-                  <Group spacing={5}>
-                    <Image
-                      width={20}
-                      height={20}
-                      alt={`${client.project.projectName}`}
-                      src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${client.project.projectIcon}`}
-                    />
-
-                    <Text>{client.project.projectName}</Text>
-                  </Group>
-                </td>
-                <td className="  text-center ">
-                  <Button
-                    className="text-xs"
-                    variant="outline"
-                    rightIcon={<IconSend size={16} />}
+            <Group position="apart" className="">
+              {user.user?.role.includes('STAFF') ? null : (
+                <ButtonNavigate
+                  icon={<IconPlus />}
+                  url={`/${getCurrentPage(pathname)}/add-client`}
+                >
+                  Tambah Client
+                </ButtonNavigate>
+              )}
+              <form onSubmit={handleSearchSubmit} className="lg:w-fit w-full">
+                <Group className="w-full " position="right">
+                  <TextInput
+                    placeholder="Cari Client"
+                    radius={'md'}
+                    className="w-full lg:w-[320px]"
+                    {...searchForm.getInputProps('searchValue')}
                     styles={{
-                      inner: {
-                        width: 'fit-content',
-                        fontSize: 12,
+                      input: {
+                        height: 40,
                       },
                     }}
+                  />
+
+                  <button
+                    type="submit"
+                    className="bg-primary shadow-sm border-0 w-[40px] h-[40px] flex items-center justify-center rounded-lg"
                   >
-                    Send Invoice
-                  </Button>
-                </td>
+                    <IconSearch size={21} color={'white'} />
+                  </button>
+                </Group>
+              </form>
+            </Group>
 
-                <td className=" ">
-                  <Group position="center" className="w-[70px]" spacing={5}>
-                    <ActionIcon
-                      variant="outline"
-                      radius={'xl'}
-                      color={'red'}
-                      c={COLORS.DANGER}
-                      opacity={'0.7'}
-                      size={'md'}
-                      onClick={() => openModalConfirmationDelete(client.id)}
-                    >
-                      <IconTrash size={'1rem'} />
-                    </ActionIcon>
+            <Space h={50} />
+            <Table
+              tableHead={tableHead}
+              tableRow={clients?.data?.map((client: any, index: number) => {
+                return (
+                  <tr key={client.id} className="text-center">
+                    <td className="">{`${index + 1}`}</td>
+                    <td className="">{`${client.name} `}</td>
+                    <td className="">{`${client.email} `}</td>
+                    <td className="">{`${client.address} `}</td>
+                    <td className="">{`${client.phoneNumber} `}</td>
+                    <td className="">
+                      <div className="flex  items-center">
+                        <Image
+                          width={20}
+                          height={20}
+                          alt={`${client.project.projectName}`}
+                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${client.project.projectIcon}`}
+                        />
 
-                    <ActionIcon
-                      variant="outline"
-                      radius={'xl'}
-                      color={'gray'}
-                      c={COLORS.SECONDARY}
-                      opacity={'0.7'}
-                      size={'md'}
-                      onClick={() => {
-                        push(`/client/edit-client/${client.id}`);
-                      }}
-                    >
-                      <IconPencilCode size={'1rem'} />
-                    </ActionIcon>
-                  </Group>
-                </td>
-              </tr>
-            );
-          })}
-        />
+                        <Text>{client.project.projectName}</Text>
+                      </div>
+                    </td>
+                    <td className="   ">
+                      <Button
+                        className=""
+                        variant="outline"
+                        rightIcon={<IconSend size={16} />}
+                        styles={{
+                          inner: {
+                            width: 'fit-content',
+                            fontSize: 12,
+                          },
+                        }}
+                      >
+                        Send Invoice
+                      </Button>
+                    </td>
+
+                    <td className=" ">
+                      <Group position="center" className="w-[70px]" spacing={5}>
+                        <ActionIcon
+                          variant="outline"
+                          radius={'xl'}
+                          color={'red'}
+                          c={COLORS.DANGER}
+                          opacity={'0.7'}
+                          size={'md'}
+                          onClick={() => openModalConfirmationDelete(client.id)}
+                        >
+                          <IconTrash size={'1rem'} />
+                        </ActionIcon>
+
+                        <ActionIcon
+                          variant="outline"
+                          radius={'xl'}
+                          color={'gray'}
+                          c={COLORS.SECONDARY}
+                          opacity={'0.7'}
+                          size={'md'}
+                          onClick={() => {
+                            push(`/client/edit-client/${client.id}`);
+                          }}
+                        >
+                          <IconPencilCode size={'1rem'} />
+                        </ActionIcon>
+                      </Group>
+                    </td>
+                  </tr>
+                );
+              })}
+            />
+          </>
+        )}
       </Container>
     </MainLayout>
   );

@@ -12,15 +12,13 @@ const NavbarMainList = () => {
   const [initialToken, setInitialToken] = useState('');
   const token = __getBrowserAuthCookie(TOKEN_NAME);
 
-  console.log('token : ', token);
-
   useEffect(() => {
     setInitialToken(token as string);
   }, [token]);
 
   return (
     <Group>
-      {!initialToken
+      {/* {!initialToken
         ? navbarMainLink.map((navItem) => {
             return (
               <NavItem
@@ -30,9 +28,9 @@ const NavbarMainList = () => {
               />
             );
           })
-        : null}
+        : null} */}
 
-      <Button
+      {/* <Button
         component={'a'}
         href={!initialToken ? '/register' : '/dashboard'}
         bg={COLORS.PRIMARY}
@@ -42,6 +40,16 @@ const NavbarMainList = () => {
         }
       >
         {!initialToken ? 'Register' : 'Go to Dashboard'}
+      </Button> */}
+
+      <Button
+        component={'a'}
+        href={!initialToken ? '/login' : '/dashboard'}
+        bg={COLORS.PRIMARY}
+        className="font-medium text-base"
+        rightIcon={<ICDashboardButton width={20} height={20} />}
+      >
+        Go to Dashboard
       </Button>
     </Group>
   );

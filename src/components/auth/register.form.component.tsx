@@ -49,7 +49,6 @@ const RegisterForm = () => {
     };
 
     // register(payload);
-    console.log(payload);
   });
 
   return (

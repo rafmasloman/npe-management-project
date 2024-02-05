@@ -13,9 +13,6 @@ const AddInvoicePage = () => {
 
   const isLoading = useRouteLoader();
 
-  const token = __getBrowserAuthCookie('token');
-
-  console.log('token : ', token);
 
   return (
     <MainLayout>

@@ -67,8 +67,6 @@ const InvoicePage = () => {
 
   const { data: invoices } = useGetAllInvoices();
 
-  console.log('invoices : ', invoices);
-
   const { mutate: deleteInvoice, isSuccess, isPending } = useDeleteInvoice();
 
   const searchForm = useForm({
@@ -187,7 +185,7 @@ const InvoicePage = () => {
               icon={<IconPlus />}
               url={`/${getCurrentPage(pathname)}/add-invoice`}
             >
-              Add Invoice
+              Tambah Invoice
             </ButtonNavigate>
           )}
           <form onSubmit={handleSearchSubmit} className="lg:w-fit w-full">

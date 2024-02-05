@@ -47,7 +47,6 @@ const EditProject = ({ projectDetail }: any) => {
     price,
   } = projectDetail.data?.project;
 
-  console.log('project detail edit : ', member);
 
   return (
     <MainLayout>

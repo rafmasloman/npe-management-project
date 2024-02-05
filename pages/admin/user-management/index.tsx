@@ -71,7 +71,6 @@ const UserAdmin = () => {
   const { mutate: deleteUser } = useDeleteUser();
 
   const userData = readAllUsers?.data;
-  console.log(userData);
 
   const handleConfirm = (userId: string) => {
     setUserDeleteId(userId);

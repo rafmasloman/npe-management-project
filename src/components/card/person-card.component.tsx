@@ -7,7 +7,6 @@ interface IPersonCardProps {
 }
 
 const PersonCard = ({ name, image }: IPersonCardProps) => {
-  console.log(image);
 
   return (
     <Group

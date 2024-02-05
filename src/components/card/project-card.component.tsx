@@ -49,7 +49,6 @@ const ProjectCard = ({
   const [opened, { open, close }] = useDisclosure(false);
   const { pathname } = useRouter();
 
-  console.log(platform);
 
   // const platformServices = platform
   //   ?.slice(1, -1)

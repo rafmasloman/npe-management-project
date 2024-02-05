@@ -65,7 +65,6 @@ const DashboardAdmin = ({ userCredential }: any) => {
   const { pathname } = useRouter();
   const user = useContext(UserContext);
 
-  console.log('user : ', user);
 
   const [userProject, setUserProject] = useState<any>([]);
 

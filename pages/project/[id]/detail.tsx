@@ -74,7 +74,6 @@ const ProjectDetail = ({ projectDetail }: any) => {
 
   const user = React.useContext(UserContext);
 
-  console.log('user : ', user.user?.role);
 
   return (
     <MainLayout>

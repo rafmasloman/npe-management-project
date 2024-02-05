@@ -50,7 +50,6 @@ const MilestonePages = () => {
 
   const [activePage, setPage] = useState(1);
   const [milestoneId, setMilestoneId] = useState('');
-  console.log('milestones : ', milestoneId);
 
   const openModalConfirmationDelete = (milestoneId: string) => {
     setMilestoneId(milestoneId);

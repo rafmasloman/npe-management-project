@@ -60,7 +60,7 @@ const ProjectLayout = ({ pathname, children }: ILayoutProps) => {
               icon={<IconPlus />}
               url={`/${getCurrentPage(pathname)}/add-project`}
             >
-              Add Project
+              Tambah Project
             </ButtonNavigate>
           )}
           <form onSubmit={handleSearchSubmit} className="w-full">

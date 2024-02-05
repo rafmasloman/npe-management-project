@@ -13,8 +13,6 @@ const AddProject = () => {
 
   const token = __getBrowserAuthCookie('token');
 
-  console.log('token : ', token);
-
   return (
     <MainLayout>
       {isLoading ? (
@@ -22,7 +20,7 @@ const AddProject = () => {
       ) : (
         <FormLayout
           pathname={pathname}
-          title="Add Project"
+          title="Tambah Project"
           pageTitle="Tambah Project"
         >
           <ProjectForm />

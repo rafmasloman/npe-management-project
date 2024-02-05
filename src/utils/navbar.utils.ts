@@ -1,5 +1,4 @@
-import { ICalender } from '../assets/icons/nav-icon/calender.icon';
-
+import { ICClient } from '../assets/icons/nav-icon/client.icon';
 import ICDashboard from '../assets/icons/nav-icon/dashboard.icon';
 import { ICInvoices } from '../assets/icons/nav-icon/invoices.icon';
 import { ICMilestone } from '../assets/icons/nav-icon/milestone.icon';
@@ -20,6 +19,12 @@ export const navbarAdminLink = [
     id: 2,
     icon: ICUser,
     label: 'User Management',
+    href: ROUTES.USER,
+  },
+  {
+    id: 3,
+    icon: ICTeams,
+    label: 'My People',
     href: ROUTES.USER,
   },
   // {
@@ -48,7 +53,7 @@ export const navbarAdminLink = [
   },
   {
     id: 7,
-    icon: ICTeams,
+    icon: ICClient,
     label: 'Client',
     href: ROUTES.CLIENT,
   },

@@ -19,7 +19,6 @@ const TaskWorkSpace = ({ todos }: any) => {
   const { mutate: updateStatus } = usePutStatusTask();
 
   const handleOnDrop = (text: string, id: number, status: string) => {
-    console.log('task id : ', id);
 
     updateStatus({ id, status });
   };

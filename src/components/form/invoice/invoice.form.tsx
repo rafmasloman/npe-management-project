@@ -88,14 +88,11 @@ const InvoiceForm = ({ initialValues }: IInvoiceInitialValueParams) => {
       clientId: values.clientId,
     };
 
-    console.log('params : ', params);
 
     if (!initialValues) {
-      console.log('success create : ');
 
       createInvoice(params);
     } else if (!!initialValues) {
-      console.log('success update : ');
       updateInvoice({ invoiceId: query.id as string, payload: params });
     }
   });

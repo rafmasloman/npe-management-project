@@ -13,7 +13,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const milestoneId = params?.milestoneId;
 
   const cookieToken = cookie.parse(req.headers.cookie!) as any;
-  console.log('cookie token : ', cookieToken?.token);
 
   __setSSRAuthCookie(cookieToken?.token);
 
@@ -31,8 +30,8 @@ const EditMilestone = ({ milestoneDetail }: any) => {
     <MainLayout>
       <FormLayout
         pathname={pathname}
-        title="Add Milestone"
-        pageTitle="Tambah Milestone"
+        title="Edit Milestone"
+        pageTitle="Edit Milestone"
       >
         <MilestoneForm
           initValue={{
