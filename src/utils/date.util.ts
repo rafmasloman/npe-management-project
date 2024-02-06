@@ -15,6 +15,6 @@ export const countingDeadline = (initialDate: string) => {
     return 'Melewati Deadline';
   } else {
     const remainingDays = deadline.diff(now, 'days');
-    return remainingDays;
+    return ` ${remainingDays} day to go`;
   }
 };

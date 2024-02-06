@@ -49,49 +49,55 @@ const ProjectAdmin = ({ projects }: any) => {
 
   const [project, setProject] = useState([]);
 
-  const { data: getProjects, isSuccess } = useGetProjectQuery(undefined, '');
+  const {
+    data: getProjects,
+    isSuccess,
+    isLoading,
+  } = useGetProjectQuery(undefined, '');
 
   useEffect(() => {
     setProject(projects.data);
   }, [projects]);
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
 
   return (
     <MainLayout>
       <ProjectLayout pathname={pathname}>
         <Space h={50} />
 
-        <Suspense fallback={<Loader size={60} color={COLORS.PRIMARY} />}>
-          <SimpleGrid
-            breakpoints={[
-              {
-                minWidth: 'sm',
-                cols: 1,
-              },
-              {
-                minWidth: 'lg',
-                cols: 3,
-              },
-            ]}
-            mx={largeScreen ? 0 : '1rem'}
-            spacing={'xl'}
-          >
-            {project.map((project: any) => (
-              <ProjectCard
-                key={project.id}
-                width={340}
-                height={340}
-                member={project.member}
-                platform={project.platform}
-                projectName={project.projectName}
-                deadline={project.endDate}
-                description={project.description}
-                projectIcon={project.projectIcon}
-                task={project.task}
-                projectId={project.id}
-              />
-            ))}
-          </SimpleGrid>
-        </Suspense>
+        <SimpleGrid
+          breakpoints={[
+            {
+              minWidth: 'sm',
+              cols: 1,
+            },
+            {
+              minWidth: 'lg',
+              cols: 3,
+            },
+          ]}
+          mx={largeScreen ? 0 : '1rem'}
+          spacing={'xl'}
+        >
+          {project.map((project: any) => (
+            <ProjectCard
+              key={project.id}
+              width={340}
+              height={340}
+              member={project.member}
+              platform={project.platform}
+              projectName={project.projectName}
+              deadline={project.endDate}
+              description={project.description}
+              projectIcon={project.projectIcon}
+              task={project.task}
+              projectId={project.id}
+            />
+          ))}
+        </SimpleGrid>
       </ProjectLayout>
     </MainLayout>
   );

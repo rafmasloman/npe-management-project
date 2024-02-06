@@ -64,7 +64,7 @@ const Client = () => {
     { open: openModalDelete, close: closeModalDelete },
   ] = useDisclosure(false);
 
-  const { data: clients } = useGetClientsQuery();
+  const { data: clients, isLoading } = useGetClientsQuery();
   const { mutate: deleteClient, isSuccess, isPending } = useDeleteClient();
 
   console.log('clients : ', !clients?.data);
@@ -136,6 +136,10 @@ const Client = () => {
       closeModalDelete();
     }
   };
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
 
   return (
     <MainLayout>

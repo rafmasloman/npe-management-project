@@ -19,7 +19,6 @@ const TaskWorkSpace = ({ todos }: any) => {
   const { mutate: updateStatus } = usePutStatusTask();
 
   const handleOnDrop = (text: string, id: number, status: string) => {
-
     updateStatus({ id, status });
   };
 
@@ -85,6 +84,7 @@ const TaskWorkSpace = ({ todos }: any) => {
                   text={t.name}
                   comment={t.comment}
                   status={t.status}
+                  priority={t.priority}
                 />
               );
             })}
@@ -115,6 +115,7 @@ const TaskWorkSpace = ({ todos }: any) => {
                   text={t.name}
                   comment={t.comment}
                   status={t.status}
+                  priority={t.priority}
                 />
               );
             })}
@@ -145,6 +146,7 @@ const TaskWorkSpace = ({ todos }: any) => {
                   text={t.name}
                   comment={t.comment}
                   status={t.status}
+                  priority={t.priority}
                 />
               );
             })}

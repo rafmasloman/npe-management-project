@@ -63,7 +63,7 @@ const ProjectLayout = ({ pathname, children }: ILayoutProps) => {
               Tambah Project
             </ButtonNavigate>
           )}
-          <form onSubmit={handleSearchSubmit} className="w-full">
+          <form onSubmit={handleSearchSubmit} className="w-fit ">
             <Group className="w-full " position="right">
               <TextInput
                 placeholder="Cari Project"

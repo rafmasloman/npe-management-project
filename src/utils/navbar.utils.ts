@@ -25,7 +25,7 @@ export const navbarAdminLink = [
     id: 3,
     icon: ICTeams,
     label: 'My People',
-    href: ROUTES.USER,
+    href: ROUTES.MEMBER,
   },
   // {
   //   id: 3,

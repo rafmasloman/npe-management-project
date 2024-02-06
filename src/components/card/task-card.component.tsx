@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Avatar,
+  Badge,
   Button,
   Card,
   Divider,
@@ -53,6 +54,7 @@ interface ITaskCardProps {
   };
   comment?: any;
   status: string;
+  priority: string;
 }
 
 interface IMemberTaskCardProps {
@@ -75,6 +77,7 @@ const TaskCard = ({
   badgeStyles,
   comment,
   status,
+  priority,
 }: ITaskCardProps) => {
   const { item, itemType, isDraggingLayer, initialOffset, currentOffset } =
     useDragLayer((monitor) => ({
@@ -148,6 +151,8 @@ const TaskCard = ({
 
     mutate(payload);
   });
+
+  console.log('priority : ', priority);
 
   return (
     <Card
@@ -310,32 +315,20 @@ const TaskCard = ({
       </Group> */}
 
       <Group position="apart" className="w-full">
-        <Avatar.Group className="cursor-default">
-          {member.map((m, index) => {
-            return (
-              <Tooltip
-                key={index}
-                label={`${m.user?.firstname} ${m.user?.lastname}`}
-                withArrow
-                color={COLORS.LIGHTBLUE}
-                styles={{
-                  tooltip: {
-                    color: COLORS.DEEPBLUE,
-                    fontWeight: 600,
-                  },
-                }}
-              >
-                <Avatar
-                  radius={'xl'}
-                  src={`${
-                    process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
-                  }/members/${m.profilePicture!}`}
-                  size={27}
-                />
-              </Tooltip>
-            );
-          })}
-        </Avatar.Group>
+        <Group>
+          <Badge
+            color={
+              priority?.toLowerCase().includes('High'.toLowerCase())
+                ? 'red'
+                : priority?.toLowerCase().includes('Medium'.toLowerCase())
+                ? 'orange'
+                : 'indigo'
+            }
+          >
+            {priority?.charAt(0).toUpperCase()! +
+              priority?.slice(1).toLowerCase()!}
+          </Badge>
+        </Group>
 
         <Group position="apart" className="cursor-default" bg={'white'}>
           <ActionMenu
@@ -371,6 +364,35 @@ const TaskCard = ({
       </Group>
 
       <Space h={rem(16)} />
+
+      <Avatar.Group className="cursor-default">
+        {member.map((m, index) => {
+          return (
+            <Tooltip
+              key={index}
+              label={`${m.user?.firstname} ${m.user?.lastname}`}
+              withArrow
+              color={COLORS.LIGHTBLUE}
+              styles={{
+                tooltip: {
+                  color: COLORS.DEEPBLUE,
+                  fontWeight: 600,
+                },
+              }}
+            >
+              <Avatar
+                radius={'xl'}
+                src={`${
+                  process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
+                }/members/${m.profilePicture!}`}
+                size={27}
+              />
+            </Tooltip>
+          );
+        })}
+      </Avatar.Group>
+
+      <Divider className="my-3.5" />
 
       <Group position="apart" className="w-fit">
         <Group spacing="xs">

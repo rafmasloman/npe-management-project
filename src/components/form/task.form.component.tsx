@@ -41,6 +41,7 @@ const TaskForm = () => {
       projectId: '',
       milestoneId: '',
       member: '',
+      priority: '',
       endDate: '',
       status: '',
     },
@@ -78,10 +79,10 @@ const TaskForm = () => {
       member: values.member,
       endDate: values.endDate,
       status: values.status,
+      priority: values.priority,
     };
 
     createTask(payload);
-
   });
 
   return (
@@ -132,6 +133,20 @@ const TaskForm = () => {
             label="Status"
             withAsterisk
             {...form.getInputProps('status')}
+          />
+        </Grid.Col>
+
+        <Grid.Col span={12}>
+          <Select
+            data={[
+              { label: 'Low', value: 'LOW' },
+              { label: 'Medium', value: 'Medium' },
+              { label: 'High', value: 'HIGHT' },
+            ]}
+            placeholder="Pilih Tingkat Prioritas"
+            label="Prioritas"
+            withAsterisk
+            {...form.getInputProps('priority')}
           />
         </Grid.Col>
 

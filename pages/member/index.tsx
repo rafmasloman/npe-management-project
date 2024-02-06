@@ -51,27 +51,23 @@ import { IconPlaneDeparture } from '@tabler/icons-react';
 import { useDeleteClient } from '@/src/hooks/client/useDeleteClient';
 import ModalAction from '@/src/components/modal/modal-action.component';
 import Image from 'next/image';
-import { useGetAllInvoices } from '@/src/hooks/invoices/useGetInvoices';
-import { useDeleteInvoice } from '@/src/hooks/invoices/useDeleteInvoices';
 import NoDataCard from '@/src/components/card/no_data-card.component';
-import { ICInvoices } from '@/src/assets/icons/nav-icon/invoices.icon';
+import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
+import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
 
-const InvoicePage = () => {
+const MemberPage = () => {
   const { pathname, push, replace } = useRouter();
   const user = useContext(UserContext);
 
-  const [invoiceId, setInvoiceId] = useState('');
-
+  const [clientId, setClientId] = useState('');
   const [
     openedDeleteConfirmation,
     { open: openModalDelete, close: closeModalDelete },
   ] = useDisclosure(false);
 
-  const { data: invoices, isLoading } = useGetAllInvoices();
+  const { data: members, isLoading } = useGetMemberQuery();
+  const { mutate: deleteClient, isSuccess, isPending } = useDeleteClient();
 
-  console.log('invoices : ', isLoading);
-
-  const { mutate: deleteInvoice, isSuccess, isPending } = useDeleteInvoice();
 
   const searchForm = useForm({
     initialValues: {
@@ -84,22 +80,16 @@ const InvoicePage = () => {
       title: 'No',
     },
     {
-      title: 'Invoice',
+      title: 'Nama',
     },
     {
-      title: 'Order ID',
+      title: 'Posisi',
     },
     {
-      title: 'Other Info',
+      title: 'No. Telp',
     },
     {
-      title: 'Client',
-    },
-    {
-      title: 'Project',
-    },
-    {
-      title: 'Action',
+      title: 'Aksi',
     },
   ];
 
@@ -113,8 +103,8 @@ const InvoicePage = () => {
   //   });
   // };
 
-  const openModalConfirmationDelete = (invoiceId: string) => {
-    setInvoiceId(invoiceId);
+  const openModalConfirmationDelete = (clientId: string) => {
+    setClientId(clientId);
 
     openModalDelete();
   };
@@ -130,7 +120,7 @@ const InvoicePage = () => {
   });
 
   const handleDeleteClient = () => {
-    deleteInvoice(invoiceId);
+    deleteClient(clientId);
 
     if (!isPending) {
       closeModalDelete();
@@ -185,7 +175,22 @@ const InvoicePage = () => {
           role={getCurrentRole(pathname)}
         />
 
-        {invoices?.data?.length > 0 ? (
+        {members?.data?.length <= 0 ? (
+          <div className="flex  w-full justify-center mt-[70px]">
+            <NoDataCard
+              icon={<ICTeams width={50} height={50} />}
+              description="Untuk membesarkan perusahaan tentu anda butuh client, tambah client sekarang"
+              title="Client"
+            >
+              <ButtonNavigate
+                icon={<IconPlus />}
+                url={`/${getCurrentPage(pathname)}/add-client`}
+              >
+                Tambah Client
+              </ButtonNavigate>
+            </NoDataCard>
+          </div>
+        ) : (
           <>
             <Space h={50} />
 
@@ -193,15 +198,15 @@ const InvoicePage = () => {
               {user.user?.role.includes('STAFF') ? null : (
                 <ButtonNavigate
                   icon={<IconPlus />}
-                  url={`/${getCurrentPage(pathname)}/add-invoice`}
+                  url={`/${getCurrentPage(pathname)}/add-member`}
                 >
-                  Tambah Invoice
+                  Tambah Orang
                 </ButtonNavigate>
               )}
               <form onSubmit={handleSearchSubmit} className="lg:w-fit w-full">
                 <Group className="w-full " position="right">
                   <TextInput
-                    placeholder="Cari Client"
+                    placeholder="Cari Member"
                     radius={'md'}
                     className="w-full lg:w-[320px]"
                     {...searchForm.getInputProps('searchValue')}
@@ -223,42 +228,26 @@ const InvoicePage = () => {
             </Group>
 
             <Space h={50} />
-
             <Table
               tableHead={tableHead}
-              tableRow={invoices?.data?.map((invoice: any, index: number) => {
+              tableRow={members?.data?.map((member: any, index: number) => {
                 return (
-                  <tr key={invoice.id}>
-                    <td className="text-center text-xs">{`${index + 1}`}</td>
-                    <td className="  text-center  text-xs">{`${invoice.invoicesTitle} `}</td>
-                    <td className="  text-center text-xs">{`${invoice.orderId} `}</td>
-                    <td className="   text-center  text-xs">{`${invoice.otherInfo} `}</td>
-                    <td className=" text-center  text-xs">{`${invoice.client.name} `}</td>
-                    <td className=" text-center text-xs ">
-                      <div className="flex items-center w-full">
-                        <Image
-                          width={20}
-                          height={20}
-                          alt={`${invoice.client.project.projectName}`}
-                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${invoice.client.project.projectIcon}`}
-                        />
-
-                        <Text>{invoice.client.project.projectName}</Text>
-                      </div>
-                    </td>
+                  <tr key={member.id} className="text-center">
+                    <td className="">{`${index + 1}`}</td>
+                    <td className="">{`${member.user?.firstname} ${member.user?.lastname} `}</td>
+                    <td className="">{`${member.position} `}</td>
+                    <td className="">{`${member.phoneNumber} `}</td>
 
                     <td className=" ">
-                      <Group position="center" className="w-[70px]" spacing={5}>
+                      <Group position="center" className="w-full " spacing={10}>
                         <ActionIcon
                           variant="outline"
                           radius={'xl'}
                           color={'red'}
                           c={COLORS.DANGER}
                           opacity={'0.7'}
-                          size={'md'}
-                          onClick={() =>
-                            openModalConfirmationDelete(invoice.id)
-                          }
+                          size={'lg'}
+                          onClick={() => openModalConfirmationDelete(member.id)}
                         >
                           <IconTrash size={'1rem'} />
                         </ActionIcon>
@@ -269,9 +258,9 @@ const InvoicePage = () => {
                           color={'gray'}
                           c={COLORS.SECONDARY}
                           opacity={'0.7'}
-                          size={'md'}
+                          size={'lg'}
                           onClick={() => {
-                            push(`/invoices/edit-invoice/${invoice.id}`);
+                            push(`/member/edit-member/${member.id}`);
                           }}
                         >
                           <IconPencilCode size={'1rem'} />
@@ -283,25 +272,10 @@ const InvoicePage = () => {
               })}
             />
           </>
-        ) : (
-          <div className="flex  w-full justify-center mt-[70px]">
-            <NoDataCard
-              icon={<ICInvoices width={50} height={50} />}
-              description="Agar Tagihan pada Client dapat terpantau, sebaiknya tambahkan invoice client"
-              title="Invoice"
-            >
-              <ButtonNavigate
-                icon={<IconPlus />}
-                url={`/${getCurrentPage(pathname)}/add-invoice`}
-              >
-                Tambah Invoice
-              </ButtonNavigate>
-            </NoDataCard>
-          </div>
         )}
       </Container>
     </MainLayout>
   );
 };
 
-export default InvoicePage;
+export default MemberPage;

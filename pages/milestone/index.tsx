@@ -44,7 +44,7 @@ import ModalAction from '@/src/components/modal/modal-action.component';
 const MilestonePages = () => {
   const { pathname, replace } = useRouter();
 
-  const { data: milestones } = useGetAllMilestone();
+  const { data: milestones, isLoading } = useGetAllMilestone();
   const { mutate: deleteMilestone } = useDeleteMilestone();
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -139,6 +139,10 @@ const MilestonePages = () => {
       </tr>
     );
   });
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
 
   return (
     <MainLayout>
