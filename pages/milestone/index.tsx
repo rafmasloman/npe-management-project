@@ -64,7 +64,10 @@ const MilestonePages = () => {
 
   const rows = milestones?.data?.map((milestone: any, index: number) => {
     return (
-      <tr key={index} className="border-solid border-[1px] border-gray-300">
+      <tr
+        key={index}
+        className="border-solid border-[1px] border-gray-300 "
+      >
         <td>{index}</td>
         <td>{milestone.milestoneName}</td>
         <td>

@@ -8,4 +8,5 @@ export const API_ROUTES = {
   TASK: 'task',
   CLIENT: 'client',
   INVOICE: 'invoice',
+  PAYROLL: 'payroll',
 };

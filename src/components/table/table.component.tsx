@@ -14,15 +14,12 @@ const Table = ({ tableHead, tableRow }: ITableProps) => {
         return (
           <th
             key={index}
-            className={` ${index === 0 ? 'rounded-tl-lg' : ''} ${
-              index === tableHead.length - 1 ? 'rounded-tr-lg' : ''
-            }`}
+            // className={` ${index === 0 ? 'rounded-tl-lg' : ''} ${
+            //   index === tableHead.length - 1 ? 'rounded-tr-lg' : ''
+            // }`}
             // colSpan={th.title === 'Project' ? 1 : 0}
           >
-            <Text
-              className="text-slate-700 font-medium text-sm text-center "
-              fw={600}
-            >
+            <Text className="text-slate-700 font-medium text-sm " fw={600}>
               {th.title}
             </Text>
           </th>
@@ -37,12 +34,11 @@ const Table = ({ tableHead, tableRow }: ITableProps) => {
 
   return (
     <TableMantine
-      align="right"
-      className="table-auto border-collapse  w-full py-2 rounded-t-lg"
+      className="border-collapse h-full w-full py-2 rounded-t-lg "
       verticalSpacing={'lg'}
       horizontalSpacing={'md'}
     >
-      <thead className="bg-blue-200 ">{ths}</thead>
+      <thead className=" ">{ths}</thead>
       <tbody className="bg-white">{tableRow}</tbody>
     </TableMantine>
   );
