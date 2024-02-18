@@ -29,6 +29,8 @@ class UserMutationApi {
 
       return data;
     } catch (error) {
+      console.log('error');
+
       throw error;
     }
   }
@@ -52,6 +54,8 @@ class UserMutationApi {
 
       return data;
     } catch (error) {
+      console.log(error);
+
       throw error;
     }
   }

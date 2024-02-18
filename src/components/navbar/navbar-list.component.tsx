@@ -31,15 +31,14 @@ interface INavList {
 const navbarAdmin = () => {
   return navbarAdminLink.map(({ id, label, icon: Icon, href }: INavList) => {
     return (
-      <>
+      <div key={id}>
         <NavItem
           label={label}
-          key={id}
           href={href}
           icon={<Icon width={25} height={25} />}
         />
         <Space h={20} />
-      </>
+      </div>
     );
   });
 };
@@ -47,15 +46,14 @@ const navbarAdmin = () => {
 const navbarStaff = () => {
   return navbarStaffLink.map(({ id, label, icon: Icon, href }: INavList) => {
     return (
-      <>
+      <div key={id}>
         <NavItem
           label={label}
-          key={id}
           href={href}
           icon={<Icon width={25} height={25} />}
         />
         <Space h={20} />
-      </>
+      </div>
     );
   });
 };
@@ -89,10 +87,10 @@ const NavList = () => {
           label: { fontSize: rem(16) },
         }}
       >
-        {projectsMember?.data?.project?.map((project: any) => {
+        {projectsMember?.data?.project?.map((project: any, index: number) => {
           return (
             <Link
-              key={project.id}
+              key={index}
               href={`/project/${project.id}/detail`}
               style={{ textDecoration: 'none' }}
             >

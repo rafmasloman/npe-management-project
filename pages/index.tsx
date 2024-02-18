@@ -36,6 +36,21 @@ import { ICTeamColaboration } from '@/src/assets/icons/team_collaboration.icon';
 import ContactUsSection from '@/src/shared/section/components/contactus-section.component';
 import FooterSection from '@/src/shared/section/components/footer-section.component';
 import test from '../src/assets/images/contactus_bg.png';
+import { io } from 'socket.io-client';
+import { useEffect } from 'react';
+
+import cookie from 'cookie';
+import { GetServerSidePropsContext } from 'next';
+import { __setSSRAuthCookie } from '@/src/utils/cookie.util';
+import { initializingSocket } from '@/src/utils/socket.util';
+
+// export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+//   const { req } = ctx;
+
+//   const cookieToken = cookie.parse(req.headers.cookie!) as any;
+
+//   return { props: { cookieToken } };
+// }
 
 export default function Home() {
   return (

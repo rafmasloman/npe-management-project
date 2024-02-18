@@ -19,8 +19,14 @@ import { useMutation } from '@tanstack/react-query';
 import { usePostLogin } from '@/src/hooks/auth/usePostLogin';
 import { IApiBaseResponse } from '@/src/interfaces/base-response.interface';
 import { notifications } from '@mantine/notifications';
-import { IconAlertCircle, IconX } from '@tabler/icons-react';
+import {
+  IconAlertCircle,
+  IconLock,
+  IconMail,
+  IconX,
+} from '@tabler/icons-react';
 import { useAuth } from '@/src/hooks/useAuth';
+import { IconPasswordFingerprint } from '@tabler/icons-react';
 
 const schema = Yup.object().shape({
   email: Yup.string().required('email harus dimasukkan'),
@@ -65,10 +71,12 @@ const LoginForm = () => {
               label="Email"
               placeholder="Masukkan Email"
               {...form.getInputProps('email')}
+              icon={<IconMail size={20} />}
             />
             <PasswordInput
               label="Password"
               placeholder="Masukkan Password"
+              icon={<IconLock size={20} />}
               {...form.getInputProps('password')}
             />
           </Stack>
@@ -80,6 +88,7 @@ const LoginForm = () => {
               type="submit"
               bg={COLORS.PRIMARY}
               loading={isPending}
+              className="text-base h-[45px]"
             >
               Login
             </Button>

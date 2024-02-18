@@ -48,6 +48,16 @@ import { GetServerSidePropsContext } from 'next';
 import cookie from 'cookie';
 import UserQueryApi from '../api/user/user-query';
 import { IAuthUserCredentialQuery } from '../api/auth/auth-query';
+import { COLORS } from '@/src/constant/colors.constant';
+import { ICSalary } from '@/src/assets/icons/salary.icon';
+import { ICProject } from '@/src/assets/icons/nav-icon/project.icon';
+import { ICProjects } from '@/src/assets/icons/projects.icon';
+import { ICInvoices } from '@/src/assets/icons/nav-icon/invoices.icon';
+import { ICUser } from '@/src/assets/icons/nav-icon/user.icon';
+import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
+import { ICClient } from '@/src/assets/icons/nav-icon/client.icon';
+import DataCard from '@/src/components/card/data-card.component';
+import { DASHBOARD_DATA_FEATURE } from '@/src/utils/dashboard.util';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req } = ctx;
@@ -61,10 +71,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   return { props: { userCredential } };
 }
 
-const DashboardAdmin = ({ userCredential }: any) => {
+const Dashboard = ({ userCredential }: any) => {
   const { pathname } = useRouter();
   const user = useContext(UserContext);
-
 
   const [userProject, setUserProject] = useState<any>([]);
 
@@ -73,6 +82,7 @@ const DashboardAdmin = ({ userCredential }: any) => {
     user.user?.id!,
   );
 
+  const { data: allProjects } = useGetProjectQuery();
   useEffect(() => {
     if (userProjects?.data) {
       setUserProject(userProjects?.data?.member);
@@ -90,6 +100,33 @@ const DashboardAdmin = ({ userCredential }: any) => {
           role={getCurrentRole(pathname)}
         />
 
+        <Space h={40} />
+
+        <SimpleGrid
+          breakpoints={[
+            { minWidth: 'sm', cols: 1 },
+            {
+              minWidth: 'md',
+              cols: 2,
+            },
+            {
+              minWidth: 'lg',
+              cols: 4,
+            },
+          ]}
+        >
+          {DASHBOARD_DATA_FEATURE.map((data) => {
+            return (
+              <DataCard
+                title={data.title}
+                key={data.id}
+                icon={<data.icon width={25} height={25} />}
+                totalData={data.totalData}
+                color={data.color}
+              />
+            );
+          })}
+        </SimpleGrid>
         <Space h={40} />
 
         <Grid grow gutter={50}>
@@ -215,4 +252,4 @@ const DashboardAdmin = ({ userCredential }: any) => {
   );
 };
 
-export default DashboardAdmin;
+export default Dashboard;

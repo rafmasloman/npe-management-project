@@ -2,6 +2,7 @@ import { ICClient } from '../assets/icons/nav-icon/client.icon';
 import ICDashboard from '../assets/icons/nav-icon/dashboard.icon';
 import { ICInvoices } from '../assets/icons/nav-icon/invoices.icon';
 import { ICMilestone } from '../assets/icons/nav-icon/milestone.icon';
+import { ICPayroll } from '../assets/icons/nav-icon/payroll.icon';
 import { ICProject } from '../assets/icons/nav-icon/project.icon';
 import { ICTask } from '../assets/icons/nav-icon/task.icon';
 import { ICTeams } from '../assets/icons/nav-icon/teams.icon';
@@ -27,38 +28,45 @@ export const navbarAdminLink = [
     label: 'My People',
     href: ROUTES.MEMBER,
   },
-  // {
-  //   id: 3,
-  //   icon: ICalender,
-  //   label: 'Member',
-  //   href: ROUTES.MEMBER,
-  // },
   {
     id: 4,
     icon: ICInvoices,
     label: 'Invoices',
     href: ROUTES.INVOICES,
   },
+
   // {
-  //   id: 5,
-  //   icon: ICTask,
-  //   label: 'Task',
-  //   href: ROUTES.TASK,
+  //   id: 4,
+  //   icon: ICInvoices,
+  //   label: 'Transaction',
+  //   href: '',
   // },
   {
+    id: 5,
+    icon: ICTask,
+    label: 'Task',
+    href: ROUTES.TASK,
+  },
+  {
     id: 6,
+    icon: ICPayroll,
+    label: 'Payroll',
+    href: ROUTES.PAYROLL,
+  },
+  {
+    id: 7,
     icon: ICMilestone,
     label: 'Milestone',
     href: ROUTES.MILESTONE,
   },
   {
-    id: 7,
+    id: 8,
     icon: ICClient,
     label: 'Client',
     href: ROUTES.CLIENT,
   },
   {
-    id: 8,
+    id: 9,
     icon: ICProject,
     label: 'Project',
     href: ROUTES.PROJECTS,

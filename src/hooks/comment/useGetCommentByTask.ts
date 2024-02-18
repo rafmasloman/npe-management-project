@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useGetCommentByTask = (taskId: number) => {
   return useQuery({
-    queryKey: [`get-comments-by-task-id-key-${taskId}`],
+    queryKey: [`get-comments-by-task-id-key-${taskId}`, taskId],
     queryFn: () => CommentQueryAPI.getCommentByTask(taskId),
   });
 };

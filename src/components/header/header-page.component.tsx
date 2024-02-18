@@ -39,7 +39,6 @@ const HeaderPage = ({ userId, pageTitle, role, onClick }: IHeaderPageProps) => {
   const [opened, { close, open }] = useDisclosure(false);
 
   const largeScreen = useMediaQuery('(min-width: 60em)');
-  console.log('userId : ', userId);
 
   // const [opened, { open, close }] = useDisclosure(false);
   // const theme = useMantineTheme();

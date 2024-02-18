@@ -3,7 +3,10 @@ import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { IApiBaseResponse } from '@/src/interfaces/base-response.interface';
 import { IApiGetAllRoleQueryResponse } from '@/src/interfaces/api/role/role-api.interface';
 import { IApiGetUserQueryResponse } from '@/src/interfaces/api/user/user-api.interface';
-import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
+import {
+  __getBrowserAuthCookie,
+  __getSSRAuthCookie,
+} from '@/src/utils/cookie.util';
 
 class UserQueryApi {
   private static routesName = `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/${API_ROUTES.USER}`;
@@ -38,7 +41,9 @@ class UserQueryApi {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
         },
       });
 

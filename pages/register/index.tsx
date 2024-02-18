@@ -25,7 +25,7 @@ const Register = () => {
       <Group className="  absolute left-10 top-10">
         <Image src={NPELogo.src} width={50} height={50} alt="Logo" />
         <Text fw={600} fz={'1.25rem'} color={COLORS.SECONDARY}>
-          NPE Simplify
+          NPE Ngatur
         </Text>
       </Group>
 
@@ -53,7 +53,7 @@ const Register = () => {
           <Stack align="center" spacing={30}>
             <Image src={NPELogoWhite.src} width={120} height={130} alt="Logo" />
             <Text className="text-5xl text-white font-semibold" color={'white'}>
-              NPE Simplify
+              NPE Ngatur
             </Text>
           </Stack>
         </div>

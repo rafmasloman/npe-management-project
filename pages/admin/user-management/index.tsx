@@ -165,9 +165,7 @@ const UserAdmin = () => {
 
         <ButtonNavigate
           icon={<IconPlus />}
-          url={`/${getCurrentRole(pathname)}/${getCurrentPage(
-            pathname,
-          )}/add-user`}
+          url={`/${getCurrentRole(pathname)}/user-management/add-user`}
         >
           Tambah User
         </ButtonNavigate>

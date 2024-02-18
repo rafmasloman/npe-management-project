@@ -75,7 +75,7 @@ const MainLayout = ({ children }: IMainLayout) => {
 
               <Stack spacing={0}>
                 <Text className="font-bold text-primary text-xl">NPE</Text>
-                <Text className="font-bold text-primary text-xl">Simplify</Text>
+                <Text className="font-bold text-primary text-xl">Ngatur</Text>
               </Stack>
             </Group>
           </MediaQuery>

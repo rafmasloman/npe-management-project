@@ -11,6 +11,7 @@ import {
   Menu,
   Modal,
   ScrollArea,
+  Select,
   Space,
   Stack,
   Text,
@@ -19,6 +20,9 @@ import {
   rem,
 } from '@mantine/core';
 import {
+  IconArrowDown,
+  IconCircle,
+  IconCircleFilled,
   IconClockCheck,
   IconDots,
   IconMessage,
@@ -42,6 +46,9 @@ import { useDeleteTask } from '@/src/hooks/task/useDeleteTaskMutation';
 import ModalAction from '../modal/modal-action.component';
 import TaskForm from '../form/task.form.component';
 import { useDragItem } from '@/src/hooks/common/drag/useDragTask';
+import CommentLayout from '@/src/layouts/comment.layout';
+import { TODO_UTILS } from '@/src/utils/todo.util';
+import TaskStatusMenu from '../menu/task-status-menu.component';
 
 interface ITaskCardProps {
   id?: string;
@@ -102,6 +109,7 @@ const TaskCard = ({
 
   const [taskId, setTaskId] = useState<number | null>(null);
   const [isProjectMenuOpen, setProjectMenuOpen] = useState(false);
+  const [statusColor, setStatusColor] = useState('');
 
   const [opened, { open, close }] = useDisclosure(false);
   const [openedConfirmation, { open: openModal, close: closeModal }] =
@@ -152,7 +160,9 @@ const TaskCard = ({
     mutate(payload);
   });
 
-  console.log('priority : ', priority);
+  useEffect(() => {
+    setStatusColor(TODO_UTILS.STATUS_COLOR(status)!);
+  }, [status]);
 
   return (
     <Card
@@ -246,73 +256,10 @@ const TaskCard = ({
             borderColor: COLORS.GRAY,
             marginBottom: 20,
           },
-          root: {
-            backgroundColor: 'red',
-          },
         }}
       >
-        <div className="flex flex-col relative  h-[600px] justify-between">
-          <ScrollArea h={'90%'}>
-            <Stack>
-              {commentData?.data?.map((comment: any) => {
-                return (
-                  <Group
-                    key={comment.id}
-                    position={
-                      userAccount.user?.id! === comment.userId
-                        ? 'right'
-                        : 'left'
-                    }
-                  >
-                    <CommentChat
-                      userId={comment.userId}
-                      message={comment.message}
-                      createdAt={comment.createdAt}
-                      user={comment.user}
-                    />
-                  </Group>
-                );
-              })}
-            </Stack>
-          </ScrollArea>
-
-          <form
-            className="w-full  absolute bottom-0"
-            onSubmit={handleSubmitCommentMessage}
-          >
-            <Grid className="w-full" align="center">
-              <Grid.Col span={11}>
-                <TextInput
-                  placeholder="Tulis Pesan..."
-                  {...commentForm.getInputProps('message')}
-                  styles={{
-                    input: {
-                      height: '100%',
-                    },
-                  }}
-                />
-              </Grid.Col>
-              <Grid.Col span={1}>
-                <ActionIcon
-                  type="submit"
-                  variant="filled"
-                  size={32}
-                  radius={'sm'}
-                  className="bg-primary"
-                >
-                  <IconSend size={20} className=" h-full " color="white" />
-                </ActionIcon>
-              </Grid.Col>
-            </Grid>
-          </form>
-        </div>
+        <CommentLayout taskId={taskId!} />
       </Drawer>
-
-      {/* <Group position={'apart'}>
-        <ActionIcon color={COLORS.GRAY}>
-          <IconDots color={COLORS.GRAY} />
-        </ActionIcon>
-      </Group> */}
 
       <Group position="apart" className="w-full">
         <Group>
@@ -394,7 +341,7 @@ const TaskCard = ({
 
       <Divider className="my-3.5" />
 
-      <Group position="apart" className="w-fit">
+      <Group position="apart" className="w-full">
         <Group spacing="xs">
           <Group spacing={5}>
             <IconClockCheck size={rem(14)} color={COLORS.DANGER} />
@@ -411,6 +358,18 @@ const TaskCard = ({
             </Text>
           </Group>
         </Group>
+
+        {/* <Group spacing={5} align="center">
+          <IconCircleFilled
+            className={`w-2.5 h-2.5 text-[${TODO_UTILS.STATUS_COLOR(
+              status,
+            )!}] `}
+          />
+
+          <p className="text-sm">Status</p>
+        </Group> */}
+
+        <TaskStatusMenu id={Number(id)!} />
       </Group>
     </Card>
   );

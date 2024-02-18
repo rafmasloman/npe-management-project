@@ -10,7 +10,7 @@ export const useDeleteUser = () => {
     mutationKey: ['delete-user-id-key'],
     mutationFn: (userId: string) => UserMutationApi.deleteUserMutation(userId),
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['user-get-all-query'] });
 
       Notifications({
         title: 'Data berhasil dihapus',

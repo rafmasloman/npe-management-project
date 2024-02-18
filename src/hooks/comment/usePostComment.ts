@@ -4,7 +4,7 @@ import MemberQueryAPI from '@/pages/api/member/member-query';
 import { IPostCommentMutationParams } from '@/src/interfaces/comment.interfaces';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const usePostComment = (taskId?: number) => {
+export const usePostComment = (taskId: number) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`post-comment-id-key`],

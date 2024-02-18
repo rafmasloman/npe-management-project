@@ -10,9 +10,18 @@ interface INavItem {
   href: string;
   icon?: ReactNode;
   isActive?: boolean;
+  isNestedNav?: boolean;
+  children?: ReactNode;
 }
 
-const NavItem = ({ label, href, icon, isActive }: INavItem) => {
+const NavItem = ({
+  label,
+  href,
+  icon,
+  isActive,
+  isNestedNav,
+  children,
+}: INavItem) => {
   const { pathname } = useRouter();
 
   const isActiveNav = pathname.includes(label.toLowerCase()) ? true : false;
@@ -21,7 +30,6 @@ const NavItem = ({ label, href, icon, isActive }: INavItem) => {
     <Link href={href} style={{ textDecoration: 'none' }}>
       <Flex align={'center'}>
         <NavLink
-          // mb={30}
           label={label}
           icon={icon}
           variant="filled"
@@ -33,13 +41,6 @@ const NavItem = ({ label, href, icon, isActive }: INavItem) => {
           <div className="bg-yellow h-10 w-1.5 rounded-tl-md rounded-bl-md"></div>
         ) : null}
       </Flex>
-      {/* <Group spacing={'xl'}>
-          {icon}
-          <Text color="black" fw={400}>
-            {label}
-          </Text>
-        </Group> */}
-      {/* </NavLink> */}
     </Link>
   );
 };

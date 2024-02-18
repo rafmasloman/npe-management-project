@@ -16,7 +16,7 @@ export const ICTasks = () => {
         height="33"
         rx="5"
         stroke="#33B5A6"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="5.59961"

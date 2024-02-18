@@ -16,12 +16,9 @@ export async function IAuthUserCredentialQuery() {
           Authorization: `Bearer ${
             __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
           }`,
-          
         },
       },
     );
-
-    console.log('response : ', response);
 
     const data = await response.json();
 

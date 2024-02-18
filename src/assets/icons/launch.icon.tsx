@@ -9,7 +9,7 @@ export const ICLaunch = ({ width, height }: IconInterfaceProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_911_6104)">
+      <g clipPath="url(#clip0_911_6104)">
         <path
           opacity="0.62"
           d="M15.2773 19.1562C17.7957 16.6398 17.5703 12.3406 14.7789 9.54724C11.9859 6.75466 7.68906 6.53005 5.16992 9.04763C2.65312 11.5621 -1.28672 20.0281 1.50585 22.8211C4.29999 25.6144 12.7633 21.6726 15.2793 19.1578"

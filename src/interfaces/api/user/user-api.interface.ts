@@ -16,7 +16,7 @@ export interface IApiCreatePostUserMutationResponse {
   password: string;
   firstname: string;
   lastname: string;
-  roleId: number;
+  role: string;
   memberId: string;
   clientId: string;
 }

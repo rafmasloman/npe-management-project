@@ -16,7 +16,7 @@ export const ICProjectManagement = () => {
         height="23"
         rx="3"
         stroke="#00AFE6"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect
         x="7"

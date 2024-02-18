@@ -14,7 +14,7 @@ import { SelectItemsStylesNames } from '@mantine/core/lib/Select/SelectItems/Sel
 import { DateInputProps } from '@mantine/dates';
 
 export const ButtonStyles: Partial<ButtonProps> = {
-  h: '40px',
+  h: '45px',
   px: '1rem',
   py: '5px',
   radius: '7px',
@@ -26,6 +26,10 @@ export const TextInputStyles: Partial<TextInputProps> = {
     label: {
       marginBottom: '10px',
     },
+    input: {
+      height: '45px',
+      borderRadius: 10,
+    },
   },
 };
 
@@ -34,6 +38,13 @@ export const PasswordInputStyles: Partial<PasswordInputProps> = {
   styles: {
     label: {
       marginBottom: '10px',
+    },
+    input: {
+      height: '45px',
+      borderRadius: 10,
+    },
+    innerInput: {
+      height: '100%',
     },
   },
 };

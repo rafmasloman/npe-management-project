@@ -42,7 +42,7 @@ const CommentChat = ({
   return (
     <Group bg={'white'} p={10} className="rounded-lg w-3/4">
       <Avatar
-        src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${user.member?.profilePicture}`}
+        src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${user?.member?.profilePicture}`}
         size={30}
         radius={'xl'}
       />
@@ -50,9 +50,9 @@ const CommentChat = ({
       <div className="flex justify-between items-end flex-1">
         <div>
           <Text className="text-sm text-gray-500">
-            {userAccount.user?.id! === userId
+            {userAccount?.user?.id! === userId
               ? 'You'
-              : `${user.firstname} ${user.lastname}`}
+              : `${user?.firstname} ${user?.lastname}`}
           </Text>
           <Text className="text-[0.875rem]">{message}</Text>
         </div>

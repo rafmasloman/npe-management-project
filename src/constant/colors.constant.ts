@@ -10,4 +10,7 @@ export const COLORS = {
   DEEPGRAY: '#E7E7E7',
   LIGHTBLUE: '#CEECFD',
   DEEPBLUE: '#2E87BA',
+  ON_PROGRESS: '#0891B2',
+  TODO: '#F79F1A',
+  COMPLETED: '#16a34a',
 };

@@ -57,8 +57,13 @@ const TaskWorkSpace = ({ todos }: any) => {
 
       <Space h={50} />
 
-      <SimpleGrid cols={3} spacing={rem(50)}>
-        <Stack ref={dropTodo} className={`relative w-full`} spacing={20}>
+      <SimpleGrid
+        breakpoints={[
+          { minWidth: 'sm', cols: 1, spacing: rem(10) },
+          { minWidth: 'md', cols: 3, spacing: rem(50) },
+        ]}
+      >
+        <Stack ref={dropTodo} className={` w-full`} spacing={20}>
           <div className="">
             <HeaderStatus
               headerColor={COLORS.THIRD}
@@ -68,7 +73,7 @@ const TaskWorkSpace = ({ todos }: any) => {
           </div>
 
           <div
-            className={`w-full p-1.5 h-screen space-y-[30px]  ${
+            className={`w-full p-1.5 h-fit lg:h-screen space-y-[30px]  ${
               isOver
                 ? 'border-2 border-dashed border-opacity-75  border-amber-500 rounded-lg transition duration-700'
                 : 'border-2 border-solid border-transparent'
@@ -99,7 +104,7 @@ const TaskWorkSpace = ({ todos }: any) => {
           />
 
           <div
-            className={`w-full p-1.5 h-screen space-y-[30px] ${
+            className={`w-full p-1.5 h-fit lg:h-screen space-y-[30px] ${
               isOverProgress
                 ? 'border-2 border-dashed border-opacity-75  border-cyan-600 rounded-lg transition duration-700'
                 : 'border-2 border-solid border-transparent'
@@ -130,7 +135,7 @@ const TaskWorkSpace = ({ todos }: any) => {
           />
 
           <div
-            className={`w-full p-1.5 h-screen space-y-[30px] ${
+            className={`w-full p-1.5 h-fit lg:h-screen space-y-[30px] ${
               isOverCompleted
                 ? 'border-2 border-dashed border-opacity-75  border-green-600  rounded-lg transition duration-700'
                 : 'border-2 border-solid border-transparent'

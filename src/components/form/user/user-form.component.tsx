@@ -21,74 +21,58 @@ import { IApiCreatePostUserMutationParams } from '@/src/interfaces/api/user/user
 import { usePostUser } from '@/src/hooks/user/usePostUser';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/src/constant/routes.constant';
-import { clientSchema } from './client.schema';
 import { usePostClientMutation } from '@/src/hooks/client/usePostClient';
 import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
 import { IClientInitialValuesParams } from '@/src/interfaces/client.interface';
 import { usePutClientMutation } from '@/src/hooks/client/usePutClient';
+import { userSchema } from './user.schema';
+import { useUpdateUserMutation } from '@/src/hooks/user/useUpdateUserMutation';
 
-interface IClientInitialValueParams {
-  initialValues?: IClientInitialValuesParams;
+interface IUserInitialValueParams {
+  initialValues?: IApiCreatePostUserMutationParams;
 }
 
-interface IClientOptionValueTypes {
+interface IUserOptionValueTypes {
   value: string;
   label: string;
 }
 
-const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
-  const { mutate: createClient, isPending } = usePostClientMutation();
+const UserForm = ({ initialValues }: IUserInitialValueParams) => {
+  const { mutate: createUser, isPending } = usePostUser();
   const {
-    mutate: updateClient,
+    mutate: updateUser,
     isSuccess: isSuccessUpdate,
     isPending: isPendingUpdate,
-  } = usePutClientMutation();
-  const { data: projects, isSuccess } = useGetProjectQuery(undefined, '');
-
-  const [projectsOption, setProjectsOption] = useState<
-    IClientOptionValueTypes[]
-  >([]);
+  } = useUpdateUserMutation();
 
   const { query } = useRouter();
 
   const form = useForm({
-    validate: yupResolver(clientSchema),
+    validate: yupResolver(userSchema),
     initialValues: {
-      name: initialValues?.name || '',
-      phoneNumber: initialValues?.phoneNumber || '',
-      address: initialValues?.address || '',
+      username: initialValues?.username || '',
       email: initialValues?.email || '',
-      project: initialValues?.project.id || '',
+      password: initialValues?.password || '',
+      firstname: initialValues?.firstname || '',
+      lastname: initialValues?.lastname || '',
+      role: initialValues?.role || '',
     },
   });
 
-  useEffect(() => {
-    if (!isSuccess) {
-      setProjectsOption([]);
-    } else {
-      const project = projects?.data?.map((project: any) => {
-        return {
-          value: project.id,
-          label: project.projectName,
-        };
-      });
-      setProjectsOption(project);
-    }
-  }, [projects, isSuccess]);
-
   const handleSubmit = form.onSubmit((values) => {
     const params = {
-      name: values.name,
+      username: values.username,
       email: values.email,
-      phoneNumber: values.phoneNumber,
-      address: values.address,
-      project: values.project,
+      password: values.password,
+      firstname: values.firstname,
+      lastname: values.lastname,
+      role: values.role,
     };
 
     if (!initialValues) {
-      createClient(params);
+      createUser(params);
     } else if (!!initialValues) {
-      updateClient({ clientId: query.id as string, payload: params });
+      updateUser({ userId: query.userId as string, params });
     }
   });
 
@@ -98,10 +82,10 @@ const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
         <Grid.Col span={6}>
           <TextInput
             withAsterisk
-            placeholder="Masukkan Nama Client"
-            label="Nama Client"
+            placeholder="Masukkan Username"
+            label="Username"
             radius={'md'}
-            {...form.getInputProps('name')}
+            {...form.getInputProps('username')}
             styles={{
               input: {
                 padding: 24,
@@ -111,23 +95,9 @@ const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
           />
         </Grid.Col>
         <Grid.Col span={6}>
-          {/* <NumberInput
-            withAsterisk
-            hideControls
-            placeholder="62"
-            label="No. Telp"
-            radius={'md'}
-            styles={{
-              input: {
-                padding: 24,
-                marginTop: 10,
-              },
-            }}
-          /> */}
-
           <TextInput
             withAsterisk
-            placeholder="Masukkan Email Client"
+            placeholder="Masukkan Email User"
             label="Email"
             radius={'md'}
             {...form.getInputProps('email')}
@@ -139,14 +109,14 @@ const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
             }}
           />
         </Grid.Col>
+
         <Grid.Col span={6}>
           <TextInput
             withAsterisk
-            placeholder="Masukkan No. Telp Client"
-            label="Nomor Telepon"
+            placeholder="Masukkan Nama Depan"
+            label="Nama Depan"
             radius={'md'}
-            type="number"
-            {...form.getInputProps('phoneNumber')}
+            {...form.getInputProps('firstname')}
             styles={{
               input: {
                 padding: 24,
@@ -158,24 +128,47 @@ const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
         <Grid.Col span={6}>
           <TextInput
             withAsterisk
-            placeholder="Masukkan Alamat Tempat tinggal"
-            label="Alamat"
+            placeholder="Masukkan Nama Belakang"
+            label="Nama Belakang"
             radius={'md'}
-            {...form.getInputProps('address')}
+            {...form.getInputProps('lastname')}
             styles={{
               input: {
                 padding: 24,
                 marginTop: 10,
+              },
+            }}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <PasswordInput
+            withAsterisk
+            placeholder="Masukkan Password"
+            label="Password"
+            radius={'md'}
+            {...form.getInputProps('password')}
+            styles={{
+              input: {
+                padding: 24,
+                marginTop: 10,
+              },
+              innerInput: {
+                height: '100%',
+                padding: 24,
               },
             }}
           />
         </Grid.Col>
         <Grid.Col span={6}>
           <Select
-            label="Projects"
-            placeholder="Pilih Project"
-            data={projectsOption}
-            {...form.getInputProps('project')}
+            label="Roles"
+            placeholder="Pilih Role"
+            data={[
+              { label: 'Admin', value: 'ADMIN' },
+              { label: 'Staff', value: 'STAFF' },
+              { label: 'Project Manager', value: 'PROJECT_MANAGER' },
+            ]}
+            {...form.getInputProps('role')}
           />
         </Grid.Col>
 
@@ -196,4 +189,4 @@ const ClientForm = ({ initialValues }: IClientInitialValueParams) => {
   );
 };
 
-export default ClientForm;
+export default UserForm;

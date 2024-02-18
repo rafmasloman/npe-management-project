@@ -253,11 +253,11 @@ const Client = () => {
                         <Image
                           width={20}
                           height={20}
-                          alt={`${client.project.projectName}`}
-                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${client.project.projectIcon}`}
+                          alt={`${client.project?.projectName}`}
+                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${client.project?.projectIcon}`}
                         />
 
-                        <Text>{client.project.projectName}</Text>
+                        <Text>{client.project?.projectName}</Text>
                       </div>
                     </td>
                     <td className="   ">

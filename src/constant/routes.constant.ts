@@ -15,6 +15,7 @@ export const ROUTES = {
   MILESTONE: '/milestone',
   TEAMS: '/teams',
   PROJECTS: '/project',
+  PAYROLL: '/payroll',
 
   // MEMBER ROUTES
 };
