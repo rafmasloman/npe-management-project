@@ -42,21 +42,16 @@ import { useDisclosure } from '@mantine/hooks';
 import { useDeleteUser } from '@/src/hooks/user/useDeleteUserMutation';
 import { UserContext } from '@/src/context/user-credential.context';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
+import { useModal } from '@/src/hooks/useModal';
 
 const UserAdmin = () => {
   const { pathname, replace } = useRouter();
 
-  const [userDeleteId, setUserDeleteId] = useState('');
+  const { opened, close, itemId, handleConfirm } = useModal();
 
   const isLoading = useRouteLoader();
 
-  const theme = useMantineTheme();
-
   const { logout } = useAuth();
-
-  const queryClient = useQueryClient();
-
-  const [opened, { close, open }] = useDisclosure(false);
 
   const tableHead = [
     { title: 'Name' },
@@ -72,13 +67,8 @@ const UserAdmin = () => {
 
   const userData = readAllUsers?.data;
 
-  const handleConfirm = (userId: string) => {
-    setUserDeleteId(userId);
-    open();
-  };
-
   const handleDelete = () => {
-    deleteUser(userDeleteId);
+    deleteUser(itemId);
     close();
   };
 
@@ -177,7 +167,7 @@ const UserAdmin = () => {
           tableRow={userData?.map((user: any) => {
             return (
               <tr key={user.id} className="">
-                <td className="px-6 py-4 text-center">{`${user.firstname} ${user.lastname}`}</td>
+                <td className="px-6 py-4 text-center ">{`${user.firstname} ${user.lastname}`}</td>
                 <td className="px-6 py-4 text-center">{user.email}</td>
                 <td className="px-6 py-4 text-center">{user.role}</td>
                 <td className="px-6 py-4">

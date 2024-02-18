@@ -59,6 +59,8 @@ const UserForm = ({ initialValues }: IUserInitialValueParams) => {
     },
   });
 
+  console.log('pass : ', form.values);
+
   const handleSubmit = form.onSubmit((values) => {
     const params = {
       username: values.username,
@@ -140,6 +142,20 @@ const UserForm = ({ initialValues }: IUserInitialValueParams) => {
             }}
           />
         </Grid.Col>
+
+        <Grid.Col span={6}>
+          <Select
+            label="Roles"
+            placeholder="Pilih Role"
+            data={[
+              { label: 'Admin', value: 'ADMIN' },
+              { label: 'Staff', value: 'STAFF' },
+              { label: 'Project Manager', value: 'PROJECT_MANAGER' },
+            ]}
+            {...form.getInputProps('role')}
+          />
+        </Grid.Col>
+
         <Grid.Col span={6}>
           <PasswordInput
             withAsterisk
@@ -157,18 +173,6 @@ const UserForm = ({ initialValues }: IUserInitialValueParams) => {
                 padding: 24,
               },
             }}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <Select
-            label="Roles"
-            placeholder="Pilih Role"
-            data={[
-              { label: 'Admin', value: 'ADMIN' },
-              { label: 'Staff', value: 'STAFF' },
-              { label: 'Project Manager', value: 'PROJECT_MANAGER' },
-            ]}
-            {...form.getInputProps('role')}
           />
         </Grid.Col>
 
