@@ -194,7 +194,7 @@ const AdminPayroll = () => {
 
             <ButtonNavigate
               icon={<IconPlus />}
-              url={`/${getCurrentRole(pathname)}/user-management/add-user`}
+              url={`/${getCurrentRole(pathname)}/add-payroll`}
             >
               Tambah Payroll
             </ButtonNavigate>

@@ -10,7 +10,7 @@ export const usePostProject = () => {
   const { replace } = useRouter();
 
   return useMutation({
-    mutationKey: ['post-project-id-key'],
+    mutationKey: ['post-payroll-id-key'],
     mutationFn: (payload: FormData) =>
       ProjectMutationApi.createProject(payload),
     onSuccess(data, variables, context) {

@@ -1,6 +1,6 @@
 import { Space } from '@mantine/core';
 import ModalForm from '../components/modal/modal-form.component';
-import PayrollForm from '../components/form/payroll.form.component';
+import PayrollForm from '../components/form/PayrollForm';
 import Table from '../components/table/table.component';
 import {
   payroll,
