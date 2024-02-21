@@ -25,7 +25,7 @@ import {
   Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconPlus, IconX } from '@tabler/icons-react';
+import { IconCircleFilled, IconPlus, IconX } from '@tabler/icons-react';
 import { IconPencilCode, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -44,6 +44,7 @@ const AdminPayroll = () => {
     { title: 'Salary' },
     { title: 'Provider' },
     { title: 'Status' },
+    { title: 'Project' },
     { title: 'Action' },
   ];
 
@@ -208,7 +209,7 @@ const AdminPayroll = () => {
               tableRow={payrolls?.data?.map((payroll: any) => {
                 return (
                   <tr key={payroll.id} className="">
-                    <td className=" md:w-1/5  ">
+                    <td className=" md:w-1/5 ">
                       <div className="flex flex-row items-center gap-5">
                         <Avatar
                           radius={'xl'}
@@ -220,27 +221,49 @@ const AdminPayroll = () => {
                           }
                         />
 
-                        {/* <div
-                        className=" bg-red-500 rounded-full"
-                        style={{
-                          backgroundImage: `url('http://localhost:5000/api/v1/files/download/members/Group 48095518 (2).png')`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundSize: '100% 100%',
-                          backgroundPosition: 'top',
-                          width: '50px',
-                          height: '30px',
-                        }}
-                      ></div> */}
                         <Text className="text-left">
                           {`${payroll.member?.user?.firstname} ${payroll.member?.user?.lastname}`}
                         </Text>
                       </div>
                     </td>
-                    <td className="md:w-1/5  ">{`${payroll.member?.position}`}</td>
-                    <td className="md:w-1/6 ">{payroll.salary}</td>
-                    <td className=" ">{payroll.transactionProvider}</td>
-                    <td className="md:w-1/6 ">{payroll.payrollStatus}</td>
+                    <td className="md:w-1/6  ">{`${payroll.member?.position}`}</td>
+                    <td className=" ">{payroll.salary}</td>
+                    <td className="">{payroll.transactionProvider}</td>
+                    <td className="md:w-1/6">
+                      <div className="flex items-center gap-2.5">
+                        <IconCircleFilled
+                          size={10}
+                          style={{
+                            color:
+                              payroll.payrollStatus === 'PAID'
+                                ? COLORS.SUCCESS
+                                : COLORS.ON_PROGRESS,
+                          }}
+                        />
+                        {payroll.payrollStatus === 'PAID'
+                          ? 'Sudah Dibayar'
+                          : 'Belum Dibayar'}
+                      </div>
+                    </td>
                     <td className="md:w-1/6 ">
+                      <div className="flex flex-row items-center gap-2.5">
+                        <Avatar
+                          radius={'xl'}
+                          size={20}
+                          className="w-2 h-fit"
+                          src={
+                            !payroll.project.projectIcon
+                              ? ''
+                              : `${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${payroll.project?.projectIcon}`
+                          }
+                        />
+
+                        <Text className="text-left">
+                          {`${payroll.project?.projectName}`}
+                        </Text>
+                      </div>
+                    </td>
+                    <td className=" ">
                       <Group position="left">
                         <ActionIcon
                           variant="outline"

@@ -11,6 +11,7 @@ import useRouteLoader from '@/src/utils/routes.event';
 import useRouteEvents from '@/src/utils/routes.event';
 import {
   ActionIcon,
+  Avatar,
   Button,
   Container,
   Divider,
@@ -54,20 +55,25 @@ import Image from 'next/image';
 import NoDataCard from '@/src/components/card/no_data-card.component';
 import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
 import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
+import TableLayout from '@/src/layouts/form/table.layout';
+import { useDeleteMemberMutation } from '@/src/hooks/member/useDeleteMemberMutation';
 
 const MemberPage = () => {
   const { pathname, push, replace } = useRouter();
   const user = useContext(UserContext);
 
-  const [clientId, setClientId] = useState('');
+  const [memberId, setMemberId] = useState('');
   const [
     openedDeleteConfirmation,
     { open: openModalDelete, close: closeModalDelete },
   ] = useDisclosure(false);
 
   const { data: members, isLoading } = useGetMemberQuery();
-  const { mutate: deleteClient, isSuccess, isPending } = useDeleteClient();
-
+  const {
+    mutate: deleteMember,
+    isSuccess,
+    isPending,
+  } = useDeleteMemberMutation();
 
   const searchForm = useForm({
     initialValues: {
@@ -103,8 +109,8 @@ const MemberPage = () => {
   //   });
   // };
 
-  const openModalConfirmationDelete = (clientId: string) => {
-    setClientId(clientId);
+  const openModalConfirmationDelete = (memberId: string) => {
+    setMemberId(memberId);
 
     openModalDelete();
   };
@@ -119,8 +125,8 @@ const MemberPage = () => {
     }
   });
 
-  const handleDeleteClient = () => {
-    deleteClient(clientId);
+  const handleDeleteMember = () => {
+    deleteMember(memberId);
 
     if (!isPending) {
       closeModalDelete();
@@ -145,7 +151,7 @@ const MemberPage = () => {
         <Group mt={20}>
           <Button
             variant=""
-            onClick={handleDeleteClient}
+            onClick={handleDeleteMember}
             w={'48%'}
             loading={isPending}
             radius={'md'}
@@ -175,104 +181,94 @@ const MemberPage = () => {
           role={getCurrentRole(pathname)}
         />
 
-        {members?.data?.length <= 0 ? (
-          <div className="flex  w-full justify-center mt-[70px]">
-            <NoDataCard
-              icon={<ICTeams width={50} height={50} />}
-              description="Untuk membesarkan perusahaan tentu anda butuh client, tambah client sekarang"
-              title="Client"
-            >
-              <ButtonNavigate
-                icon={<IconPlus />}
-                url={`/${getCurrentPage(pathname)}/add-client`}
-              >
-                Tambah Client
-              </ButtonNavigate>
-            </NoDataCard>
-          </div>
-        ) : (
-          <>
-            <Space h={50} />
+        <Space h={50} />
 
-            <Group position="apart" className="">
-              {user.user?.role.includes('STAFF') ? null : (
+        <TableLayout
+          layoutTitle={`${members?.data?.length} Crew`}
+          addUrl="/add-member"
+          icon={<ICTeams width={30} height={30} />}
+        >
+          {members?.data?.length <= 0 ? (
+            <div className="flex  w-full justify-center mt-[70px]">
+              <NoDataCard
+                icon={<ICTeams width={50} height={50} />}
+                description="Untuk mengerjakan project dibutuhkan tim yang baik, tambah crew sekarang"
+                title="Crew"
+              >
                 <ButtonNavigate
                   icon={<IconPlus />}
                   url={`/${getCurrentPage(pathname)}/add-member`}
                 >
-                  Tambah Orang
+                  Tambah Crew
                 </ButtonNavigate>
-              )}
-              <form onSubmit={handleSearchSubmit} className="lg:w-fit w-full">
-                <Group className="w-full " position="right">
-                  <TextInput
-                    placeholder="Cari Member"
-                    radius={'md'}
-                    className="w-full lg:w-[320px]"
-                    {...searchForm.getInputProps('searchValue')}
-                    styles={{
-                      input: {
-                        height: 40,
-                      },
-                    }}
-                  />
+              </NoDataCard>
+            </div>
+          ) : (
+            <div className="px-8 overflow-x-scroll lg:overflow-x-hidden">
+              <Table
+                tableHead={tableHead}
+                tableRow={members?.data?.map((member: any, index: number) => {
+                  return (
+                    <tr key={member.id} className="">
+                      <td className="">{`${index + 1}`}</td>
+                      <td className="">
+                        <div className="flex flex-row items-center gap-5">
+                          <Avatar
+                            radius={'xl'}
+                            size={36}
+                            src={
+                              !member.profilePicture
+                                ? ''
+                                : `${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${member?.profilePicture}`
+                            }
+                          />
 
-                  <button
-                    type="submit"
-                    className="bg-primary shadow-sm border-0 w-[40px] h-[40px] flex items-center justify-center rounded-lg"
-                  >
-                    <IconSearch size={21} color={'white'} />
-                  </button>
-                </Group>
-              </form>
-            </Group>
+                          <Text className="text-left">
+                            {`${member?.user?.firstname} ${member?.user?.lastname}`}
+                          </Text>
+                        </div>
+                      </td>
+                      <td className="">{`${member.position} `}</td>
+                      <td className="">{`${member.phoneNumber} `}</td>
 
-            <Space h={50} />
-            <Table
-              tableHead={tableHead}
-              tableRow={members?.data?.map((member: any, index: number) => {
-                return (
-                  <tr key={member.id} className="text-center">
-                    <td className="">{`${index + 1}`}</td>
-                    <td className="">{`${member.user?.firstname} ${member.user?.lastname} `}</td>
-                    <td className="">{`${member.position} `}</td>
-                    <td className="">{`${member.phoneNumber} `}</td>
+                      <td className=" ">
+                        <Group position="left" className="w-full " spacing={10}>
+                          <ActionIcon
+                            variant="outline"
+                            radius={'xl'}
+                            color={'red'}
+                            c={COLORS.DANGER}
+                            opacity={'0.7'}
+                            size={'lg'}
+                            onClick={() =>
+                              openModalConfirmationDelete(member.id)
+                            }
+                          >
+                            <IconTrash size={'1rem'} />
+                          </ActionIcon>
 
-                    <td className=" ">
-                      <Group position="center" className="w-full " spacing={10}>
-                        <ActionIcon
-                          variant="outline"
-                          radius={'xl'}
-                          color={'red'}
-                          c={COLORS.DANGER}
-                          opacity={'0.7'}
-                          size={'lg'}
-                          onClick={() => openModalConfirmationDelete(member.id)}
-                        >
-                          <IconTrash size={'1rem'} />
-                        </ActionIcon>
-
-                        <ActionIcon
-                          variant="outline"
-                          radius={'xl'}
-                          color={'gray'}
-                          c={COLORS.SECONDARY}
-                          opacity={'0.7'}
-                          size={'lg'}
-                          onClick={() => {
-                            push(`/member/edit-member/${member.id}`);
-                          }}
-                        >
-                          <IconPencilCode size={'1rem'} />
-                        </ActionIcon>
-                      </Group>
-                    </td>
-                  </tr>
-                );
-              })}
-            />
-          </>
-        )}
+                          <ActionIcon
+                            variant="outline"
+                            radius={'xl'}
+                            color={'gray'}
+                            c={COLORS.SECONDARY}
+                            opacity={'0.7'}
+                            size={'lg'}
+                            onClick={() => {
+                              push(`/member/edit-member/${member.id}`);
+                            }}
+                          >
+                            <IconPencilCode size={'1rem'} />
+                          </ActionIcon>
+                        </Group>
+                      </td>
+                    </tr>
+                  );
+                })}
+              />
+            </div>
+          )}
+        </TableLayout>
       </Container>
     </MainLayout>
   );

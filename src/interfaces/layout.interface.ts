@@ -9,4 +9,11 @@ interface IFormLayoutProps {
   pageTitle: string;
   title: string;
   description?: string;
+  anchorData?: IAnchorPropsType[];
+}
+
+interface IAnchorPropsType {
+  id: number;
+  text: string;
+  href: string;
 }

@@ -1,4 +1,5 @@
 import {
+  Anchor,
   Box,
   Button,
   Card,
@@ -11,7 +12,7 @@ import {
 import MenuComp from '../menu/menu.component';
 import UserProfile from '../profile/user-profile.component';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { IconLogout, IconUser } from '@tabler/icons-react';
+import { IconChevronRight, IconLogout, IconUser } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { ROUTES } from '@/src/constant/routes.constant';
 import { useAuth } from '@/src/hooks/useAuth';
@@ -25,7 +26,7 @@ import { deleteCookie } from 'cookies-next';
 import { COLORS } from '@/src/constant/colors.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { UserContext } from '@/src/context/user-credential.context';
-import { useContext } from 'react';
+import { ReactNode, useContext } from 'react';
 import ModalAction from '../modal/modal-action.component';
 
 interface IHeaderPageProps {
@@ -33,10 +34,21 @@ interface IHeaderPageProps {
   pageTitle: string;
   role: string;
   onClick?: () => void;
+  children?: ReactNode;
 }
 
-const HeaderPage = ({ userId, pageTitle, role, onClick }: IHeaderPageProps) => {
+const HeaderPage = ({
+  userId,
+  pageTitle,
+  role,
+  onClick,
+  children,
+}: IHeaderPageProps) => {
   const [opened, { close, open }] = useDisclosure(false);
+
+  const { pathname } = useRouter();
+
+  console.log('pathname : ', pathname.includes('add'));
 
   const largeScreen = useMediaQuery('(min-width: 60em)');
 
@@ -107,49 +119,14 @@ const HeaderPage = ({ userId, pageTitle, role, onClick }: IHeaderPageProps) => {
         </Group>
       </ModalAction>
 
-      {/* <Modal
-        opened={opened}
-        onClose={close}
-        title="Keluar dari akun"
-        overlayProps={{
-          color:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[9]
-              : theme.colors.gray[2],
-          opacity: 0.55,
-          blur: 3,
-        }}
-      >
-        <Group position="center" spacing={'xl'}>
-          <Button
-            variant="outline"
-            onClick={onClick}
-            w={'180px'}
-            // loading={isLoading}
-            radius={'md'}
-            c={COLORS.DANGER}
-            bg={COLORS.LIGHTBLUE}
-            // disabled={disableNoButton}
-          >
-            Ya
-          </Button>
-          <Button
-            // loading={isLoading}
-            onClick={close}
-            variant="outline"
-            w={'180px'}
-            radius={'md'}
-            c={COLORS.PRIMARY}
-            color="blue"
-          >
-            Batal
-          </Button>
-        </Group>
-      </Modal> */}
+      {pathname.includes('add') || pathname.includes('edit') ? null : (
+        <Text fw={600} fz={largeScreen ? '1.25rem' : '1rem'}>
+          {firstLetterToUpperCase(pageTitle)}
+        </Text>
+      )}
 
-      <Text fw={600} fz={largeScreen ? '1.25rem' : '1rem'}>
-        {firstLetterToUpperCase(pageTitle)}
-      </Text>
+      {children}
+
       <MenuComp
         button={
           <UserProfile

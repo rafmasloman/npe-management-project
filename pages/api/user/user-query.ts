@@ -21,8 +21,6 @@ class UserQueryApi {
         },
       });
 
-      console.log(response);
-
       const data = await response.json();
 
       return data;
@@ -33,6 +31,23 @@ class UserQueryApi {
     }
   }
 
+  static async getUserQueryStaff() {
+    try {
+      const response = await fetch(`${this.routesName}/staff`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+        },
+      });
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async getUserQueryById(
     userId: string,
   ): Promise<IApiBaseResponse<IApiGetUserQueryResponse>> {
