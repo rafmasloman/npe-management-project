@@ -2,6 +2,7 @@ import { navbarAdminLink, navbarStaffLink } from '@/src/utils/navbar.utils';
 import {
   Anchor,
   Divider,
+  Flex,
   Image,
   List,
   NavLink,
@@ -20,42 +21,318 @@ import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '@/src/context/user-credential.context';
 import { useGetMemberProjectQuery } from '@/src/hooks/member/useGetQueryMemberProject';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
+import ICDashboard from '@/src/assets/icons/nav-icon/dashboard.icon';
+import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
+import { ROUTES } from '@/src/constant/routes.constant';
+import { ICUser } from '@/src/assets/icons/nav-icon/user.icon';
+import { ICTransaction } from '@/src/assets/icons/nav-icon/transaction.icon';
+import { ICPayroll } from '@/src/assets/icons/nav-icon/payroll.icon';
+import { ICInvoices } from '@/src/assets/icons/nav-icon/invoices.icon';
+import { ICProject } from '@/src/assets/icons/nav-icon/project.icon';
+import { ICTask } from '@/src/assets/icons/nav-icon/task.icon';
+import { ICMilestone } from '@/src/assets/icons/nav-icon/milestone.icon';
+import { ICProfile } from '@/src/assets/icons/nav-icon/profile.icon';
 
 interface INavList {
   id: number;
   label: string;
-  href: string;
+  href?: string;
   icon: React.FC<any>;
 }
 
 const navbarAdmin = () => {
-  return navbarAdminLink.map(({ id, label, icon: Icon, href }: INavList) => {
-    return (
-      <div key={id}>
-        <NavItem
-          label={label}
-          href={href}
-          icon={<Icon width={25} height={25} />}
+  return (
+    <div className="">
+      <Link href={ROUTES.DASHBOARD} className="no-underline ">
+        <NavLink
+          label="Dashboard"
+          icon={<ICDashboard width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
         />
-        <Space h={20} />
-      </div>
-    );
-  });
+      </Link>
+
+      <Space h={30} />
+
+      <NavLink
+        label="People"
+        icon={<ICTeams width={25} height={25} />}
+        styles={{
+          label: {
+            fontSize: rem(16),
+            marginLeft: 10,
+          },
+        }}
+        className="hover:bg-sky-50 w-[230px] rounded-lg"
+        childrenOffset={28}
+      >
+        <Space h={16} />
+
+        <Link href={ROUTES.USER} className="no-underline">
+          <NavLink
+            label="User Management"
+            icon={<ICUser width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+
+        <Space h={16} />
+
+        <Link href={ROUTES.MEMBER} className="no-underline">
+          <NavLink
+            label="Crew"
+            icon={<ICTeams width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+      </NavLink>
+
+      <Space h={30} />
+
+      <NavLink
+        label="Payment"
+        icon={<ICTransaction width={25} height={25} />}
+        styles={{
+          label: {
+            fontSize: rem(16),
+            marginLeft: 10,
+          },
+        }}
+        className="hover:bg-sky-50 w-[230px] rounded-lg"
+        childrenOffset={28}
+      >
+        <Space h={16} />
+
+        <Link href={ROUTES.PAYROLL} className="no-underline">
+          <NavLink
+            label="Payroll"
+            icon={<ICPayroll width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+
+        <Space h={16} />
+
+        <Link href={ROUTES.INVOICES} className="no-underline">
+          <NavLink
+            label="Invoice"
+            icon={<ICInvoices width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+      </NavLink>
+
+      <Space h={30} />
+
+      <Link href={ROUTES.PROJECTS} className="no-underline">
+        <NavLink
+          label="Projects"
+          icon={<ICProject width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
+        />
+      </Link>
+
+      <Space h={40} />
+
+      <Text className="text-lg font-semibold pl-3" c={COLORS.SECONDARY}>
+        Teamspaces
+      </Text>
+
+      <Space h={20} />
+
+      <Link href={ROUTES.TASK} className="no-underline">
+        <NavLink
+          label="Task"
+          icon={<ICTask width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
+        />
+      </Link>
+
+      <Space h={20} />
+
+      <Link href={ROUTES.MILESTONE} className="no-underline ">
+        <NavLink
+          label="Milestone"
+          icon={<ICMilestone />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 hover:w-[230px] rounded-lg"
+        />
+      </Link>
+    </div>
+  );
 };
 
 const navbarStaff = () => {
-  return navbarStaffLink.map(({ id, label, icon: Icon, href }: INavList) => {
-    return (
-      <div key={id}>
-        <NavItem
-          label={label}
-          href={href}
-          icon={<Icon width={25} height={25} />}
+  return (
+    <div className="">
+      <Link href={ROUTES.DASHBOARD} className="no-underline ">
+        <NavLink
+          label="Dashboard"
+          icon={<ICDashboard width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
         />
-        <Space h={20} />
-      </div>
-    );
-  });
+      </Link>
+
+      <Space h={30} />
+
+      <Link href={ROUTES.MEMBER} className="no-underline">
+        <NavLink
+          label="Crew"
+          icon={<ICTeams width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
+        />
+      </Link>
+
+      <Space h={30} />
+
+      <NavLink
+        label="Payment"
+        icon={<ICTransaction width={25} height={25} />}
+        styles={{
+          label: {
+            fontSize: rem(16),
+            marginLeft: 10,
+          },
+        }}
+        className="hover:bg-sky-50 w-[230px] rounded-lg"
+        childrenOffset={28}
+      >
+        <Space h={16} />
+
+        <Link href={ROUTES.PAYROLL} className="no-underline">
+          <NavLink
+            label="Payroll"
+            icon={<ICPayroll width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+
+        <Space h={16} />
+
+        <Link href={ROUTES.INVOICES} className="no-underline">
+          <NavLink
+            label="Invoice"
+            icon={<ICInvoices width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+      </NavLink>
+
+      <Space h={30} />
+
+      <Link href={ROUTES.PROJECTS} className="no-underline">
+        <NavLink
+          label="Projects"
+          icon={<ICProject width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
+        />
+      </Link>
+
+      <Space h={25} />
+
+      <Divider className="w-[230px] bg-gray-200" h={2} />
+
+      <Space h={25} />
+
+      <Text className="text-lg font-semibold pl-3" c={COLORS.SECONDARY}>
+        Account
+      </Text>
+
+      <Space h={20} />
+
+      <Link href={ROUTES.PROFILE} className="no-underline">
+        <NavLink
+          label="Profile"
+          icon={<ICProfile width={25} height={25} />}
+          styles={{
+            label: {
+              fontSize: rem(16),
+              marginLeft: 10,
+            },
+          }}
+          className="hover:bg-sky-50 w-[230px] rounded-lg"
+        />
+      </Link>
+
+      <Space h={20} />
+    </div>
+  );
 };
 
 const NavList = () => {
@@ -78,7 +355,7 @@ const NavList = () => {
     >
       {user.user?.role !== 'ADMIN' ? navbarStaff() : navbarAdmin()}
 
-      <Divider ml={-30} />
+      {/* <Divider ml={-30} />
       <NavLink
         label={'Workspace'}
         icon={<IconFileStack width={25} height={25} color={COLORS.DEEPBLUE} />}
@@ -108,7 +385,7 @@ const NavList = () => {
             </Link>
           );
         })}
-      </NavLink>
+      </NavLink> */}
     </Stack>
   );
 };

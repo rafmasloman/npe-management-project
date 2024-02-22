@@ -36,7 +36,9 @@ const NavItem = ({
           styles={{
             label: { fontSize: rem(16) },
           }}
-        />
+        >
+          {!href ? null : children}
+        </NavLink>
         {isActiveNav ? (
           <div className="bg-yellow h-10 w-1.5 rounded-tl-md rounded-bl-md"></div>
         ) : null}

@@ -18,4 +18,5 @@ export const ROUTES = {
   PAYROLL: '/payroll',
 
   // MEMBER ROUTES
+  PROFILE: '/profile',
 };

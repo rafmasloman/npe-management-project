@@ -25,8 +25,18 @@ const AddPayroll = () => {
           title="Tambah Payroll"
           pageTitle="Tambah Payroll"
           anchorData={[
-            { id: 1, text: 'Payroll', href: '/payroll' },
-            { id: 2, text: 'Tambah Payroll', href: '/add-payroll' },
+            {
+              id: 1,
+              text: 'Payroll',
+              href: '/payroll',
+              isActiveText: '/payroll',
+            },
+            {
+              id: 2,
+              text: 'Tambah Payroll',
+              href: '/add-payroll',
+              isActiveText: '/add-payroll',
+            },
           ]}
         >
           <Container

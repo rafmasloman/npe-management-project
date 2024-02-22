@@ -13,7 +13,7 @@ interface IDataCardPropsTypes {
 
 const DataCard = ({ title, totalData, icon, color }: IDataCardPropsTypes) => {
   return (
-    <Group className="bg-white w-full flex justify-between items-center h-20 p-4">
+    <Group className="bg-white w-full flex justify-between items-center h-20 p-4 rounded-lg border border-solid border-gray-200">
       <Group className="h-full">
         <Group
           className={`w-1 h-full rounded-3xl`}

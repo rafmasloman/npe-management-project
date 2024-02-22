@@ -15,6 +15,11 @@ const FormLayout = ({
 }: IFormLayoutProps) => {
   const { pathname: currentPage } = useRouter();
 
+  console.log(
+    'pathanem : ',
+    currentPage.split('/')[currentPage.split('/').length - 1],
+  );
+
   return (
     <>
       <SEO title={title} description="" />
@@ -23,6 +28,8 @@ const FormLayout = ({
         <HeaderPage pageTitle={pageTitle} role={getCurrentRole(pathname)}>
           <Group>
             {anchorData?.map((anchor) => {
+              console.log('tes : ', currentPage);
+
               return (
                 <>
                   <Anchor
@@ -32,7 +39,7 @@ const FormLayout = ({
                         currentPage.split('/')[
                           currentPage.split('/').length - 1
                         ]
-                      }` === anchor.href
+                      }` === anchor.isActiveText
                         ? 'bg-slate-200'
                         : ''
                     }`}
@@ -46,7 +53,7 @@ const FormLayout = ({
                         currentPage.split('/')[
                           currentPage.split('/').length - 1
                         ]
-                      }` === anchor.href
+                      }` === anchor.isActiveText
                         ? 'hidden'
                         : 'block'
                     }`}

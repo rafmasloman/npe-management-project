@@ -38,7 +38,25 @@ const EditUser = ({
 
   return (
     <MainLayout>
-      <FormLayout pathname={pathname} title="Add User" pageTitle="Tambah User">
+      <FormLayout
+        pathname={pathname}
+        title="Add User"
+        pageTitle="Tambah User"
+        anchorData={[
+          {
+            id: 1,
+            text: 'User Management',
+            href: '/admin/user-management',
+            isActiveText: '/user-management',
+          },
+          {
+            id: 2,
+            text: 'Edit User',
+            href: `/admin/user-management/${userDetail.id}/edit-user`,
+            isActiveText: '/edit-user',
+          },
+        ]}
+      >
         <UserForm
           initialValues={{
             email: userDetail.email,

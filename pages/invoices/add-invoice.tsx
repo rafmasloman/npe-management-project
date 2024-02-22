@@ -13,20 +13,19 @@ const AddInvoicePage = () => {
 
   const isLoading = useRouteLoader();
 
+  if (isLoading) {
+    <PageLoading />;
+  }
 
   return (
     <MainLayout>
-      {isLoading ? (
-        <PageLoading />
-      ) : (
-        <FormLayout
-          pathname={pathname}
-          title="Halaman Tambah Invoice"
-          pageTitle="Tambah Invoice"
-        >
-          <InvoiceForm />
-        </FormLayout>
-      )}
+      <FormLayout
+        pathname={pathname}
+        title="Halaman Tambah Invoice"
+        pageTitle="Tambah Invoice"
+      >
+        <InvoiceForm />
+      </FormLayout>
     </MainLayout>
   );
 };

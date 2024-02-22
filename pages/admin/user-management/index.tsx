@@ -43,6 +43,8 @@ import { useDeleteUser } from '@/src/hooks/user/useDeleteUserMutation';
 import { UserContext } from '@/src/context/user-credential.context';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
 import { useModal } from '@/src/hooks/useModal';
+import TableLayout from '@/src/layouts/form/table.layout';
+import { ICUser } from '@/src/assets/icons/nav-icon/user.icon';
 
 const UserAdmin = () => {
   const { pathname, replace } = useRouter();
@@ -61,7 +63,7 @@ const UserAdmin = () => {
     { title: 'Action' },
   ];
 
-  const { data: readAllUsers } = useGetQueryUser();
+  const { data: readAllUsers, isLoading: isLoadingUser } = useGetQueryUser();
 
   const { mutate: deleteUser } = useDeleteUser();
 
@@ -78,9 +80,12 @@ const UserAdmin = () => {
     replace(ROUTES.LOGIN);
   };
 
+  if (isLoadingUser || isLoading) {
+    return <PageLoading />;
+  }
+
   return (
     <MainLayout>
-      {isLoading && <PageLoading />}
       <SEO title="Users" description="User page for npe pro" />
 
       <Modal
@@ -153,56 +158,57 @@ const UserAdmin = () => {
 
         <Space h={50} />
 
-        <ButtonNavigate
-          icon={<IconPlus />}
-          url={`/${getCurrentRole(pathname)}/user-management/add-user`}
+        <TableLayout
+          layoutTitle={`${userData?.length} User`}
+          addUrl="/user-management/add-user"
+          icon={<ICUser width={30} height={30} />}
         >
-          Tambah User
-        </ButtonNavigate>
+          <div className="px-8 overflow-x-scroll lg:overflow-x-hidden">
+            <Table
+              tableHead={tableHead}
+              tableRow={userData?.map((user: any) => {
+                return (
+                  <tr key={user.id} className="">
+                    <td className=" ">{`${user.firstname} ${user.lastname}`}</td>
+                    <td className="">{user.email}</td>
+                    <td className="">{user.role}</td>
+                    <td className="">
+                      <Group position="center">
+                        <ActionIcon
+                          variant="outline"
+                          radius={'xl'}
+                          color={'red'}
+                          c={COLORS.DANGER}
+                          opacity={'0.7'}
+                          size={'lg'}
+                          onClick={() => handleConfirm(user.id)}
+                        >
+                          <IconTrash size={'1.125rem'} />
+                        </ActionIcon>
 
-        <Space h={50} />
-
-        <Table
-          tableHead={tableHead}
-          tableRow={userData?.map((user: any) => {
-            return (
-              <tr key={user.id} className="">
-                <td className="px-6 py-4 text-center ">{`${user.firstname} ${user.lastname}`}</td>
-                <td className="px-6 py-4 text-center">{user.email}</td>
-                <td className="px-6 py-4 text-center">{user.role}</td>
-                <td className="px-6 py-4">
-                  <Group position="center">
-                    <ActionIcon
-                      variant="outline"
-                      radius={'xl'}
-                      color={'red'}
-                      c={COLORS.DANGER}
-                      opacity={'0.7'}
-                      size={'lg'}
-                      onClick={() => handleConfirm(user.id)}
-                    >
-                      <IconTrash size={'1.125rem'} />
-                    </ActionIcon>
-
-                    <ActionIcon
-                      variant="outline"
-                      radius={'xl'}
-                      color={'gray'}
-                      c={COLORS.SECONDARY}
-                      opacity={'0.7'}
-                      size={'lg'}
-                      onClick={() => {
-                        replace(`/admin/user-management/${user.id}/edit-user`);
-                      }}
-                    >
-                      <IconPencilCode size={'1.125rem'} />
-                    </ActionIcon>
-                  </Group>
-                </td>
-              </tr>
-            );
-          })}
-        />
+                        <ActionIcon
+                          variant="outline"
+                          radius={'xl'}
+                          color={'gray'}
+                          c={COLORS.SECONDARY}
+                          opacity={'0.7'}
+                          size={'lg'}
+                          onClick={() => {
+                            replace(
+                              `/admin/user-management/${user.id}/edit-user`,
+                            );
+                          }}
+                        >
+                          <IconPencilCode size={'1.125rem'} />
+                        </ActionIcon>
+                      </Group>
+                    </td>
+                  </tr>
+                );
+              })}
+            />
+          </div>
+        </TableLayout>
       </Container>
     </MainLayout>
   );

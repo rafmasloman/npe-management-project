@@ -16,4 +16,5 @@ interface IAnchorPropsType {
   id: number;
   text: string;
   href: string;
+  isActiveText: string;
 }

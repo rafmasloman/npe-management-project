@@ -41,8 +41,8 @@ const AdminPayroll = () => {
   const tableHead = [
     { title: 'Name' },
     { title: 'Position' },
+    { title: 'Percent' },
     { title: 'Salary' },
-    { title: 'Provider' },
     { title: 'Status' },
     { title: 'Project' },
     { title: 'Action' },
@@ -227,8 +227,8 @@ const AdminPayroll = () => {
                       </div>
                     </td>
                     <td className="md:w-1/6  ">{`${payroll.member?.position}`}</td>
+                    <td className="">{payroll.percent} %</td>
                     <td className=" ">{payroll.salary}</td>
-                    <td className="">{payroll.transactionProvider}</td>
                     <td className="md:w-1/6">
                       <div className="flex items-center gap-2.5">
                         <IconCircleFilled

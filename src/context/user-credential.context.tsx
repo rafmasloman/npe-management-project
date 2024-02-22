@@ -32,7 +32,6 @@ export function UserCredential({ children }: IUserProviderProps) {
     setUser(userCredential);
   }, [userCredential, isSuccess]);
 
-
   return (
     <UserContext.Provider value={{ user: user?.user! }}>
       {children}

@@ -6,6 +6,7 @@ import { ICPayroll } from '../assets/icons/nav-icon/payroll.icon';
 import { ICProject } from '../assets/icons/nav-icon/project.icon';
 import { ICTask } from '../assets/icons/nav-icon/task.icon';
 import { ICTeams } from '../assets/icons/nav-icon/teams.icon';
+import { ICTransaction } from '../assets/icons/nav-icon/transaction.icon';
 import { ICUser } from '../assets/icons/nav-icon/user.icon';
 import { ROUTES } from '../constant/routes.constant';
 
@@ -34,13 +35,6 @@ export const navbarAdminLink = [
     label: 'Invoices',
     href: ROUTES.INVOICES,
   },
-
-  // {
-  //   id: 4,
-  //   icon: ICInvoices,
-  //   label: 'Transaction',
-  //   href: '',
-  // },
   {
     id: 5,
     icon: ICTask,
@@ -70,6 +64,24 @@ export const navbarAdminLink = [
     icon: ICProject,
     label: 'Project',
     href: ROUTES.PROJECTS,
+  },
+];
+
+export const navbarAdminTeamspace = [
+  {
+    id: 1,
+    icon: ICTransaction,
+    label: 'Payments',
+  },
+  {
+    id: 1,
+    icon: ICTask,
+    label: 'Task',
+  },
+  {
+    id: 2,
+    icon: ICMilestone,
+    label: 'Milestone',
   },
 ];
 

@@ -11,17 +11,35 @@ import { Suspense } from 'react';
 const AddUser = () => {
   const { pathname } = useRouter();
 
+  const isLoading = useRouteLoader();
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
+
   return (
     <MainLayout>
-      <Suspense fallback={<Loader size={100} color={COLORS.PRIMARY} />}>
-        <FormLayout
-          pathname={pathname}
-          title="Tambah User"
-          pageTitle="Tambah User"
-        >
-          <UserForm />
-        </FormLayout>
-      </Suspense>
+      <FormLayout
+        pathname={pathname}
+        title="Tambah User"
+        pageTitle="Tambah User"
+        anchorData={[
+          {
+            id: 1,
+            text: 'User Management',
+            href: '/admin/user-management',
+            isActiveText: '/user-management',
+          },
+          {
+            id: 2,
+            text: 'Tambah User',
+            href: '/admin/user-management/add-user',
+            isActiveText: '/add-user',
+          },
+        ]}
+      >
+        <UserForm />
+      </FormLayout>
     </MainLayout>
   );
 };

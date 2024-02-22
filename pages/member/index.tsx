@@ -68,7 +68,7 @@ const MemberPage = () => {
     { open: openModalDelete, close: closeModalDelete },
   ] = useDisclosure(false);
 
-  const { data: members, isLoading } = useGetMemberQuery();
+  const { data: members } = useGetMemberQuery();
   const {
     mutate: deleteMember,
     isSuccess,
@@ -80,6 +80,8 @@ const MemberPage = () => {
       searchValue: '',
     },
   });
+
+  const isLoading = useRouteLoader();
 
   const tableHead = [
     {

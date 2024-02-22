@@ -9,4 +9,5 @@ export const API_ROUTES = {
   CLIENT: 'client',
   INVOICE: 'invoice',
   PAYROLL: 'payroll',
+  PROFILE: 'profile',
 };

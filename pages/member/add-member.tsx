@@ -27,8 +27,13 @@ const AddMember = () => {
           title="Tambah Crew"
           pageTitle="Tambah Crew"
           anchorData={[
-            { id: 1, text: 'Crew', href: '/member' },
-            { id: 2, text: 'Tambah Crew', href: '/add-member' },
+            { id: 1, text: 'Crew', href: '/member', isActiveText: '/member' },
+            {
+              id: 2,
+              text: 'Tambah Crew',
+              href: '/add-member',
+              isActiveText: '/add-member',
+            },
           ]}
         >
           <Container

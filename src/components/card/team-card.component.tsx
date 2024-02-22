@@ -1,5 +1,5 @@
 import { COLORS } from '@/src/constant/colors.constant';
-import { Avatar, Card, Group, Stack, Text } from '@mantine/core';
+import { Avatar, Card, Flex, Group, Stack, Text } from '@mantine/core';
 
 interface ITeamCardProps {
   name: string;
@@ -8,8 +8,8 @@ interface ITeamCardProps {
 
 const TeamCard = ({ name, position }: ITeamCardProps) => {
   return (
-    <Card radius={'lg'} className="w-full md:w-3/4">
-      <Group>
+    <Card radius={'lg'} className="w-full md:w-[370px]">
+      <Flex direction={'row'} align={'center'} gap={10}>
         <Avatar size={45} radius={'xl'} />
         <Stack spacing={0}>
           <Text fw={500} className="">
@@ -19,7 +19,7 @@ const TeamCard = ({ name, position }: ITeamCardProps) => {
             {position}
           </Text>
         </Stack>
-      </Group>
+      </Flex>
     </Card>
   );
 };
