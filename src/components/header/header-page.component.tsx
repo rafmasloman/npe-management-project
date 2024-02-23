@@ -48,8 +48,6 @@ const HeaderPage = ({
 
   const { pathname } = useRouter();
 
-  console.log('pathname : ', pathname.includes('add'));
-
   const largeScreen = useMediaQuery('(min-width: 60em)');
 
   // const [opened, { open, close }] = useDisclosure(false);

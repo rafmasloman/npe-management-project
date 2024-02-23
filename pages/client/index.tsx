@@ -53,6 +53,8 @@ import ModalAction from '@/src/components/modal/modal-action.component';
 import Image from 'next/image';
 import NoDataCard from '@/src/components/card/no_data-card.component';
 import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
+import TableLayout from '@/src/layouts/form/table.layout';
+import { ICClient } from '@/src/assets/icons/nav-icon/client.icon';
 
 const Client = () => {
   const { pathname, push, replace } = useRouter();
@@ -185,64 +187,34 @@ const Client = () => {
           role={getCurrentRole(pathname)}
         />
 
-        {clients?.data?.length <= 0 ? (
-          <div className="flex  w-full justify-center mt-[70px]">
-            <NoDataCard
-              icon={<ICTeams width={50} height={50} />}
-              description="Untuk membesarkan perusahaan tentu anda butuh client, tambah client sekarang"
-              title="Client"
-            >
-              <ButtonNavigate
-                icon={<IconPlus />}
-                url={`/${getCurrentPage(pathname)}/add-client`}
-              >
-                Tambah Client
-              </ButtonNavigate>
-            </NoDataCard>
-          </div>
-        ) : (
-          <>
-            <Space h={50} />
+        <Space h={60} />
 
-            <Group position="apart" className="">
-              {user.user?.role.includes('STAFF') ? null : (
+        <TableLayout
+          layoutTitle={`${clients?.data?.length} Clients`}
+          addUrl="/add-client"
+          icon={<ICClient width={30} height={30} />}
+        >
+          {clients?.data?.length < 0 ? (
+            <div className="flex  w-full justify-center mt-[70px]">
+              <NoDataCard
+                icon={<ICTeams width={50} height={50} />}
+                description="Untuk membesarkan perusahaan tentu anda butuh client, tambah client sekarang"
+                title="Client"
+              >
                 <ButtonNavigate
                   icon={<IconPlus />}
                   url={`/${getCurrentPage(pathname)}/add-client`}
                 >
                   Tambah Client
                 </ButtonNavigate>
-              )}
-              <form onSubmit={handleSearchSubmit} className="lg:w-fit w-full">
-                <Group className="w-full " position="right">
-                  <TextInput
-                    placeholder="Cari Client"
-                    radius={'md'}
-                    className="w-full lg:w-[320px]"
-                    {...searchForm.getInputProps('searchValue')}
-                    styles={{
-                      input: {
-                        height: 40,
-                      },
-                    }}
-                  />
-
-                  <button
-                    type="submit"
-                    className="bg-primary shadow-sm border-0 w-[40px] h-[40px] flex items-center justify-center rounded-lg"
-                  >
-                    <IconSearch size={21} color={'white'} />
-                  </button>
-                </Group>
-              </form>
-            </Group>
-
-            <Space h={50} />
+              </NoDataCard>
+            </div>
+          ) : (
             <Table
               tableHead={tableHead}
               tableRow={clients?.data?.map((client: any, index: number) => {
                 return (
-                  <tr key={client.id} className="text-center">
+                  <tr key={client.id} className="">
                     <td className="">{`${index + 1}`}</td>
                     <td className="">{`${client.name} `}</td>
                     <td className="">{`${client.email} `}</td>
@@ -309,8 +281,8 @@ const Client = () => {
                 );
               })}
             />
-          </>
-        )}
+          )}
+        </TableLayout>
       </Container>
     </MainLayout>
   );

@@ -74,7 +74,6 @@ const ProjectDetail = ({ projectDetail }: any) => {
 
   const user = React.useContext(UserContext);
 
-
   return (
     <MainLayout>
       <SEO title="detail project" description="" />
@@ -151,21 +150,6 @@ const ProjectDetail = ({ projectDetail }: any) => {
             >
               Milestone
             </Tabs.Tab>
-
-            {user.user?.role === 'STAFF' ? null : (
-              <Tabs.Tab
-                fz={rem(16)}
-                mr={rem(50)}
-                pb={rem(20)}
-                pl={0}
-                value="payroll"
-                style={{
-                  borderWidth: 3,
-                }}
-              >
-                Payroll
-              </Tabs.Tab>
-            )}
           </Tabs.List>
 
           <Tabs.Panel value="overview" pt={rem(50)}>
@@ -175,12 +159,6 @@ const ProjectDetail = ({ projectDetail }: any) => {
           <Tabs.Panel value="tasks" pt={rem(50)}>
             <TaskWorkSpace todos={projects?.data?.todos} />
           </Tabs.Panel>
-
-          {user.user?.role === 'STAFF' ? null : (
-            <Tabs.Panel value="payroll" pt={rem(50)}>
-              <PayrollSpace projectPrice={projectDetail?.priceDeals!} />
-            </Tabs.Panel>
-          )}
         </Tabs>
 
         <Space h={50} />

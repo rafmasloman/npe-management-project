@@ -1,15 +1,10 @@
-import { ICPayroll } from '@/src/assets/icons/nav-icon/payroll.icon';
 import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
 import MemberForm from '@/src/components/form/member/member.form.component';
-import MilestoneForm from '@/src/components/form/milestone/milestone.form.component';
-import PayrollForm from '@/src/components/form/payroll/payroll.form.component';
 import PageLoading from '@/src/components/loading/page-loading.component';
-import { COLORS } from '@/src/constant/colors.constant';
 import FormLayout from '@/src/layouts/form/form.layout';
 import MainLayout from '@/src/layouts/main.layout';
 import useRouteLoader from '@/src/utils/routes.event';
-import { Anchor, Container, Group, Space, Text, Title } from '@mantine/core';
-import { IconArrowNarrowRight, IconChevronRight } from '@tabler/icons-react';
+import { Container, Group, Space, Text, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 
 const AddMember = () => {

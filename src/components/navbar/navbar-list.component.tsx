@@ -32,6 +32,7 @@ import { ICProject } from '@/src/assets/icons/nav-icon/project.icon';
 import { ICTask } from '@/src/assets/icons/nav-icon/task.icon';
 import { ICMilestone } from '@/src/assets/icons/nav-icon/milestone.icon';
 import { ICProfile } from '@/src/assets/icons/nav-icon/profile.icon';
+import { ICClient } from '@/src/assets/icons/nav-icon/client.icon';
 
 interface INavList {
   id: number;
@@ -93,6 +94,22 @@ const navbarAdmin = () => {
           <NavLink
             label="Crew"
             icon={<ICTeams width={23} height={23} />}
+            styles={{
+              label: {
+                fontSize: rem(16),
+                marginLeft: 5,
+              },
+            }}
+            className="hover:bg-sky-50 w-[230px] rounded-lg"
+          />
+        </Link>
+
+        <Space h={16} />
+
+        <Link href={ROUTES.CLIENT} className="no-underline">
+          <NavLink
+            label="Client"
+            icon={<ICClient width={23} height={23} />}
             styles={{
               label: {
                 fontSize: rem(16),

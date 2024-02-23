@@ -21,6 +21,7 @@ import { usePostProject } from '@/src/hooks/project/usePostProjectMutation';
 import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
 import { useRouter } from 'next/router';
 import { usePutProject } from '@/src/hooks/project/usePutProjectMutation';
+import { useGetClientsQuery } from '@/src/hooks/client/useGetClient';
 
 interface IProjectFormProps {
   initValue?: IProjectDataParams;
@@ -36,20 +37,14 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
   const [membersData, setMembersData] = useState<ISelectMemberDataStateProps[]>(
     [{ value: '', label: '' }],
   );
-
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([
-    'Member1',
-    'Member2',
-  ]);
-
-  // Fungsi untuk mengelola perubahan nilai
-  const handleMembersChange = (values: string[]) => {
-    setSelectedMembers(values);
-  };
+  const [clientsData, setClientsData] = useState<ISelectMemberDataStateProps[]>(
+    [{ value: '', label: '' }],
+  );
 
   const { mutate: createProject } = usePostProject();
   const { mutate: updateProject } = usePutProject();
   const { data: members } = useGetMemberQuery();
+  const { data: clients } = useGetClientsQuery();
 
   const { pathname, query } = useRouter();
 
@@ -58,23 +53,26 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
     initialValues: {
       projectName: initValue?.projectName || '',
       client: initValue?.client || '',
-      platform: initValue?.platform || [],
+      platform:
+        initValue?.platform?.split(',').map((platform: any) => {
+          return platform;
+        }) || [],
       startedDate: initValue?.startedDate || '',
       endDate: initValue?.endDate || '',
       description: initValue?.description || '',
       projectIcon: initValue?.projectIcon || '',
-      member: initValue?.members || [],
       image: '',
       price: initValue?.price || 0,
-      members: initValue?.members || [],
+      member:
+        initValue?.member?.map((member: any) => {
+          return member.id;
+        }) || [],
     },
   });
 
-  // const arrayFromWebsiteMobileString = initValue?.platform
-  //   .replace('[', '')
-  //   .replace(']', '')
-  //   .split(', ')
-  //   .map((item: any) => item.trim());
+  initValue?.platform?.split(',').map((platform: any) => {
+    console.log('init value name : ', platform);
+  });
 
   const handleSubmit = form.onSubmit((values) => {
     const formData = new FormData();
@@ -82,48 +80,47 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
     formData.set('projectName', values.projectName);
     formData.set('member', values.member as any);
     formData.set('description', values.description);
-    formData.set('platform', values.platform as string);
+    formData.set('platform', values.platform as any);
     formData.set('startedDate', values.startedDate as string);
     formData.set('endDate', values.endDate as string);
     formData.set('projectIcon', values.projectIcon);
     formData.set('price', values.price.toString());
 
     if (!initValue) {
+      console.log('data : ', formData.get('projectIcon'));
+
       createProject(formData);
     } else if (!!initValue) {
-      console.log('date : ', formData.get('startedDate'));
+      console.log('date : ', formData.get('member'));
 
       updateProject({ projectId: query.id, payload: formData });
     }
   });
 
   useEffect(() => {
-    if (members?.data && members?.data.length > 0) {
-      const selectMembers = members?.data?.map((member: any) => {
-        return {
-          value: member.id,
-          label: `${member.user?.firstname} ${member.user?.lastname}`,
-        };
-      });
+    const selectMembers = !members
+      ? []
+      : members?.data?.map((member: any) => {
+          return {
+            value: member.id,
+            label: `${member.user?.firstname} ${member.user?.lastname}`,
+          };
+        });
 
-      // if (!!initValue?.members) {
-      //   const initialMembers = initValue?.members?.map((member: any) => {
-      //     return {
-      //       value: member.id,
-      //       label: member.user?.fullname,
-      //     };
-      //   });
+    const selectClient = !clients
+      ? []
+      : clients?.data?.map((client: any) => {
+          return {
+            value: client.id,
+            label: client.name,
+          };
+        });
 
-      //   setMembersData(initialMembers as any);
-      // }
+    setMembersData(selectMembers);
+    setClientsData(selectClient);
+  }, [members, clients]);
 
-      setMembersData(selectMembers);
-
-      // setMembersData(selectMembers);
-    }
-  }, [members]);
-
-  console.log('members : tes', membersData);
+  console.log('members : ', form.getInputProps('projectIcon').value);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -145,16 +142,10 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
         </Grid.Col>
         <Grid.Col lg={6} md={1}>
           <Select
-            data={[
-              {
-                label: 'Client',
-                value: 'client',
-              },
-            ]}
+            data={clientsData}
             placeholder="Pilih Client"
             label="Clients"
             {...form.getInputProps('client')}
-            // withAsterisk
           />
         </Grid.Col>
         <Grid.Col lg={6} md={1}>
@@ -170,14 +161,12 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
         </Grid.Col>
         <Grid.Col lg={6} md={1}>
           <MultiSelect
-            data={selectedMembers}
+            data={membersData}
             placeholder="Pilih Member"
             label="Member"
             radius={'md'}
             withAsterisk
             {...form.getInputProps('member')}
-            value={selectedMembers}
-            onChange={handleMembersChange}
           />
         </Grid.Col>
         <Grid.Col lg={6} md={1}>
@@ -204,6 +193,14 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
             placeholder="Harga Project"
             label="Biaya"
             {...form.getInputProps('price')}
+          />
+        </Grid.Col>
+
+        <Grid.Col lg={12} md={1}>
+          <Textarea
+            placeholder="Tulis Deskripsi Project"
+            label="Deskripsi"
+            {...form.getInputProps('description')}
           />
         </Grid.Col>
 

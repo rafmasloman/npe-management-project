@@ -14,13 +14,15 @@ import { useEffect, useState } from 'react';
 
 const NavbarMainList = () => {
   const [isTokenAvaiable, setIsTokenAvaiable] = useState(false);
-  const token = __getSSRAuthCookie();
+  const token = __getBrowserAuthCookie(TOKEN_NAME);
 
   useEffect(() => {
     if (!!token) {
       setIsTokenAvaiable(!isTokenAvaiable);
     }
   }, [token]);
+
+  console.log('is token : ', isTokenAvaiable);
 
   return (
     <Group>

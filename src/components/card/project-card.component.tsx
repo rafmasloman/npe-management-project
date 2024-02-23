@@ -49,7 +49,6 @@ const ProjectCard = ({
   const [opened, { open, close }] = useDisclosure(false);
   const { pathname } = useRouter();
 
-
   // const platformServices = platform
   //   ?.slice(1, -1)
   //   .split(', ')
@@ -144,13 +143,13 @@ const ProjectCard = ({
         >
           <Flex direction={'column'} gap={'xl'}>
             <Group position="apart">
-              <Image
+              <Avatar
                 src={`${
                   process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
                 }/projects/${projectIcon!}`}
                 alt="Project Logo"
-                width={40}
-                height={60}
+                size={50}
+                className="h-fit"
               />
 
               {/* <Group mt={10}>

@@ -14,18 +14,38 @@ export const useDeleteProject = () => {
     onSuccess(data, variables, context) {
       queryClient.invalidateQueries({ queryKey: ['get-projects-id-key'] });
 
+      console.log('data delete project : ', data);
+
+      if (data.name === 'Unauthorized') {
+        return Notifications({
+          title: 'Data Gagal dihapus',
+          message: data.message,
+          status: 'FAILED',
+        });
+      }
+
+      if (!data) {
+        return Notifications({
+          title: 'Data Gagal dihapus',
+          message: 'Gagal menghapus data',
+          status: 'FAILED',
+        });
+      }
+
       Notifications({
         title: 'Data berhasil dihapus',
         message: 'Berhasil menghapus data user',
         status: 'SUCCESS',
       });
     },
-    onError: (data, variables, context) => {
-      Notifications({
-        title: 'Data Gagal dihapus',
-        message: 'Gagal menghapus data user',
-        status: 'FAILED',
-      });
-    },
+    // onError(error, variables, context) {
+    //   console.log('error delete project : ', error);
+
+    //   Notifications({
+    //     title: 'Data Gagal dihapus',
+    //     message: 'Gagal menghapus data user',
+    //     status: 'FAILED',
+    //   });
+    // },
   });
 };

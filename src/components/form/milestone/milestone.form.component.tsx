@@ -31,7 +31,7 @@ interface IMilestoneFormProps {
 const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
   const [selectProject, setSelectProject] = useState([]);
 
-  const { data: projects } = useGetProjectQuery();
+  const { data: projects } = useGetProjectQuery(undefined, '');
   const { mutate: createMilestone } = usePostMilestone();
   const { mutate: updateMilestone } = usePutMilestone();
 

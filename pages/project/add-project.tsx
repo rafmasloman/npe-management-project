@@ -22,6 +22,20 @@ const AddProject = () => {
           pathname={pathname}
           title="Tambah Project"
           pageTitle="Tambah Project"
+          anchorData={[
+            {
+              id: 1,
+              text: 'Project',
+              href: '/project',
+              isActiveText: '/project',
+            },
+            {
+              id: 2,
+              text: 'Tambah Project',
+              href: '/add-project',
+              isActiveText: '/add-project',
+            },
+          ]}
         >
           <ProjectForm />
         </FormLayout>

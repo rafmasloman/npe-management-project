@@ -53,11 +53,14 @@ const ProjectAdmin = ({ projects }: any) => {
     data: getProjects,
     isSuccess,
     isLoading,
+    refetch,
   } = useGetProjectQuery(undefined, '');
 
+  console.log('projects : ', getProjects?.data);
+
   useEffect(() => {
-    setProject(projects.data);
-  }, [projects]);
+    setProject(getProjects?.data);
+  }, [getProjects, isSuccess]);
 
   if (isLoading) {
     return <PageLoading />;
@@ -82,7 +85,7 @@ const ProjectAdmin = ({ projects }: any) => {
           mx={largeScreen ? 0 : '1rem'}
           spacing={'xl'}
         >
-          {project.map((project: any) => (
+          {project?.map((project: any) => (
             <ProjectCard
               key={project.id}
               width={340}

@@ -1,4 +1,5 @@
 import SEO from '@/src/components/SEO/seo.component';
+import ProfileForm from '@/src/components/form/profile/profile-form.component';
 import HeaderPage from '@/src/components/header/header-page.component';
 import { UserContext } from '@/src/context/user-credential.context';
 import { useGetQueryProfile } from '@/src/hooks/profile/useGetQueryProfile';
@@ -149,6 +150,26 @@ const ProfilePages = () => {
                   </Stack>
                 </SimpleGrid>
               </Box>
+            </div>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="edit-profile" className="py-14">
+            <div className="pl-10">
+              <Title order={3}>Edit Profile</Title>
+
+              <Space h={30} />
+
+              <ProfileForm
+                initialValues={{
+                  firstname: userProfile?.firstname,
+                  lastname: userProfile?.lastname,
+                  email: userProfile?.email,
+                  phoneNumber: userProfile?.phoneNumber,
+                  gender: userMemberProfile?.data?.gender,
+                  birthDate: userMemberProfile?.data?.birthDate,
+                  profilePicture: userMemberProfile?.data?.profilePicture,
+                }}
+              />
             </div>
           </Tabs.Panel>
         </Tabs>

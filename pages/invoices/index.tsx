@@ -233,17 +233,17 @@ const InvoicePage = () => {
                     <td className="  text-center  text-xs">{`${invoice.invoicesTitle} `}</td>
                     <td className="  text-center text-xs">{`${invoice.orderId} `}</td>
                     <td className="   text-center  text-xs">{`${invoice.otherInfo} `}</td>
-                    <td className=" text-center  text-xs">{`${invoice.client.name} `}</td>
+                    <td className=" text-center  text-xs">{`${invoice.client?.name} `}</td>
                     <td className=" text-center text-xs ">
                       <div className="flex items-center w-full">
                         <Image
                           width={20}
                           height={20}
-                          alt={`${invoice.client.project.projectName}`}
-                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${invoice.client.project.projectIcon}`}
+                          alt={`${invoice.client?.project?.projectName}`}
+                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${invoice.client?.project?.projectIcon}`}
                         />
 
-                        <Text>{invoice.client.project.projectName}</Text>
+                        <Text>{invoice.client?.project?.projectName}</Text>
                       </div>
                     </td>
 

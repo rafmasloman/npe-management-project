@@ -37,7 +37,7 @@ const EditProject = ({ projectDetail }: any) => {
 
   const {
     projectName,
-    client,
+    clientId,
     platform,
     startedDate,
     endDate,
@@ -46,7 +46,6 @@ const EditProject = ({ projectDetail }: any) => {
     member,
     price,
   } = projectDetail.data?.project;
-
 
   return (
     <MainLayout>
@@ -57,17 +56,31 @@ const EditProject = ({ projectDetail }: any) => {
           pathname={pathname}
           title="Edit Project"
           pageTitle="Edit Project"
+          anchorData={[
+            {
+              id: 1,
+              text: 'Project',
+              href: '/project',
+              isActiveText: '/project',
+            },
+            {
+              id: 2,
+              text: 'Edit Project',
+              href: '/edit-project',
+              isActiveText: '/edit-project',
+            },
+          ]}
         >
           <ProjectForm
             initValue={{
               projectName,
-              client,
+              client: clientId,
               platform,
               description,
               startedDate: new Date(startedDate),
               endDate: new Date(endDate),
               projectIcon,
-              members: member,
+              member,
               price,
             }}
           />

@@ -21,8 +21,8 @@ import { IMemberProps } from '../interfaces/member.interface';
 import { IPlatformService } from '../interfaces/platform.interface';
 import { useEffect, useState } from 'react';
 import ModalForm from '../components/modal/modal-form.component';
-import PayrollForm from '../components/form/PayrollForm';
 import { formattedDate } from '../utils/date.util';
+import PayrollForm from '../components/form/payroll/payroll.form.component';
 
 interface IProjectDetailResponse {
   id: number;

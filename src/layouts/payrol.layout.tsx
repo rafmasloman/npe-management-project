@@ -1,12 +1,12 @@
 import { Space } from '@mantine/core';
 import ModalForm from '../components/modal/modal-form.component';
-import PayrollForm from '../components/form/PayrollForm';
 import Table from '../components/table/table.component';
 import {
   payroll,
   payroll as payrolls,
 } from '@/pages/api/dummy/payroll.dummy.api';
 import { salaryPercent } from '../utils/payroll.util';
+import PayrollForm from '../components/form/payroll/payroll.form.component';
 
 interface IPayrollProps {
   projectPrice: number;
