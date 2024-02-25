@@ -69,7 +69,7 @@ const ProjectCard = ({
   };
 
   return (
-    <div className="relative  w-full ">
+    <div className="relative w-full  lg:w-[350px] ">
       <ModalAction
         headerText="Hapus Data Project?"
         message="Data yang telah dihapus tidak dapat dikembalikan"

@@ -44,7 +44,7 @@ import ActionMenu from '../menu/action-menu.component';
 import { IconTrash } from '@tabler/icons-react';
 import { useDeleteTask } from '@/src/hooks/task/useDeleteTaskMutation';
 import ModalAction from '../modal/modal-action.component';
-import TaskForm from '../form/task.form.component';
+import TaskForm from '../form/task/task.form.component';
 import { useDragItem } from '@/src/hooks/common/drag/useDragTask';
 import CommentLayout from '@/src/layouts/comment.layout';
 import { TODO_UTILS } from '@/src/utils/todo.util';

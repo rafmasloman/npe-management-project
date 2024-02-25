@@ -5,7 +5,7 @@ import {
   IconCircleFilled,
   IconTrash,
 } from '@tabler/icons-react';
-import TaskForm from '../components/form/task.form.component';
+import TaskForm from '../components/form/task/task.form.component';
 import HeaderStatus from '../components/header/header-task-status.component';
 import ModalForm from '../components/modal/modal-form.component';
 import { COLORS } from '../constant/colors.constant';

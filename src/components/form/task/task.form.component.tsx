@@ -6,19 +6,23 @@ import {
   Group,
   MultiSelect,
   Select,
+  Stack,
+  Text,
   TextInput,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { IconPlus } from '@tabler/icons-react';
-import ItemSelect from '../input/select-item.input.component';
-import ItemValue from '../select/value-select.component';
+import ItemSelect from '../../input/select-item.input.component';
+import ItemValue from '../../select/value-select.component';
 import { useGetAllMilestone } from '@/src/hooks/milestone/useGetAllMilestones';
 import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
-import { useForm } from '@mantine/form';
+import { useForm, yupResolver } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { usePostTask } from '@/src/hooks/task/usePostTaskMutation';
 import { useEffect, useState } from 'react';
 import { useGetMilestonesByProject } from '@/src/hooks/milestone/useGetMilestoneByProject';
+import { TaskFormSchema } from './task.schema';
+import Link from 'next/link';
 
 const TaskForm = () => {
   // const queryMembers = members.map((member) => ({
@@ -35,7 +39,7 @@ const TaskForm = () => {
   const { mutate: createTask } = usePostTask();
 
   const form = useForm({
-    // validate: yupResolver(schema),
+    // validate: yupResolver(TaskFormSchema),
     initialValues: {
       name: '',
       projectId: '',
@@ -81,6 +85,8 @@ const TaskForm = () => {
       status: values.status,
       priority: values.priority,
     };
+
+    console.log('task : ', payload);
 
     createTask(payload);
   });
@@ -140,8 +146,8 @@ const TaskForm = () => {
           <Select
             data={[
               { label: 'Low', value: 'LOW' },
-              { label: 'Medium', value: 'Medium' },
-              { label: 'High', value: 'HIGHT' },
+              { label: 'Medium', value: 'MEDIUM' },
+              { label: 'High', value: 'HIGH' },
             ]}
             placeholder="Pilih Tingkat Prioritas"
             label="Prioritas"
@@ -151,13 +157,22 @@ const TaskForm = () => {
         </Grid.Col>
 
         <Grid.Col span={12}>
-          <Select
-            data={milestoneOption}
-            placeholder="Pilih Milestone"
-            label="Milestone"
-            withAsterisk
-            {...form.getInputProps('milestoneId')}
-          />
+          <Stack>
+            <Select
+              data={milestoneOption}
+              placeholder="Pilih Milestone"
+              label="Milestone"
+              withAsterisk
+              {...form.getInputProps('milestoneId')}
+            />
+            <Link
+              href={'/milestone/add-milestone'}
+              className="text-xs"
+              style={{ color: COLORS.PRIMARY }}
+            >
+              Buat Milestone
+            </Link>
+          </Stack>
         </Grid.Col>
 
         <Grid.Col span={12}>

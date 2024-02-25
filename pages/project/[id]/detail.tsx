@@ -30,7 +30,7 @@ import SEO from '@/src/components/SEO/seo.component';
 import HeaderPage from '@/src/components/header/header-page.component';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
 import ModalForm from '@/src/components/modal/modal-form.component';
-import TaskForm from '@/src/components/form/task.form.component';
+import TaskForm from '@/src/components/form/task/task.form.component';
 import HeaderStatus from '@/src/components/header/header-task-status.component';
 import TaskCard from '@/src/components/card/task-card.component';
 import { IconTrash } from '@tabler/icons-react';
@@ -71,8 +71,6 @@ const ProjectDetail = ({ projectDetail }: any) => {
   const { data: projects } = useGetProjectDetailQuery(query.id as string);
 
   const project = projects?.data?.project!;
-
-  const user = React.useContext(UserContext);
 
   return (
     <MainLayout>

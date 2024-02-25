@@ -6,6 +6,7 @@ import {
   FileInput,
   Grid,
   Group,
+  MultiSelect,
   NumberInput,
   Select,
   Text,
@@ -23,17 +24,27 @@ import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
 import { usePostMilestone } from '@/src/hooks/milestone/usePostMilestone';
 import { usePutMilestone } from '@/src/hooks/milestone/usePutMilestone';
 import { useRouter } from 'next/router';
+import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
 
 interface IMilestoneFormProps {
   initValue?: IMilestoneDataParams;
 }
 
+interface ISelectMemberDataStateProps {
+  value: string;
+  label: string;
+}
 const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
   const [selectProject, setSelectProject] = useState([]);
+  const [membersData, setMembersData] = useState<ISelectMemberDataStateProps[]>(
+    [{ value: '', label: '' }],
+  );
 
   const { data: projects } = useGetProjectQuery(undefined, '');
   const { mutate: createMilestone } = usePostMilestone();
   const { mutate: updateMilestone } = usePutMilestone();
+
+  const { data: members } = useGetMemberQuery();
 
   const { query } = useRouter();
 
@@ -45,10 +56,23 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       startedDate: initValue?.startedDate || '',
       endDate: initValue?.endDate || '',
       status: initValue?.status || 'TO DO',
+      member:
+        initValue?.member?.map((member: any) => {
+          return member.id;
+        }) || [],
     },
   });
 
   useEffect(() => {
+    const selectMembers = !members
+      ? []
+      : members?.data?.map((member: any) => {
+          return {
+            value: member.id,
+            label: `${member.user?.firstname} ${member.user?.lastname}`,
+          };
+        });
+
     if (projects?.data && projects?.data.length > 0) {
       const selectProject = projects?.data?.map((project: any) => {
         return {
@@ -58,7 +82,9 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       });
       setSelectProject(selectProject);
     }
-  }, [projects]);
+
+    setMembersData(selectMembers);
+  }, [projects, members]);
 
   const handleSubmit = form.onSubmit((values) => {
     const payload = {
@@ -67,7 +93,10 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       startedDate: values.startedDate as string,
       endDate: values.endDate as string,
       status: values.status,
+      member: values.member,
     };
+
+    console.log('milestone : ', payload);
 
     if (!initValue) {
       createMilestone(payload);
@@ -114,18 +143,29 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
         </Grid.Col>
 
         <Grid.Col lg={6} md={1}>
+          <MultiSelect
+            data={membersData}
+            placeholder="Pilih Member"
+            label="Member"
+            radius={'md'}
+            withAsterisk
+            {...form.getInputProps('member')}
+          />
+        </Grid.Col>
+
+        <Grid.Col lg={6} md={1}>
           <Group position="apart">
             <DateInput
               label="Tanggal Mulai"
               placeholder="Pilih tanggal mulai"
-              w={'49%'}
+              w={'48%'}
               withAsterisk
               {...form.getInputProps('startedDate')}
             />
             <DateInput
               label="Tanggal Selesai"
               placeholder="Pilih tanggal selesai"
-              w={'49%'}
+              w={'48%'}
               withAsterisk
               {...form.getInputProps('endDate')}
             />

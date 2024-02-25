@@ -19,13 +19,17 @@ import { IconPlus, IconSearch } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
 import DownloadFileAPI from '../api/file/file-query';
 import { GetServerSidePropsContext } from 'next';
 import { __setSSRAuthCookie } from '@/src/utils/cookie.util';
 import ProjectsQueryApi from '../api/project/project-query';
 
 import cookie from 'cookie';
+import { UserContext } from '@/src/context/user-credential.context';
+import { useGetMemberProjectQuery } from '@/src/hooks/member/useGetQueryMemberProject';
+import { useGetQueryUserProjects } from '@/src/hooks/user/useGetUserProjectQuery';
+import { useGetQueryUserMemberProjects } from '@/src/hooks/user/useGetUserMemberProjectQuery';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req, query } = ctx;
@@ -42,12 +46,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   return { props: { projects } };
 }
 
-const ProjectAdmin = ({ projects }: any) => {
+const ProjectAdmin = () => {
   const { pathname } = useRouter();
+  const user = useContext(UserContext);
   const largeScreen = useMediaQuery('(min-width: 60em)');
   const [iconFilename, setIconFilename] = useState('');
 
-  const [project, setProject] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   const {
     data: getProjects,
@@ -56,15 +61,20 @@ const ProjectAdmin = ({ projects }: any) => {
     refetch,
   } = useGetProjectQuery(undefined, '');
 
-  console.log('projects : ', getProjects?.data);
-
+  const { data: getMemberProjects } = useGetQueryUserMemberProjects(
+    user?.user?.id!,
+  );
   useEffect(() => {
-    setProject(getProjects?.data);
-  }, [getProjects, isSuccess]);
+    user?.user?.role === 'ADMIN'
+      ? setProjects(getProjects?.data)
+      : setProjects(getMemberProjects?.data?.project);
+  }, [getProjects, getMemberProjects, user?.user?.role, isSuccess]);
 
   if (isLoading) {
     return <PageLoading />;
   }
+
+  console.log('user : ', getMemberProjects?.data?.project);
 
   return (
     <MainLayout>
@@ -85,7 +95,7 @@ const ProjectAdmin = ({ projects }: any) => {
           mx={largeScreen ? 0 : '1rem'}
           spacing={'xl'}
         >
-          {project?.map((project: any) => (
+          {projects?.map((project: any) => (
             <ProjectCard
               key={project.id}
               width={340}

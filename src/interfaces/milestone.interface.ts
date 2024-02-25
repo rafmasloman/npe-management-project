@@ -21,4 +21,5 @@ export interface IMilestoneDataParams {
   startedDate: Date;
   endDate: Date;
   status: string;
+  member: any[];
 }

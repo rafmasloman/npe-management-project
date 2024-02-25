@@ -165,7 +165,7 @@ const Dashboard = ({ userCredential }: any) => {
           <Space h={30} />
 
           {/* <ScrollArea className="w-screen sm:w-full"> */}
-          <div className="w-full  flex flex-col md:flex-row md:justify-between">
+          <div className="w-full  flex flex-col md:flex-row  gap-10">
             {userProject?.project?.map((project: any) => (
               <ProjectCard
                 key={project.id}
