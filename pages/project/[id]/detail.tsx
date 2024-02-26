@@ -46,6 +46,8 @@ import {
   __setSSRAuthCookie,
 } from '@/src/utils/cookie.util';
 import { UserContext } from '@/src/context/user-credential.context';
+import MilestoneSpace from '@/src/layouts/milestone-workspace.layout';
+import TabList from '@/src/components/tab/tab-list.component';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { params, req } = ctx;
@@ -109,46 +111,7 @@ const ProjectDetail = ({ projectDetail }: any) => {
         <Space h={50} />
 
         <Tabs styles={{}} defaultValue={'overview'}>
-          <Tabs.List>
-            <Tabs.Tab
-              fz={rem(16)}
-              mr={rem(50)}
-              value="overview"
-              pb={rem(20)}
-              color={'#F79F1A'!}
-              style={{
-                borderWidth: 3,
-                bottom: 0,
-              }}
-              pl={0}
-            >
-              Overview
-            </Tabs.Tab>
-            <Tabs.Tab
-              fz={rem(16)}
-              mr={rem(50)}
-              pb={rem(20)}
-              pl={0}
-              value="tasks"
-              style={{
-                borderWidth: 3,
-              }}
-            >
-              Tasks
-            </Tabs.Tab>
-            <Tabs.Tab
-              fz={rem(16)}
-              mr={rem(50)}
-              pb={rem(20)}
-              pl={0}
-              value="milestone"
-              style={{
-                borderWidth: 3,
-              }}
-            >
-              Milestone
-            </Tabs.Tab>
-          </Tabs.List>
+          <TabList />
 
           <Tabs.Panel value="overview" pt={rem(50)}>
             <ProjectOverview projectDetail={project} />
@@ -156,6 +119,10 @@ const ProjectDetail = ({ projectDetail }: any) => {
 
           <Tabs.Panel value="tasks" pt={rem(50)}>
             <TaskWorkSpace todos={projects?.data?.todos} />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="milestone">
+            <MilestoneSpace />
           </Tabs.Panel>
         </Tabs>
 

@@ -1,11 +1,11 @@
 import { Text } from '@mantine/core';
 
-const MilestoneWorkspace = () => {
+const MilestoneSpace = () => {
   return (
     <div>
-      <Text>Milestone Workspace</Text>
+      <div></div>
     </div>
   );
 };
 
-export default MilestoneWorkspace;
+export default MilestoneSpace;
