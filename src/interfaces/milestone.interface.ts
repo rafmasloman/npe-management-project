@@ -1,6 +1,6 @@
 import { IMemberProps } from './member.interface';
 import { IPlatformService } from './platform.interface';
-import { ITaskProps } from './task.interface';
+import { ITaskProps, ITasksMilestoneResponseData } from './task.interface';
 
 export interface IMilestoneCardProps {
   projectId?: string;
@@ -22,4 +22,16 @@ export interface IMilestoneDataParams {
   endDate: Date;
   status: string;
   member: any[];
+}
+
+export interface IMilestoneProjectResponseData {
+  id: number;
+  milestoneName: string;
+  description: string;
+  projectId: string;
+  progress: number;
+  startedDate: Date;
+  endDate: Date;
+  status: string;
+  task: ITasksMilestoneResponseData[];
 }

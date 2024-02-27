@@ -195,7 +195,7 @@ const navbarAdmin = () => {
       <Link href={ROUTES.TASK} className="no-underline">
         <NavLink
           label="Task"
-          icon={<ICTask width={25} height={25} />}
+          icon={<ICTask width={30} height={30} />}
           styles={{
             label: {
               fontSize: rem(16),

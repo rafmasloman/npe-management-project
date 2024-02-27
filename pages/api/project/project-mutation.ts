@@ -16,8 +16,6 @@ class ProjectMutationApi {
         body: payload,
       });
 
-      console.log('payload mutation : ', response);
-
       const data = await response.json();
       return data;
     } catch (error: any) {
@@ -57,6 +55,26 @@ class ProjectMutationApi {
       const data = await response.json();
       return data;
     } catch (error) {
+      return error;
+    }
+  }
+
+  static async inviteMemberToProject(payload: any) {
+    try {
+      const response = await fetch(`${this.routesName}/inviteMember`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error: any) {
+      console.log('error : ', error);
+
       return error;
     }
   }

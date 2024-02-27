@@ -1,5 +1,6 @@
 import MainLayout from '@/src/layouts/main.layout';
 import {
+  Avatar,
   Box,
   Card,
   Container,
@@ -12,6 +13,7 @@ import {
   Tabs,
   Text,
   TextInput,
+  Tooltip,
   rem,
 } from '@mantine/core';
 import Image from 'next/image';
@@ -88,27 +90,61 @@ const ProjectDetail = ({ projectDetail }: any) => {
 
         {/* {isLoading && <PageLoading />} */}
 
-        <Stack>
-          <Group>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${project?.projectIcon}`}
-              alt={'Project Showcase'}
-              width={60}
-              height={70}
-              quality={100}
-            />
+        <Group position="apart">
+          <Stack>
+            <Group>
+              <Image
+                src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${project?.projectIcon}`}
+                alt={'Project Showcase'}
+                width={60}
+                height={70}
+                quality={100}
+              />
 
-            <Text fz={'2.5rem'} fw={600}>
-              {project?.projectName}
+              <Text fz={'2.5rem'} fw={600}>
+                {project?.projectName}
+              </Text>
+            </Group>
+
+            <Text className="w-full md:w-2/3" ta="justify">
+              {project?.description}
             </Text>
-          </Group>
+          </Stack>
 
-          <Text className="w-full md:w-2/3" ta="justify">
-            {project?.description}
-          </Text>
-        </Stack>
+          <Avatar.Group spacing={'md'}>
+            {project?.member?.map((member: any, index: number) => {
+              return (
+                <Tooltip key={index} label={`${member.user?.firstname}`}>
+                  <Avatar radius={'xl'} size={45} />
+                </Tooltip>
+              );
+            })}
+          </Avatar.Group>
+        </Group>
 
-        <Space h={50} />
+        <Space h={30} />
+
+        <Group>
+          {project?.platform?.split(',').map((platform: any, index: number) => {
+            return (
+              <Text
+                key={platform}
+                fz={'0.75rem'}
+                bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
+                px={10}
+                py={4}
+                color="white"
+                style={{
+                  borderRadius: '7px',
+                }}
+              >
+                {platform}
+              </Text>
+            );
+          })}
+        </Group>
+
+        <Space h={40} />
 
         <Tabs styles={{}} defaultValue={'overview'}>
           <TabList />
@@ -122,7 +158,7 @@ const ProjectDetail = ({ projectDetail }: any) => {
           </Tabs.Panel>
 
           <Tabs.Panel value="milestone">
-            <MilestoneSpace />
+            <MilestoneSpace project={project} />
           </Tabs.Panel>
         </Tabs>
 

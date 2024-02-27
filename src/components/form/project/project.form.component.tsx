@@ -85,13 +85,14 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
     formData.set('endDate', values.endDate as string);
     formData.set('projectIcon', values.projectIcon);
     formData.set('price', values.price.toString());
+    formData.set('client', values.client);
 
     if (!initValue) {
       console.log('data : ', formData.get('projectIcon'));
 
       createProject(formData);
     } else if (!!initValue) {
-      console.log('date : ', formData.get('member'));
+      console.log('date : ', formData.get('client'));
 
       updateProject({ projectId: query.id, payload: formData });
     }

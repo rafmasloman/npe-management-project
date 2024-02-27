@@ -49,6 +49,7 @@ import { useDragItem } from '@/src/hooks/common/drag/useDragTask';
 import CommentLayout from '@/src/layouts/comment.layout';
 import { TODO_UTILS } from '@/src/utils/todo.util';
 import TaskStatusMenu from '../menu/task-status-menu.component';
+import { useRouter } from 'next/router';
 
 interface ITaskCardProps {
   id?: string;
@@ -119,7 +120,8 @@ const TaskCard = ({
     useDisclosure(false);
 
   const { data: commentData } = useGetCommentByTask(Number(id!));
-  const { mutate: deleteTask } = useDeleteTask();
+  const { mutate: deleteTask, isPending: isLoadingDeleteTask } =
+    useDeleteTask();
   const { mutate } = usePostComment(Number(id!));
 
   const userAccount = useContext(UserContext);
@@ -143,6 +145,7 @@ const TaskCard = ({
   };
 
   const openModalTaskForm = () => {
+    setTaskId(Number(id!));
     openedEdit();
   };
 
@@ -192,16 +195,14 @@ const TaskCard = ({
             variant=""
             onClick={() => handleDeleteTask()}
             w={'48%'}
-            // loading={isLoading}
+            loading={isLoadingDeleteTask}
             radius={'md'}
             c={'white'}
             bg={COLORS.DANGER}
-            // disabled={disableNoButton}
           >
             Hapus
           </Button>
           <Button
-            // loading={isLoading}
             onClick={close}
             variant="outline"
             w={'48%'}
@@ -230,7 +231,7 @@ const TaskCard = ({
           },
         }}
       >
-        <TaskForm />
+        <TaskForm taskId={taskId} />
       </Modal>
 
       <Drawer

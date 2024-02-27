@@ -7,3 +7,13 @@ export interface ITaskProps {
   milestone: string;
   assignedTo: string;
 }
+
+export interface ITasksMilestoneResponseData {
+  name: string;
+  createdAt: string;
+  endDate: string;
+  projectId: string;
+  status: string;
+  milestoneId: number;
+  priority: string;
+}

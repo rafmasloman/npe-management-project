@@ -134,7 +134,7 @@ const ProjectCard = ({
         style={ListStyleDefaultTheme.default}
       >
         <Card
-          className="w-full mb-10 lg:md-0 "
+          className="w-full mb-10 lg:md-0 border border-solid border-transparent hover:border hover:border-solid hover:border-sky-800"
           // w={300}
           h={height}
           radius={'lg'}
@@ -199,6 +199,8 @@ const ProjectCard = ({
 
               <Group style={{ position: 'relative' }}>
                 {member?.map((m, index) => {
+                  console.log(m);
+
                   index *= 3;
                   return (
                     <Tooltip

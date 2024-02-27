@@ -17,3 +17,7 @@ export const schema = yup.object().shape({
 
     .required('Mohon pilih icon'),
 });
+
+export const InviteMemberSchema = yup.object().shape({
+  member: yup.string().required('Pilih Member Terlebih dulu'),
+});

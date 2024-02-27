@@ -23,8 +23,9 @@ import { useEffect, useState } from 'react';
 import { useGetMilestonesByProject } from '@/src/hooks/milestone/useGetMilestoneByProject';
 import { TaskFormSchema } from './task.schema';
 import Link from 'next/link';
+import { useGetTaskDetailQuery } from '@/src/hooks/task/useGetTaskDetailQuery';
 
-const TaskForm = () => {
+const TaskForm = ({ taskId }: any) => {
   // const queryMembers = members.map((member) => ({
   //   member,
   // }));
@@ -36,12 +37,13 @@ const TaskForm = () => {
 
   const { data: milestones } = useGetMilestonesByProject(query.id as string);
   const { data: members } = useGetMemberQuery();
+  const { data: taskDetail } = useGetTaskDetailQuery(taskId);
   const { mutate: createTask } = usePostTask();
 
   const form = useForm({
     // validate: yupResolver(TaskFormSchema),
     initialValues: {
-      name: '',
+      name: taskDetail?.data?.name || '',
       projectId: '',
       milestoneId: '',
       member: '',

@@ -52,7 +52,7 @@ const TaskWorkSpace = ({ todos }: any) => {
   return (
     <Box>
       <ModalForm btnText="Tambah Task" title="Create Task">
-        <TaskForm />
+        <TaskForm taskId={null} />
       </ModalForm>
 
       <Space h={50} />

@@ -31,6 +31,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { IconCircleFilled } from '@tabler/icons-react';
 import moment from 'moment';
 import { useCountStatusTaskData } from '../hooks/task/useTotalTaskData';
+import InviteMemberForm from '../components/form/project/invite-member.form.component';
 
 interface IProjectDetailResponse {
   id: number;
@@ -97,10 +98,10 @@ const ProjectOverview = (projectDetail: any) => {
       <div className="gap-10 relative flex items-center px-7 py-0 border  border-solid border-gray-200 shadow-sm rounded-2xl bg-white h-72">
         <div className="w-10 h-2 bg-[#00D1FF] absolute top-7 right-10 rounded-lg"></div>
 
-        {projectManager?.map((project: any) => {
+        {projectManager?.map((manager: any) => {
           return (
             <Stack
-              key={project?.id}
+              key={manager?.id}
               spacing={40}
               className="h-full"
               justify="center"
@@ -108,7 +109,7 @@ const ProjectOverview = (projectDetail: any) => {
               <Group className="bg-neutral-100  px-3 py-2.5 rounded-xl">
                 <Avatar
                   src={
-                    !project?.profilePicture ? null : project?.profilePicture
+                    !manager?.profilePicture ? null : manager?.profilePicture
                   }
                   size={40}
                   radius={'xl'}
@@ -116,32 +117,33 @@ const ProjectOverview = (projectDetail: any) => {
 
                 <div>
                   <Text className="text-black">
-                    {project?.user?.firstname} {project?.user?.lastname}
+                    {manager?.user?.firstname} {manager?.user?.lastname}
                   </Text>
 
                   <Text className="text-sm text-neutral-400">
-                    {project?.position}
+                    {manager?.position}
                   </Text>
                 </div>
               </Group>
 
-              <Stack spacing={10}>
+              <Stack spacing={12}>
                 <div className="flex justify-between gap-14">
                   <Text className="text-gray-400 ">Project</Text>
                   <Text>{projectDetail?.projectDetail?.projectName}</Text>
                 </div>
                 <div className="flex justify-between gap-14">
-                  <Text className="text-gray-400 ">Tanggal Mulai</Text>
+                  <Text className="text-gray-400 ">Harga Project</Text>
                   <Text className="">
-                    {moment(projectDetail?.projectDetail?.startedDate).format(
-                      'DD MMMM YYYY',
+                    Rp{' '}
+                    {projectDetail?.projectDetail?.price.toLocaleString(
+                      'id-ID',
                     )}
                   </Text>
                 </div>
 
                 <div className="flex justify-between gap-14">
                   <Text className="text-gray-400 ">Deadline</Text>
-                  <Text className="">
+                  <Text className="text-red-500 font-medium">
                     {moment(projectDetail?.projectDetail?.endDate).format(
                       'DD MMMM YYYY',
                     )}
@@ -299,7 +301,7 @@ const ProjectOverview = (projectDetail: any) => {
               variant="outline"
               colorBtn={'transparant'}
             >
-              <PayrollForm />
+              <InviteMemberForm project={projectDetail?.projectDetail} />
             </ModalForm>
           </SubDetail>
 
