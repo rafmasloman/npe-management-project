@@ -30,26 +30,27 @@ const TaskForm = ({ taskId }: any) => {
   //   member,
   // }));
 
+  console.log('task id : ', taskId);
+
   const [memberOption, setMemberOption] = useState([]);
   const [milestoneOption, setMilestoneOption] = useState([]);
-
   const { query } = useRouter();
 
   const { data: milestones } = useGetMilestonesByProject(query.id as string);
   const { data: members } = useGetMemberQuery();
-  const { data: taskDetail } = useGetTaskDetailQuery(taskId);
+  const { data: taskDetail, isSuccess } = useGetTaskDetailQuery(taskId);
   const { mutate: createTask } = usePostTask();
 
   const form = useForm({
     // validate: yupResolver(TaskFormSchema),
     initialValues: {
       name: taskDetail?.data?.name || '',
-      projectId: '',
-      milestoneId: '',
-      member: '',
-      priority: '',
+      projectId: taskDetail?.data?.projectId || '',
+      milestoneId: taskDetail?.data?.milestoneId || '',
+      member: taskDetail?.data?.member || '',
+      priority: taskDetail?.data?.priority || '',
       endDate: '',
-      status: '',
+      status: taskDetail?.data?.status || '',
     },
   });
 
@@ -169,7 +170,7 @@ const TaskForm = ({ taskId }: any) => {
             />
             <Link
               href={'/milestone/add-milestone'}
-              className="text-xs"
+              className="text-xs w-fit"
               style={{ color: COLORS.PRIMARY }}
             >
               Buat Milestone

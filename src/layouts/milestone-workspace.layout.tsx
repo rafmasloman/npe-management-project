@@ -3,7 +3,9 @@ import {
   Badge,
   Divider,
   Group,
+  Menu,
   Progress,
+  Select,
   Space,
   Stack,
   Text,
@@ -17,6 +19,13 @@ import ModalForm from '../components/modal/modal-form.component';
 import { COLORS } from '../constant/colors.constant';
 import { useEffect, useState } from 'react';
 import { ICTask } from '../assets/icons/nav-icon/task.icon';
+import ButtonNavigate from '../components/button/button-link.component';
+import { IconCircleFilled, IconEdit, IconPlus } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
+import { getCurrentRole } from '../utils/page.util';
+import moment from 'moment';
+import { ICDeadline } from '../assets/icons/deadlin.icon';
+import Link from 'next/link';
 
 interface IMilestoneSpaceProps {
   project: any;
@@ -25,6 +34,8 @@ interface IMilestoneSpaceProps {
 const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
   const { data: milestones } = useGetMilestonesByProject(project?.id);
   const [members, setMembers] = useState([]);
+
+  const { pathname } = useRouter();
 
   useEffect(() => {
     milestones?.data?.map((milestone: any) => {
@@ -39,118 +50,197 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
       <Group position="apart">
         <Title order={3}>Milestone Space</Title>
 
-        <ModalForm title="Tambah Milestone" btnText="Tambah Milestone">
-          <div></div>
-        </ModalForm>
+        <ButtonNavigate icon={<IconPlus />} url={`/milestone/add-milestone`}>
+          Tambah Milestone
+        </ButtonNavigate>
       </Group>
 
       <Space h={30} />
 
-      {milestones?.data?.map((milestone: IMilestoneProjectResponseData) => {
-        return (
-          <div
-            key={milestone.id}
-            className={`bg-white border-l-[12px] rounded-xl border border-gray-200 border-solid ${
-              milestone.status === 'TODO' ? 'border-l-todo' : ''
-            }  py-5 pl-5 pr-12 flex flex-col gap-y-3.5`}
-          >
-            <div className="flex justify-between items-center">
-              <Stack spacing={5}>
-                <Text className="text-lg font-semibold text-blue-950">
-                  {milestone.milestoneName}
-                </Text>
-                <Text className="text-gray-400 font-light">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Natus ab tenetur recusandae!
-                </Text>
-              </Stack>
-
-              <Group className="border border-solid border-neutral-300 px-2.5 py-1.5 rounded-lg">
-                <Avatar
-                  size={25}
-                  className="h-fit"
-                  src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${project?.projectIcon}`}
-                />
-                <Text>{project?.projectName}</Text>
-              </Group>
-            </div>
-
-            {/* <Divider /> */}
-
-            <div className="flex items-center justify-between">
-              <Group spacing={30}>
-                <Badge
-                  color={
-                    milestone.status === 'TODO'
-                      ? 'orange'
-                      : milestone.status === 'ON_PROGRESS'
-                      ? 'indigo'
-                      : 'green'
-                  }
-                  size={'md'}
-                >
-                  {milestone.status}
-                </Badge>
-                <Group spacing={8} align="center">
-                  <ICTask primaryColor={COLORS.GRAY} width={28} height={28} />
-                  <Text className="text-gray-500">
-                    {milestone.task.length} tasks
+      <Stack spacing={30}>
+        {milestones?.data?.map((milestone: IMilestoneProjectResponseData) => {
+          return (
+            <div
+              key={milestone.id}
+              className={`bg-white border-l-[12px] rounded-xl border border-gray-200 border-solid ${
+                milestone.status === 'TODO'
+                  ? 'border-l-todo'
+                  : milestone.status === 'ON_PROGRESS'
+                  ? 'border-l-onprogress'
+                  : 'border-l-success'
+              }  py-5 pl-5 pr-12 flex flex-col gap-y-3.5`}
+            >
+              <div className="flex justify-between items-center">
+                <Stack spacing={5}>
+                  <Text className="text-lg font-semibold text-blue-950">
+                    {milestone.milestoneName}
                   </Text>
+                  <Text className="text-gray-400 font-light">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                    Natus ab tenetur recusandae!
+                  </Text>
+                </Stack>
+
+                <Menu shadow="md" width={200}>
+                  <Menu.Target>
+                    <Group
+                      className="border border-solid border-gray-300  w-fit h-fit px-2.5 py-1 rounded-lg"
+                      spacing={10}
+                    >
+                      <IconCircleFilled
+                        style={{
+                          color:
+                            milestone.status === 'TODO'
+                              ? COLORS.TODO
+                              : milestone.status === 'ON_PROGRESS'
+                              ? COLORS.ON_PROGRESS
+                              : COLORS.COMPLETED,
+                        }}
+                        size={12}
+                      />
+                      <Text>
+                        {milestone.status.slice(0, 1)}
+                        {milestone.status
+                          .slice(1, milestone.status.length)
+                          .toLowerCase()}
+                      </Text>
+                    </Group>
+                  </Menu.Target>
+
+                  <Menu.Dropdown>
+                    <Menu.Label>Milestone Status</Menu.Label>
+
+                    <Menu.Item
+                      icon={
+                        <IconCircleFilled
+                          style={{ color: COLORS.TODO }}
+                          size={12}
+                        />
+                      }
+                    >
+                      TODO
+                    </Menu.Item>
+                    <Menu.Item
+                      icon={
+                        <IconCircleFilled
+                          style={{ color: COLORS.ON_PROGRESS }}
+                          size={12}
+                        />
+                      }
+                    >
+                      ON_PROGRESS
+                    </Menu.Item>
+                    <Menu.Item
+                      icon={
+                        <IconCircleFilled
+                          style={{ color: COLORS.COMPLETED }}
+                          size={12}
+                        />
+                      }
+                    >
+                      COMPLETED
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </div>
+
+              {/* <Divider /> */}
+
+              <div className="flex items-center justify-between">
+                <Group spacing={20}>
+                  <Group spacing={10}>
+                    <ICDeadline width={20} height={20} />
+                    <Text>{moment(milestone.endDate).format('DD MMM YY')}</Text>
+                  </Group>
+
+                  <Divider
+                    h={30}
+                    w={3}
+                    className="rounded-lg"
+                    bg={COLORS.DEEPGRAY}
+                  />
+
+                  <Group spacing={10}>
+                    <IconEdit width={18} height={18} color={COLORS.SECONDARY} />
+                    <Link
+                      href={`/milestone/${milestone.id}/edit-milestone`}
+                      style={{
+                        textDecoration: 'none',
+                        color: COLORS.SECONDARY,
+                      }}
+                    >
+                      <Text>Edit</Text>
+                    </Link>
+                  </Group>
+
+                  <Divider
+                    h={30}
+                    w={3}
+                    className="rounded-lg"
+                    bg={COLORS.DEEPGRAY}
+                  />
+
+                  <Group spacing={8} align="center">
+                    <ICTask primaryColor={COLORS.GRAY} width={28} height={28} />
+                    <Text className="text-gray-500">
+                      {milestone.task.length} tasks
+                    </Text>
+                  </Group>
+
+                  <Divider
+                    h={30}
+                    w={3}
+                    className="rounded-lg"
+                    bg={COLORS.DEEPGRAY}
+                  />
+
+                  <Progress
+                    value={milestone.progress}
+                    label={`${milestone.progress}%`}
+                    radius={'lg'}
+                    size={'lg'}
+                    className="w-[300px] h-[18px]"
+                    styles={{
+                      label: {
+                        fontSize: rem(12),
+                        fontWeight: 500,
+                      },
+                    }}
+                  />
                 </Group>
 
-                <Divider
-                  h={30}
-                  w={3}
-                  className="rounded-lg"
-                  bg={COLORS.DEEPGRAY}
-                />
-
-                <Progress
-                  value={milestone.progress}
-                  label={`${milestone.progress}%`}
-                  radius={'lg'}
-                  size={'lg'}
-                  className="w-[300px] h-[18px]"
-                  styles={{
-                    label: {
-                      fontSize: rem(12),
-                      fontWeight: 500,
-                    },
-                  }}
-                />
-              </Group>
-
-              <div className="flex flex-col gap-y-3.5">
-                <Avatar.Group spacing={'md'}>
-                  {members.map((member: any) => {
-                    return (
-                      <Tooltip
-                        label={`${member.user?.firstname}`}
-                        key={member.id}
-                        color={'#93ACD6'}
-                      >
-                        <Avatar
-                          src={member.profilePicture}
-                          size={40}
-                          radius={'xl'}
-                          color={COLORS.PRIMARY}
+                <div className="flex flex-col gap-y-3.5">
+                  <Avatar.Group spacing={'md'}>
+                    {members.map((member: any) => {
+                      return (
+                        <Tooltip
+                          label={`${member.user?.firstname}`}
+                          key={member.id}
+                          color={'#93ACD6'}
                         >
-                          {!member.profilePicture
-                            ? `${member.user?.firstname.slice(
-                                0,
-                                1,
-                              )}${member.user?.lastname.slice(0, 1)}`
-                            : null}
-                        </Avatar>
-                      </Tooltip>
-                    );
-                  })}
-                </Avatar.Group>
+                          <Avatar
+                            src={member.profilePicture}
+                            size={40}
+                            radius={'xl'}
+                            color={COLORS.PRIMARY}
+                          >
+                            {!member.profilePicture
+                              ? `${member.user?.firstname.slice(
+                                  0,
+                                  1,
+                                )}${member.user?.lastname.slice(0, 1)}`
+                              : null}
+                          </Avatar>
+                        </Tooltip>
+                      );
+                    })}
+                  </Avatar.Group>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </Stack>
     </div>
   );
 };

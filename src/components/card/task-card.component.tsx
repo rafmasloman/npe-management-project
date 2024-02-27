@@ -149,6 +149,12 @@ const TaskCard = ({
     openedEdit();
   };
 
+  const handleCloseEdit = () => {
+    setTaskId(null);
+
+    closeEdit();
+  };
+
   const openModalConfirmationDelete = () => {
     openModal();
   };
@@ -217,7 +223,7 @@ const TaskCard = ({
 
       <Modal
         opened={openedModalEdit}
-        onClose={closeEdit}
+        onClose={handleCloseEdit}
         radius={'lg'}
         padding={25}
         title="Edit Task"
