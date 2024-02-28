@@ -50,6 +50,7 @@ import {
 import { UserContext } from '@/src/context/user-credential.context';
 import MilestoneSpace from '@/src/layouts/milestone-workspace.layout';
 import TabList from '@/src/components/tab/tab-list.component';
+import InviteMemberForm from '@/src/components/form/project/invite-member.form.component';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { params, req } = ctx;
@@ -111,20 +112,37 @@ const ProjectDetail = ({ projectDetail }: any) => {
             </Text>
           </Stack>
 
-          <Avatar.Group spacing={'md'}>
-            {project?.member?.map((member: any, index: number) => {
-              return (
-                <Tooltip key={index} label={`${member.user?.firstname}`}>
-                  <Avatar radius={'xl'} size={45} />
-                </Tooltip>
-              );
-            })}
-          </Avatar.Group>
+          <Group align="end">
+            <Stack spacing={10}>
+              <Text className="text-sm text-gray-400 font-medium">
+                Teams Project
+              </Text>
+              <Avatar.Group spacing={'md'}>
+                {project?.member?.map((member: any, index: number) => {
+                  return (
+                    <Tooltip key={index} label={`${member.user?.firstname}`}>
+                      <Avatar radius={'xl'} size={45} />
+                    </Tooltip>
+                  );
+                })}
+              </Avatar.Group>
+            </Stack>
+
+            <ModalForm
+              btnText="Invite Member"
+              title="Invite Member to Project"
+              // variant="outline"
+              colorBtn={COLORS.PRIMARY}
+            >
+              <InviteMemberForm project={project} />
+            </ModalForm>
+          </Group>
         </Group>
 
         <Space h={30} />
 
         <Group>
+          <Text className="text-gray-400">Avaiable on : </Text>
           {project?.platform?.split(',').map((platform: any, index: number) => {
             return (
               <Text

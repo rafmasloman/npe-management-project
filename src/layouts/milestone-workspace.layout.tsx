@@ -26,6 +26,7 @@ import { getCurrentRole } from '../utils/page.util';
 import moment from 'moment';
 import { ICDeadline } from '../assets/icons/deadlin.icon';
 import Link from 'next/link';
+import MilestoneStatusMenu from '../components/menu/milestone-status-menu.component';
 
 interface IMilestoneSpaceProps {
   project: any;
@@ -81,67 +82,10 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
                   </Text>
                 </Stack>
 
-                <Menu shadow="md" width={200}>
-                  <Menu.Target>
-                    <Group
-                      className="border border-solid border-gray-300  w-fit h-fit px-2.5 py-1 rounded-lg"
-                      spacing={10}
-                    >
-                      <IconCircleFilled
-                        style={{
-                          color:
-                            milestone.status === 'TODO'
-                              ? COLORS.TODO
-                              : milestone.status === 'ON_PROGRESS'
-                              ? COLORS.ON_PROGRESS
-                              : COLORS.COMPLETED,
-                        }}
-                        size={12}
-                      />
-                      <Text>
-                        {milestone.status.slice(0, 1)}
-                        {milestone.status
-                          .slice(1, milestone.status.length)
-                          .toLowerCase()}
-                      </Text>
-                    </Group>
-                  </Menu.Target>
-
-                  <Menu.Dropdown>
-                    <Menu.Label>Milestone Status</Menu.Label>
-
-                    <Menu.Item
-                      icon={
-                        <IconCircleFilled
-                          style={{ color: COLORS.TODO }}
-                          size={12}
-                        />
-                      }
-                    >
-                      TODO
-                    </Menu.Item>
-                    <Menu.Item
-                      icon={
-                        <IconCircleFilled
-                          style={{ color: COLORS.ON_PROGRESS }}
-                          size={12}
-                        />
-                      }
-                    >
-                      ON_PROGRESS
-                    </Menu.Item>
-                    <Menu.Item
-                      icon={
-                        <IconCircleFilled
-                          style={{ color: COLORS.COMPLETED }}
-                          size={12}
-                        />
-                      }
-                    >
-                      COMPLETED
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
+                <MilestoneStatusMenu
+                  id={milestone.id.toString()}
+                  text={milestone.status}
+                />
               </div>
 
               {/* <Divider /> */}

@@ -20,12 +20,6 @@ const InviteMemberForm = ({ project }: any) => {
   });
 
   useEffect(() => {
-    const tesProject = project?.member?.map((m: any) => {
-      return m.user?.id;
-    });
-
-    console.log('tes : ', tesProject);
-
     const membersOption = members?.data?.map((member: any) => {
       return {
         value: member.id,
@@ -34,7 +28,7 @@ const InviteMemberForm = ({ project }: any) => {
     });
 
     setMembersSelectOption(!members ? [] : membersOption);
-  }, [members, project]);
+  }, [members]);
 
   const handleSubmitInvitation = form.onSubmit((values) => {
     const payload = {

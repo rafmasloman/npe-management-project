@@ -1,6 +1,9 @@
 import { API_ROUTES } from '@/src/constant/api-routes.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
-import { __getBrowserAuthCookie } from '@/src/utils/cookie.util';
+import {
+  __getBrowserAuthCookie,
+  __getSSRAuthCookie,
+} from '@/src/utils/cookie.util';
 
 class ProfileQueryApi {
   private static routesName = `${process.env.NEXT_PUBLIC_API_LOCAL_URL}/${API_ROUTES.PROFILE}`;
@@ -10,7 +13,9 @@ class ProfileQueryApi {
       const response = await fetch(`${this.routesName}/${userId}`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
         },
       });
 

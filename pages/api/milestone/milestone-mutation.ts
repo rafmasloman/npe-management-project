@@ -61,6 +61,31 @@ class MilestoneMutationAPI {
     }
   }
 
+  static async updateStatusMilestone(
+    milestoneId: string,
+    payload: { status: string },
+  ) {
+    try {
+      const response = await fetch(`${this.routesName}/status/${milestoneId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    }
+  }
+
   static async deleteMilestone(milestoneId: string) {
     try {
       const response = await fetch(`${this.routesName}/${milestoneId}`, {

@@ -28,12 +28,34 @@ import { IconPencil, IconUserCircle } from '@tabler/icons-react';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import cookie from 'cookie';
+import { __setSSRAuthCookie } from '@/src/utils/cookie.util';
+import { GetServerSidePropsContext } from 'next';
+import UserQueryApi from '../api/user/user-query';
+import MemberQueryAPI from '../api/member/member-query';
+import ProfileQueryApi from '../api/profile/profile.query';
 
-const ProfilePages = () => {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { params, req } = ctx;
+
+  const userId = params?.slug;
+
+  const cookieToken = cookie.parse(req.headers.cookie!) as any;
+
+  __setSSRAuthCookie(cookieToken?.token);
+
+  const userProfileData = await ProfileQueryApi.getUserProfile(
+    userId as string,
+  );
+
+  return { props: { userProfileData: userProfileData.data } };
+}
+
+const ProfilePages = ({ userProfileData }: any) => {
   const { userProfile } = useProfileMember();
   const { data: userMemberProfile } = useGetQueryProfile(userProfile?.id);
 
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
   const [checked, setChecked] = useState(false);
 
   return (
@@ -161,13 +183,13 @@ const ProfilePages = () => {
 
               <ProfileForm
                 initialValues={{
-                  firstname: userProfile?.firstname,
-                  lastname: userProfile?.lastname,
-                  email: userProfile?.email,
-                  phoneNumber: userProfile?.phoneNumber,
-                  gender: userMemberProfile?.data?.gender,
-                  birthDate: userMemberProfile?.data?.birthDate,
-                  profilePicture: userMemberProfile?.data?.profilePicture,
+                  firstname: userProfileData?.user?.firstname,
+                  lastname: userProfileData?.user?.lastname,
+                  email: userProfileData?.user?.email,
+                  phoneNumber: userProfileData?.phoneNumber,
+                  gender: userProfileData?.gender,
+                  birthDate: userProfileData?.birthDate,
+                  profilePicture: userProfileData?.profilePicture,
                 }}
               />
             </div>

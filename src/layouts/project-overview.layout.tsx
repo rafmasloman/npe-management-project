@@ -31,7 +31,6 @@ import { Doughnut } from 'react-chartjs-2';
 import { IconCircleFilled } from '@tabler/icons-react';
 import moment from 'moment';
 import { useCountStatusTaskData } from '../hooks/task/useTotalTaskData';
-import InviteMemberForm from '../components/form/project/invite-member.form.component';
 
 interface IProjectDetailResponse {
   id: number;
@@ -273,77 +272,6 @@ const ProjectOverview = (projectDetail: any) => {
           </div>
         </Group>
       </div>
-
-      <Space h={30} />
-
-      <Card withBorder radius={'lg'} shadow="sm" bg={'white'} p={rem(30)}>
-        <Flex direction={'column'} gap={30}>
-          <SubDetail title="Member">
-            {isLoading ? (
-              <Loader />
-            ) : (
-              projectDetail?.projectDetail?.member?.map((member: any) => {
-                return (
-                  <PersonCard
-                    key={member.id}
-                    name={`${member.user?.firstname!} ${member.user
-                      ?.lastname!}`}
-                    image={`${
-                      process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
-                    }/members/${member.profilePicture!}`}
-                  />
-                );
-              })
-            )}
-            <ModalForm
-              btnText="Invite Member"
-              title="Invite Member to Project"
-              variant="outline"
-              colorBtn={'transparant'}
-            >
-              <InviteMemberForm project={projectDetail?.projectDetail} />
-            </ModalForm>
-          </SubDetail>
-
-          {/* <SubDetail title="Client">
-            {client?.map((client: { name: string }) => {
-              return <PersonCard key={client.name} name={client.name} />;
-            })}
-          </SubDetail> */}
-
-          <SubDetail title="Platform">
-            {platformServices?.map((platform: any, index: number) => {
-              return (
-                <Text
-                  key={platform}
-                  fz={'0.75rem'}
-                  bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
-                  px={10}
-                  py={4}
-                  color="white"
-                  style={{
-                    borderRadius: '7px',
-                  }}
-                >
-                  {platform}
-                </Text>
-              );
-            })}
-          </SubDetail>
-
-          <SubDetail title="Deadline">
-            <Text color={COLORS.DANGER} fw={600}>
-              {formattedDate(projectDetail?.projectDetail?.endDate)}
-            </Text>
-          </SubDetail>
-
-          <SubDetail title="Project Price">
-            <Text fw={600}>
-              Rp {projectDetail?.projectDetail?.price?.toLocaleString('id-ID')}
-            </Text>
-          </SubDetail>
-        </Flex>
-      </Card>
     </>
   );
 };

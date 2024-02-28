@@ -41,7 +41,7 @@ interface INavList {
   icon: React.FC<any>;
 }
 
-const navbarAdmin = () => {
+const NavbarAdmin = () => {
   return (
     <div className="">
       <Link href={ROUTES.DASHBOARD} className="no-underline ">
@@ -225,7 +225,9 @@ const navbarAdmin = () => {
   );
 };
 
-const navbarStaff = () => {
+const NavbarStaff = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="">
       <Link href={ROUTES.DASHBOARD} className="no-underline ">
@@ -333,7 +335,7 @@ const navbarStaff = () => {
 
       <Space h={20} />
 
-      <Link href={ROUTES.PROFILE} className="no-underline">
+      <Link href={`${ROUTES.PROFILE}/${user?.id!}`} className="no-underline">
         <NavLink
           label="Profile"
           icon={<ICProfile width={25} height={25} />}
@@ -370,7 +372,7 @@ const NavList = () => {
       spacing={'xs'}
       className=""
     >
-      {user.user?.role !== 'ADMIN' ? navbarStaff() : navbarAdmin()}
+      {user.user?.role !== 'ADMIN' ? NavbarStaff() : NavbarAdmin()}
 
       {/* <Divider ml={-30} />
       <NavLink

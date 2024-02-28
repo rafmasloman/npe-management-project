@@ -39,32 +39,26 @@ const ProfileForm = ({ initialValues }: IProfileFormTypeProps) => {
   const [file, setFile] = useState<Blob | null>(null);
   const [profileInitValue, setProfileInitValue] = useState({});
 
-  const { userProfile } = useProfileMember();
+  console.log('initial values : ', initialValues);
 
   const form = useForm({
     initialValues: {
-      firstname: userProfile?.firstname,
-      lastname: userProfile?.lastname,
-      email: userProfile?.email,
+      firstname: initialValues?.firstname,
+      lastname: initialValues?.lastname,
+      email: initialValues?.email,
       //   birthDate: userProfile?.birthDate,
-      phoneNumber: userProfile?.phoneNumber,
-      gender: userProfile?.gender,
-      profilePicture: userProfile?.profilePicture,
+      phoneNumber: initialValues?.phoneNumber,
+      gender: initialValues?.gender,
+      profilePicture: initialValues?.profilePicture,
     },
   });
 
-  useEffect(() => {
-    const setProfileValues = () => {
-      userProfile === undefined ? null : setProfileInitValue(userProfile);
-    };
-
-    setProfileValues();
-  }, [userProfile]);
-
-  console.log('profile : ', profileInitValue);
+  const handleSubmitUpdateProfile = form.onSubmit((values) => {
+    console.log('values : ', values);
+  });
 
   return (
-    <form>
+    <form onSubmit={handleSubmitUpdateProfile}>
       <FileButton onChange={setFile} accept="image/png, image/jpeg">
         {(props) => (
           <div className=" w-fit relative" {...props}>
