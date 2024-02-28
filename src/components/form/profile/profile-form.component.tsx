@@ -1,5 +1,7 @@
 import { COLORS } from '@/src/constant/colors.constant';
+import { UserContext } from '@/src/context/user-credential.context';
 import { useProfileMember } from '@/src/hooks/profile/useProfileMember';
+import { usePutUpdateProfile } from '@/src/hooks/profile/usePutUpdateProfile';
 import {
   Avatar,
   Button,
@@ -19,7 +21,7 @@ import {
   IconPencil,
   IconPencilBolt,
 } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 interface IProfileFormTypeProps {
   initialValues?: IProfileFormValuesProps;
@@ -39,22 +41,25 @@ const ProfileForm = ({ initialValues }: IProfileFormTypeProps) => {
   const [file, setFile] = useState<Blob | null>(null);
   const [profileInitValue, setProfileInitValue] = useState({});
 
-  console.log('initial values : ', initialValues);
+  const { mutate: updateProfile } = usePutUpdateProfile();
+  const { user } = useContext(UserContext);
 
   const form = useForm({
     initialValues: {
-      firstname: initialValues?.firstname,
-      lastname: initialValues?.lastname,
-      email: initialValues?.email,
+      firstname: initialValues?.firstname || '',
+      lastname: initialValues?.lastname || '',
+      email: initialValues?.email || '',
       //   birthDate: userProfile?.birthDate,
-      phoneNumber: initialValues?.phoneNumber,
-      gender: initialValues?.gender,
-      profilePicture: initialValues?.profilePicture,
+      phoneNumber: initialValues?.phoneNumber || '',
+      gender: initialValues?.gender || '',
+      profilePicture: initialValues?.profilePicture || '',
     },
   });
 
+  console.log('initial values : ', initialValues?.gender);
+
   const handleSubmitUpdateProfile = form.onSubmit((values) => {
-    console.log('values : ', values);
+    updateProfile({ userId: user?.id as string, payload: values });
   });
 
   return (
@@ -100,11 +105,11 @@ const ProfileForm = ({ initialValues }: IProfileFormTypeProps) => {
           data={[
             {
               label: 'Laki-laki',
-              value: 'laki-laki',
+              value: 'Laki-laki',
             },
             {
               label: 'Perempuan',
-              value: 'perempuan',
+              value: 'Perempuan',
             },
           ]}
           label="Jenis Kelamin"
