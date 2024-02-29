@@ -8,6 +8,7 @@ import {
   Drawer,
   Grid,
   Group,
+  Indicator,
   Menu,
   Modal,
   ScrollArea,
@@ -50,6 +51,7 @@ import CommentLayout from '@/src/layouts/comment.layout';
 import { TODO_UTILS } from '@/src/utils/todo.util';
 import TaskStatusMenu from '../menu/task-status-menu.component';
 import { useRouter } from 'next/router';
+import { ICMilestone } from '@/src/assets/icons/nav-icon/milestone.icon';
 
 interface ITaskCardProps {
   id?: string;
@@ -63,6 +65,7 @@ interface ITaskCardProps {
   comment?: any;
   status: string;
   priority: string;
+  milestone?: { milestoneName: string };
 }
 
 interface IMemberTaskCardProps {
@@ -86,6 +89,7 @@ const TaskCard = ({
   comment,
   status,
   priority,
+  milestone,
 }: ITaskCardProps) => {
   const { item, itemType, isDraggingLayer, initialOffset, currentOffset } =
     useDragLayer((monitor) => ({
@@ -282,6 +286,22 @@ const TaskCard = ({
             {priority?.charAt(0).toUpperCase()! +
               priority?.slice(1).toLowerCase()!}
           </Badge>
+
+          <Tooltip
+            label={
+              <div className="flex flex-row gap-2.5 border-">
+                <Text className="text-xs">Miletone : </Text>
+                <Text className="text-xs line-clamp-1">
+                  {milestone?.milestoneName}
+                </Text>
+              </div>
+            }
+          >
+            <div className="flex flex-row gap-1.5 bg-white border border-solid border-gray-300 rounded-full px-1.5 py-0.5">
+              <ICMilestone width={16} height={16} />
+              <Text className="text-xs">Milestone</Text>
+            </div>
+          </Tooltip>
         </Group>
 
         <Group position="apart" className="cursor-default" bg={'white'}>

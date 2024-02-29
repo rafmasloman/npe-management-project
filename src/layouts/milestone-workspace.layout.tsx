@@ -60,13 +60,15 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
 
       <Stack spacing={30}>
         {milestones?.data?.map((milestone: IMilestoneProjectResponseData) => {
+          console.log(milestone.status);
+
           return (
             <div
               key={milestone.id}
               className={`bg-white border-l-[12px] rounded-xl border border-gray-200 border-solid ${
-                milestone.status === 'TODO'
+                milestone.status === 'To Do'
                   ? 'border-l-todo'
-                  : milestone.status === 'ON_PROGRESS'
+                  : milestone.status === 'On Progress'
                   ? 'border-l-onprogress'
                   : 'border-l-success'
               }  py-5 pl-5 pr-12 flex flex-col gap-y-3.5`}
@@ -82,10 +84,17 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
                   </Text>
                 </Stack>
 
-                <MilestoneStatusMenu
-                  id={milestone.id.toString()}
-                  text={milestone.status}
-                />
+                <Badge
+                  color={
+                    milestone.status === 'To Do'
+                      ? 'orange'
+                      : milestone.status === 'On Progress'
+                      ? 'indigo'
+                      : 'green'
+                  }
+                >
+                  {milestone.status}
+                </Badge>
               </div>
 
               {/* <Divider /> */}
@@ -144,6 +153,13 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
                     radius={'lg'}
                     size={'lg'}
                     className="w-[300px] h-[18px]"
+                    color={
+                      milestone.status === 'On Progress'
+                        ? 'indigo'
+                        : milestone.status === 'Completed'
+                        ? 'green'
+                        : 'orange'
+                    }
                     styles={{
                       label: {
                         fontSize: rem(12),

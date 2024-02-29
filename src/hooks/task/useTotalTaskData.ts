@@ -6,8 +6,6 @@ export const useCountStatusTaskData = (tasks: any) => {
   const [totalCompleted, setTotalCompleted] = useState(0);
   const [totalTaskCompletedPercent, setTotalTaskCompletedPercent] = useState(0);
 
-  console.log(tasks?.length <= 0);
-
   useEffect(() => {
     const getTotalTodo = () => {
       const totalTodoState = tasks?.filter((task: any) => {

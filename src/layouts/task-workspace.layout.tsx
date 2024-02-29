@@ -90,6 +90,7 @@ const TaskWorkSpace = ({ todos }: any) => {
                   comment={t.comment}
                   status={t.status}
                   priority={t.priority}
+                  milestone={t.milestone}
                 />
               );
             })}
@@ -121,6 +122,7 @@ const TaskWorkSpace = ({ todos }: any) => {
                   comment={t.comment}
                   status={t.status}
                   priority={t.priority}
+                  milestone={t.milestone}
                 />
               );
             })}
@@ -152,6 +154,7 @@ const TaskWorkSpace = ({ todos }: any) => {
                   comment={t.comment}
                   status={t.status}
                   priority={t.priority}
+                  milestone={t.milestone}
                 />
               );
             })}

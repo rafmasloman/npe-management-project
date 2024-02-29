@@ -124,7 +124,7 @@ const NavbarAdmin = () => {
       <Space h={30} />
 
       <NavLink
-        label="Payment"
+        label="Transaction"
         icon={<ICTransaction width={25} height={25} />}
         styles={{
           label: {
@@ -263,7 +263,7 @@ const NavbarStaff = () => {
       <Space h={30} />
 
       <NavLink
-        label="Payment"
+        label="Transaction"
         icon={<ICTransaction width={25} height={25} />}
         styles={{
           label: {

@@ -16,6 +16,9 @@ export const usePutStatusTask = () => {
       queryClient.invalidateQueries({
         queryKey: ['get-project-detail-id-key'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['get-project-milestones-id-key'],
+      });
     },
   });
 };

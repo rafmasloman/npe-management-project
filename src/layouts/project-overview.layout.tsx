@@ -11,6 +11,7 @@ import {
   Title,
   Divider,
   Avatar,
+  RingProgress,
 } from '@mantine/core';
 import PersonCard from '../components/card/person-card.component';
 import SubDetail from '../components/project/project-sub-detail.component';
@@ -49,7 +50,6 @@ interface IProjectDetailResponse {
 const ProjectOverview = (projectDetail: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [projectManager, setProjectManager] = useState([]);
-  const [plugins, setPlugins] = useState([]);
 
   const {
     totalTodo,
@@ -58,9 +58,12 @@ const ProjectOverview = (projectDetail: any) => {
     totalTaskCompletedPercent,
   } = useCountStatusTaskData(projectDetail?.projectDetail?.task);
 
-  const platformServices = projectDetail?.projectDetail?.platform.split(',');
+  const taskPercentage = (total: number) => {
+    const countPercentage =
+      (total / projectDetail?.projectDetail?.task.length) * 100;
 
-  ChartJS.register(ArcElement, Tooltip, Legend);
+    return countPercentage;
+  };
 
   useEffect(() => {
     if (projectDetail === undefined) {
@@ -84,10 +87,6 @@ const ProjectOverview = (projectDetail: any) => {
 
   return (
     <>
-      {/* <ModalForm btnText="Invite Member" title="Invite Member to Project">
-        <PayrollForm />
-      </ModalForm> */}
-
       <Space h={'xl'} />
 
       <Title order={2}>Project Summary</Title>
@@ -155,56 +154,41 @@ const ProjectOverview = (projectDetail: any) => {
 
         <Divider w={2} h={'100%'} className="bg-neutral-200" />
 
-        <Group spacing={50}>
-          <div className="w-[210px] h-[210px]">
+        <Group spacing={50} align="center" position="center">
+          <div className="w-fit h-fit flex justify-center items-center">
             {projectDetail?.projectDetail?.task.length <= 0 ? (
               <div className="bg-neutral-300 w-full h-full rounded-[100%] flex justify-center items-center">
                 <Text className="text-lg text-neutral-500">Belum ada task</Text>
               </div>
             ) : (
-              <Doughnut
-                options={{
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                  },
-                  resizeDelay: 100,
-                  aspectRatio: 1,
-                }}
-                data={{
-                  datasets: [
-                    {
-                      data: [totalTodo, totalProgress, totalCompleted],
-                      backgroundColor: ['#1E539B', '#00D1FF', '#33EE7A'],
-                    },
-                  ],
-                  labels: ['To do', 'On Progress', 'Completed'],
-                }}
-                plugins={[
+              <RingProgress
+                size={200}
+                thickness={20}
+                label={
+                  <Text
+                    className="text-xl font-medium"
+                    align="center"
+                    px="xs"
+                    sx={{ pointerEvents: 'none' }}
+                  >
+                    {totalTaskCompletedPercent}%
+                  </Text>
+                }
+                sections={[
                   {
-                    id: 'text',
-                    beforeDraw: (chart, args, options) => {
-                      const width = chart.width;
-                      const height = chart.height;
-                      const ctx = chart.ctx;
-
-                      ctx.save();
-
-                      var fontSize = (height / 114).toFixed(2);
-                      ctx.font = fontSize + 'em sans-serif';
-                      ctx.textBaseline = 'middle';
-
-                      var text = '',
-                        textX = Math.round(
-                          (width - ctx.measureText(text).width) / 2,
-                        ),
-                        textY = height / 2;
-
-                      ctx.fillText(text, textX, textY);
-                      ctx.restore();
-                    },
+                    value: taskPercentage(totalTodo),
+                    color: COLORS.TODO,
+                    tooltip: <Text>{`To Do ${totalTodo}`}</Text>,
+                  },
+                  {
+                    value: taskPercentage(totalProgress),
+                    color: COLORS.ON_PROGRESS,
+                    tooltip: <Text>{`On Progress ${totalProgress}`}</Text>,
+                  },
+                  {
+                    value: taskPercentage(totalCompleted),
+                    color: COLORS.COMPLETED,
+                    tooltip: <Text>{`Completed ${totalCompleted}`}</Text>,
                   },
                 ]}
               />

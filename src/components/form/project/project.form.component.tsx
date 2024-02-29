@@ -33,7 +33,6 @@ interface ISelectMemberDataStateProps {
 }
 
 const ProjectForm = ({ initValue }: IProjectFormProps) => {
-  const [files, setFiles] = useState<FileWithPath[]>([]);
   const [membersData, setMembersData] = useState<ISelectMemberDataStateProps[]>(
     [{ value: '', label: '' }],
   );
@@ -69,6 +68,11 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
         }) || [],
     },
   });
+
+  console.log(
+    'project icon initial values : ',
+    form.getInputProps('projectIcon'),
+  );
 
   initValue?.platform?.split(',').map((platform: any) => {
     console.log('init value name : ', platform);

@@ -2,18 +2,19 @@ import { COLORS } from '@/src/constant/colors.constant';
 import { usePutMilestoneStatus } from '@/src/hooks/milestone/usePutMilestoneStatus';
 import { Group, Menu, Text } from '@mantine/core';
 import { IconCircleFilled } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IMilestoneStatusMenu {
   id: string;
   text: string;
+  progress?: number;
 }
 
-const MilestoneStatusMenu = ({ id, text }: IMilestoneStatusMenu) => {
+const MilestoneStatusMenu = ({ id, text, progress }: IMilestoneStatusMenu) => {
   const { mutate: updateMilestoneStatus } = usePutMilestoneStatus();
   const [milestoneId, setmilestoneId] = useState('');
 
-  console.log('id : ', id);
+  console.log('progress status : ', progress);
 
   const handleSubmitChangeStatus = (status: string) => {
     setmilestoneId(id);
@@ -25,6 +26,11 @@ const MilestoneStatusMenu = ({ id, text }: IMilestoneStatusMenu) => {
       updateMilestoneStatus({ id: milestoneId, status });
     }
   };
+
+  if (!!progress && progress >= 100) {
+    updateMilestoneStatus({ id: milestoneId, status: 'COMPLETED' });
+  }
+
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
@@ -68,7 +74,7 @@ const MilestoneStatusMenu = ({ id, text }: IMilestoneStatusMenu) => {
           ON_PROGRESS
         </Menu.Item>
         <Menu.Item
-          onClick={() => handleSubmitChangeStatus('COMPLETED')}
+          disabled
           icon={
             <IconCircleFilled style={{ color: COLORS.COMPLETED }} size={12} />
           }
