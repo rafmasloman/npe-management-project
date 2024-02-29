@@ -1,38 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NPE Ngatur
 
-## Getting Started
+### Npe Ngatur adalah Website Manajemen Project Untuk NPE Digital, yang membantu kolaborasi antar team lebih efisien dengan fitur-fitur pendukung.
 
-First, run the development server:
+## Table of Contents
+
+- [Installation Project](#installation-project)
+- [Structure Project](#structure-project)
+- [User Instructions](#user-instructions)
+- [Main Features](#features)
+- [Technologies and Library Used](#technologies-used)
+
+### Installation Project
+
+1. Clone this repository.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/rafmasloman/npe-management-project.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Move to application directory.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+cd npe-management-project
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+3. Install all dependencies.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+# using pnpm
+pnpm install
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# using yarn
+yarn install
 
-## Learn More
+# using npm
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# using pnpm
+pnpm dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# using yarn
+yarn dev
 
-## Deploy on Vercel
+# using npm
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Application will be running on port : `http://localhost:3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Structure Project
+
+**This is your source code tree:**
+
+```
+-pages
+    |-- ...
+    |-- _app.tsx
+    |-- index.tsx
+    |-- _document.tsx
+-src
+    |-- assets
+    |-- components
+    |-- contstant
+    |-- context
+    |-- hooks
+    |-- interfaces
+    |-- layouts
+    |-- shared
+    |-- themes
+    |-- utils
+
+```
+
+## Main Features
+
+- [x] Dashboard for monitoring Project
+- [x] Task Management untuk mengelola tugas project oleh masing-masing member
+- [x] Milestones untuk melakukan checkpoint ketika ada beberapa task yang complete
+- [x] Komentar untuk setiap task
+- [x] Payroll untuk memberikan sejumlah persen gaji kepada member yang terlibat dalam project
+- [x] Invoice untuk mengirimkan invoice berapa harga yang harus dibayar oleh client
+- [x] ....
+
+## Technologies and Library Used
+
+This project utilizes the following technologies and library:
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Query / Tanstack Query](https://tanstack.com/query/latest/)
+- [React Icons](https://react-icons.github.io/react-icons/)
+- [React DnD](https://https://react-dnd.github.io/react-dnd/about)
