@@ -26,6 +26,25 @@ class ProfileQueryApi {
       throw error;
     }
   }
+
+  static async getUserProfilePicture(userId: string) {
+    try {
+      const response = await fetch(`${this.routesName}/picture/${userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
+        },
+      });
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default ProfileQueryApi;

@@ -6,3 +6,7 @@ export interface IUpdateProfilePayload {
   gender: string;
   profilePicture: string;
 }
+
+export interface IUpdateProfilePicturePayload {
+  profilePicture: string;
+}

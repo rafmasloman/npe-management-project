@@ -6,9 +6,11 @@ import {
   Avatar,
   Button,
   FileButton,
+  Group,
   Select,
   SimpleGrid,
   Space,
+  Stack,
   TextInput,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
@@ -38,11 +40,13 @@ interface IProfileFormValuesProps {
 }
 
 const ProfileForm = ({ initialValues }: IProfileFormTypeProps) => {
-  const [file, setFile] = useState<Blob | null>(null);
   const [profileInitValue, setProfileInitValue] = useState({});
+  const [image, setImage] = useState<any>(null);
 
   const { mutate: updateProfile } = usePutUpdateProfile();
   const { user } = useContext(UserContext);
+
+  console.log('profile : ', initialValues?.profilePicture);
 
   const form = useForm({
     initialValues: {
@@ -56,31 +60,12 @@ const ProfileForm = ({ initialValues }: IProfileFormTypeProps) => {
     },
   });
 
-  console.log('initial values : ', initialValues?.gender);
-
   const handleSubmitUpdateProfile = form.onSubmit((values) => {
     updateProfile({ userId: user?.id as string, payload: values });
   });
 
   return (
     <form onSubmit={handleSubmitUpdateProfile}>
-      <FileButton onChange={setFile} accept="image/png, image/jpeg">
-        {(props) => (
-          <div className=" w-fit relative" {...props}>
-            <Avatar
-              size={70}
-              radius={'100%'}
-              src={!file ? initialValues?.profilePicture : file.name}
-            />
-            <IconCameraFilled
-              className="absolute bottom-0 -right-1"
-              size={25}
-              style={{ color: COLORS.THIRD }}
-            />
-          </div>
-        )}
-      </FileButton>
-
       <Space h={50} />
 
       <SimpleGrid

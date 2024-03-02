@@ -10,9 +10,11 @@ import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Container,
   Divider,
+  FileButton,
   Grid,
   Group,
   SimpleGrid,
@@ -24,7 +26,11 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { IconPencil, IconUserCircle } from '@tabler/icons-react';
+import {
+  IconCameraFilled,
+  IconPencil,
+  IconUserCircle,
+} from '@tabler/icons-react';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
@@ -34,6 +40,9 @@ import { GetServerSidePropsContext } from 'next';
 import UserQueryApi from '../api/user/user-query';
 import MemberQueryAPI from '../api/member/member-query';
 import ProfileQueryApi from '../api/profile/profile.query';
+import { COLORS } from '@/src/constant/colors.constant';
+import { useUpdateProfilePicture } from '@/src/hooks/profile/useUpdateProfilePicture';
+import { useGetQueryProfilePicture } from '@/src/hooks/profile/useGetQueryProfilePicture';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { params, req } = ctx;
@@ -52,11 +61,65 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 }
 
 const ProfilePages = ({ userProfileData }: any) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+
   const { userProfile } = useProfileMember();
   const { data: userMemberProfile } = useGetQueryProfile(userProfile?.id);
+  const {
+    data: userProfilePicture,
+    isLoading: isLoadingPicture,
+    isRefetching: isRefetchingPicture,
+  } = useGetQueryProfilePicture(userProfileData.user.id);
+  const { mutate: updateProfilePicture } = useUpdateProfilePicture();
 
   const { pathname, query } = useRouter();
   const [checked, setChecked] = useState(false);
+
+  const handleChangeProfilePictureFile = (file: File | null) => {
+    setFile(file);
+  };
+
+  const handleDeleteProfilePicture = () => {
+    console.log('delete');
+
+    setFile(null);
+    setProfilePicture('');
+
+    const formData = new FormData();
+
+    formData.set('profilePicture', profilePicture!);
+
+    updateProfilePicture({
+      userId: userProfileData.user.id,
+      payload: formData,
+    });
+  };
+
+  useEffect(() => {
+    if (!userProfilePicture?.data) {
+      setProfilePicture('');
+    } else {
+      setProfilePicture(userProfilePicture?.data?.profilePicture);
+    }
+  }, [isLoadingPicture, isRefetchingPicture, userProfilePicture?.data]);
+
+  useEffect(() => {
+    if (file !== null) {
+      const formData = new FormData();
+
+      formData.set('profilePicture', file);
+
+      updateProfilePicture({
+        userId: userProfileData.user.id,
+        payload: formData,
+      });
+    } else {
+      setFile(null);
+    }
+  }, [file]);
+
+  console.log('profile picture : ', profilePicture);
 
   return (
     <MainLayout>
@@ -98,7 +161,11 @@ const ProfilePages = ({ userProfileData }: any) => {
 
                 <Group>
                   <Group>
-                    <Avatar size={70} radius={'100%'} />
+                    <Avatar
+                      size={70}
+                      radius={'100%'}
+                      src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${profilePicture}`}
+                    />
                     <Stack spacing={0}>
                       <Text className="text-lg">{userProfile?.fullname}</Text>
                       <Text className="text-base text-gray-500">
@@ -180,6 +247,43 @@ const ProfilePages = ({ userProfileData }: any) => {
               <Title order={3}>Edit Profile</Title>
 
               <Space h={30} />
+
+              <Group>
+                <div className=" w-fit relative">
+                  <Avatar
+                    size={100}
+                    radius={'100%'}
+                    src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${profilePicture}`}
+                    className="border-[3px] border-solid border-gray-200"
+                  />
+                  <IconCameraFilled
+                    className="absolute bottom-0 -right-1"
+                    size={25}
+                    style={{ color: COLORS.THIRD }}
+                  />
+                </div>
+
+                <Stack spacing={10}>
+                  <FileButton
+                    onChange={handleChangeProfilePictureFile}
+                    accept="image/png, image/jpeg"
+                  >
+                    {(props) => (
+                      <Button {...props} className="w-full bg-primary h-[36px]">
+                        Ganti Foto
+                      </Button>
+                    )}
+                  </FileButton>
+
+                  <Button
+                    className="border-2 border-solid border-primary text-primary h-[36px]"
+                    variant="outline"
+                    onClick={handleDeleteProfilePicture}
+                  >
+                    Hapus Foto
+                  </Button>
+                </Stack>
+              </Group>
 
               <ProfileForm
                 initialValues={{

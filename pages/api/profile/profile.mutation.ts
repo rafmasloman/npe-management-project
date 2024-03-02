@@ -24,6 +24,30 @@ class ProfileMutation {
       throw error;
     }
   }
+
+  static async updateProfilePicture(userId: string, payload: FormData) {
+    try {
+      const response = await fetch(
+        `${this.routesName}/profilePicture/${userId}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+          },
+          body: payload,
+        },
+      );
+
+      const data = await response.json();
+      console.log('upload profile : ', data);
+
+      return data;
+    } catch (error) {
+      console.log('error response : ', error);
+
+      throw error;
+    }
+  }
 }
 
 export default ProfileMutation;
