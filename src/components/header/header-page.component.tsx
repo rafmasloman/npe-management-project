@@ -89,8 +89,6 @@ const HeaderPage = ({
     }
   }, [userProfilePicture?.data]);
 
-  console.log('picture : ', userProfilePictureDisplay);
-
   return (
     <Box
       mt={0}

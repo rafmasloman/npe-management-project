@@ -64,6 +64,7 @@ const ProjectAdmin = () => {
   const { data: getMemberProjects } = useGetQueryUserMemberProjects(
     user?.user?.id!,
   );
+
   useEffect(() => {
     user?.user?.role === 'ADMIN'
       ? setProjects(getProjects?.data)
@@ -74,7 +75,7 @@ const ProjectAdmin = () => {
     return <PageLoading />;
   }
 
-  console.log('user : ', getMemberProjects?.data?.project);
+  console.log('user : ', projects);
 
   return (
     <MainLayout>

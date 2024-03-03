@@ -54,6 +54,8 @@ const ProjectCard = ({
   //   .split(', ')
   //   .map((item) => item.replace(/'/g, ''));
 
+  console.log('task : ', task);
+
   const completedTask = task?.filter(
     (task) => task.status.toLowerCase() === 'Completed'.toLowerCase(),
   );
@@ -198,28 +200,26 @@ const ProjectCard = ({
         </Group> */}
 
               <Group style={{ position: 'relative' }}>
-                {member?.map((m, index) => {
-                  console.log(m);
+                <Avatar.Group spacing={'sm'}>
+                  {member?.map((m, index) => {
+                    console.log('picture : ', m);
 
-                  index *= 3;
-                  return (
-                    <Tooltip
-                      key={m.id}
-                      label={`${m.user?.firstname} ${m.user?.lastname}`}
-                    >
-                      <Avatar
-                        style={{ zIndex: index }}
-                        radius={'xl'}
-                        size={30}
-                        src={`${
-                          m.profilePicture === undefined
-                            ? ''
-                            : process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
-                        }/members/${m?.profilePicture}`}
-                      />
-                    </Tooltip>
-                  );
-                })}
+                    return (
+                      <Tooltip
+                        key={m.id}
+                        label={`${m.user?.firstname} ${m.user?.lastname}`}
+                      >
+                        <Avatar
+                          style={{ zIndex: index }}
+                          radius={'xl'}
+                          size={32}
+                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${m?.profilePicture}`}
+                          className="border border-solid border-gray-300"
+                        />
+                      </Tooltip>
+                    );
+                  })}
+                </Avatar.Group>
                 {/* <Tooltip>
               <Avatar
                 style={{ zIndex: 3 }}
