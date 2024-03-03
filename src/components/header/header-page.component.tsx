@@ -26,8 +26,9 @@ import { deleteCookie } from 'cookies-next';
 import { COLORS } from '@/src/constant/colors.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { UserContext } from '@/src/context/user-credential.context';
-import { ReactNode, useContext } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import ModalAction from '../modal/modal-action.component';
+import { useGetQueryProfilePicture } from '@/src/hooks/profile/useGetQueryProfilePicture';
 
 interface IHeaderPageProps {
   userId?: string;
@@ -46,16 +47,20 @@ const HeaderPage = ({
 }: IHeaderPageProps) => {
   const [opened, { close, open }] = useDisclosure(false);
 
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [userProfilePictureDisplay, setUserProfilePictureDisplay] = useState<
+    string | null
+  >(null);
+
   const { pathname } = useRouter();
 
   const largeScreen = useMediaQuery('(min-width: 60em)');
 
-  // const [opened, { open, close }] = useDisclosure(false);
-  // const theme = useMantineTheme();
-
-  // const token = __getBrowserAuthCookie(TOKEN_NAME);
-
   const user = useContext(UserContext);
+  const { data: userProfilePicture } = useGetQueryProfilePicture(
+    currentUserId!,
+  );
+
   const { logout } = useAuth();
 
   const handleLogout = () => {
@@ -67,6 +72,24 @@ const HeaderPage = ({
       text?.split('')[0].toUpperCase() + pageTitle.slice(1, pageTitle.length);
     return newText;
   };
+
+  useEffect(() => {
+    if (!!user.user) {
+      setCurrentUserId(user.user?.id);
+    } else {
+      setCurrentUserId(null);
+    }
+  }, [user.user]);
+
+  useEffect(() => {
+    if (!!userProfilePicture?.data) {
+      setUserProfilePictureDisplay(userProfilePicture.data?.profilePicture);
+    } else {
+      setUserProfilePictureDisplay(null);
+    }
+  }, [userProfilePicture?.data]);
+
+  console.log('picture : ', userProfilePictureDisplay);
 
   return (
     <Box
@@ -130,6 +153,7 @@ const HeaderPage = ({
           <UserProfile
             name={`${user.user?.firstname!} ${user.user?.lastname!}`}
             role={user.user?.role.toLowerCase()!}
+            profilePicture={userProfilePictureDisplay!}
           />
         }
       >
@@ -145,8 +169,6 @@ const HeaderPage = ({
           Logout
         </Menu.Item>
       </MenuComp>
-
-      {/* <Button onClick={() => handleLogout()}>Logout</Button> */}
     </Box>
   );
 };

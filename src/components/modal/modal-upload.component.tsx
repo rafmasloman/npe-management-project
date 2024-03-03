@@ -15,7 +15,7 @@ import { IconPlus, IconX } from '@tabler/icons-react';
 import React, { ReactNode } from 'react';
 
 interface IModalUploadProps {
-  headerText: string;
+  name: string;
   message: string;
   children: ReactNode;
   type: string;
@@ -24,8 +24,7 @@ interface IModalUploadProps {
 }
 
 const ModalUpload = ({
-  headerText,
-  message,
+  name,
   children,
   opened,
   close,
@@ -47,8 +46,9 @@ const ModalUpload = ({
         }}
       >
         <div className="flex justify-between">
-          <Text className="text-xl font-semibold">{headerText}</Text>
+          <Text className="text-xl font-semibold">{name}</Text>
 
+            <Stack></Stack>
           <IconX className="text-gray-400 hover:text-black" onClick={close} />
         </div>
 

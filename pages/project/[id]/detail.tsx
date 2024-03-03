@@ -7,6 +7,7 @@ import {
   Grid,
   Group,
   Menu,
+  Progress,
   SimpleGrid,
   Space,
   Stack,
@@ -91,8 +92,8 @@ const ProjectDetail = ({ projectDetail }: any) => {
 
         {/* {isLoading && <PageLoading />} */}
 
-        <Group position="apart">
-          <Stack>
+        <Group position="apart" align="center">
+          <Stack spacing={30}>
             <Group>
               <Image
                 src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${project?.projectIcon}`}
@@ -100,6 +101,7 @@ const ProjectDetail = ({ projectDetail }: any) => {
                 width={60}
                 height={70}
                 quality={100}
+                priority={true}
               />
 
               <Text fz={'2.5rem'} fw={600}>
@@ -110,59 +112,90 @@ const ProjectDetail = ({ projectDetail }: any) => {
             <Text className="w-full md:w-2/3" ta="justify">
               {project?.description}
             </Text>
-          </Stack>
 
-          <Group align="end">
-            <Stack spacing={10}>
-              <Text className="text-sm text-gray-400 font-medium">
-                Teams Project
-              </Text>
-              <Avatar.Group spacing={'md'}>
-                {project?.member?.map((member: any, index: number) => {
+            <Group>
+              <Text className="text-gray-400">Avaiable on : </Text>
+              {project?.platform
+                ?.split(',')
+                .map((platform: any, index: number) => {
                   return (
-                    <Tooltip key={index} label={`${member.user?.firstname}`}>
-                      <Avatar radius={'xl'} size={45} />
-                    </Tooltip>
+                    <Text
+                      key={platform}
+                      fz={'0.75rem'}
+                      bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
+                      px={10}
+                      py={4}
+                      color="white"
+                      style={{
+                        borderRadius: '7px',
+                      }}
+                    >
+                      {platform}
+                    </Text>
                   );
                 })}
-              </Avatar.Group>
-            </Stack>
+            </Group>
 
-            <ModalForm
-              btnText="Invite Member"
-              title="Invite Member to Project"
-              // variant="outline"
-              colorBtn={COLORS.PRIMARY}
-            >
-              <InviteMemberForm project={project} />
-            </ModalForm>
-          </Group>
+            <Group>
+              <Text className="text-gray-400">Project Progress : </Text>
+              <Progress
+                value={project?.progress}
+                label={`${project?.progress}%`}
+                radius={'lg'}
+                size={'lg'}
+                className="w-[300px] h-[18px]"
+                color={
+                  project?.progress > 0 && project?.progress < 100
+                    ? COLORS.PRIMARY
+                    : project?.progress === 100
+                    ? 'green'
+                    : 'gray'
+                }
+                styles={{
+                  label: {
+                    fontSize: rem(12),
+                    fontWeight: 500,
+                  },
+                }}
+              />
+            </Group>
+          </Stack>
+
+          <Stack>
+            <Group align="end" position="right">
+              <Stack spacing={10}>
+                <Text className="text-sm text-gray-400 font-medium">
+                  Teams Project
+                </Text>
+                <Avatar.Group spacing={'md'}>
+                  {project?.member?.map((member: any, index: number) => {
+                    return (
+                      <Tooltip key={index} label={`${member.user?.firstname}`}>
+                        <Avatar
+                          radius={'xl'}
+                          size={45}
+                          src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${member.profilePicture}`}
+                          className="border border-solid border-gray-300"
+                        />
+                      </Tooltip>
+                    );
+                  })}
+                </Avatar.Group>
+              </Stack>
+
+              <ModalForm
+                btnText="Invite Member"
+                title="Invite Member to Project"
+                // variant="outline"
+                colorBtn={COLORS.PRIMARY}
+              >
+                <InviteMemberForm project={project} />
+              </ModalForm>
+            </Group>
+          </Stack>
         </Group>
 
         <Space h={30} />
-
-        <Group>
-          <Text className="text-gray-400">Avaiable on : </Text>
-          {project?.platform?.split(',').map((platform: any, index: number) => {
-            return (
-              <Text
-                key={platform}
-                fz={'0.75rem'}
-                bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
-                px={10}
-                py={4}
-                color="white"
-                style={{
-                  borderRadius: '7px',
-                }}
-              >
-                {platform}
-              </Text>
-            );
-          })}
-        </Group>
-
-        <Space h={40} />
 
         <Tabs styles={{}} defaultValue={'overview'}>
           <TabList />

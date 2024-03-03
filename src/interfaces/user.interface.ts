@@ -4,6 +4,5 @@ export interface IUserProfileBadgeProps
   extends React.ComponentPropsWithoutRef<'button'> {
   name: string;
   role: string;
+  profilePicture?: string;
 }
-
-

@@ -16,6 +16,11 @@ export interface IAuthCredentialResponse {
   role: string;
   memberId?: string;
   clientId?: string;
+  member: {
+    id: number;
+    position: string;
+    profilePicture: string;
+  };
 }
 
 export interface IAuthRegisterParams {

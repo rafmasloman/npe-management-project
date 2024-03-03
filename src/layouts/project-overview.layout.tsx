@@ -106,9 +106,7 @@ const ProjectOverview = (projectDetail: any) => {
             >
               <Group className="bg-neutral-100  px-3 py-2.5 rounded-xl">
                 <Avatar
-                  src={
-                    !manager?.profilePicture ? null : manager?.profilePicture
-                  }
+                  src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${manager?.profilePicture}`}
                   size={40}
                   radius={'xl'}
                 />
@@ -177,17 +175,17 @@ const ProjectOverview = (projectDetail: any) => {
                 sections={[
                   {
                     value: taskPercentage(totalTodo),
-                    color: COLORS.TODO,
+                    color: 'orange',
                     tooltip: <Text>{`To Do ${totalTodo}`}</Text>,
                   },
                   {
                     value: taskPercentage(totalProgress),
-                    color: COLORS.ON_PROGRESS,
+                    color: 'indigo',
                     tooltip: <Text>{`On Progress ${totalProgress}`}</Text>,
                   },
                   {
                     value: taskPercentage(totalCompleted),
-                    color: COLORS.COMPLETED,
+                    color: 'green',
                     tooltip: <Text>{`Completed ${totalCompleted}`}</Text>,
                   },
                 ]}

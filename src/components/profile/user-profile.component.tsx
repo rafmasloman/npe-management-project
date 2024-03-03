@@ -20,12 +20,16 @@ interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
 
 // eslint-disable-next-line react/display-name
 const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
-  ({ name, role, ...others }: IUserProfileBadgeProps, ref) => (
+  ({ name, role, profilePicture, ...others }: IUserProfileBadgeProps, ref) => (
     <UnstyledButton ref={ref} {...others}>
       <Group>
         <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
           <Group>
-            <Avatar radius="xl" size={'md'} />
+            <Avatar
+              radius="xl"
+              size={'md'}
+              src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${profilePicture}`}
+            />
             <Stack spacing={0}>
               <Text>{name}</Text>
               <Text>{role}</Text>
@@ -35,7 +39,11 @@ const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
 
         <MediaQuery largerThan={'sm'} styles={{ display: 'none' }}>
           <Group>
-            <Avatar radius="xl" size={'md'} />
+            <Avatar
+              radius="xl"
+              size={'md'}
+              src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${profilePicture}`}
+            />
             <Stack spacing={0}>
               <Text fz={'0.825rem'}>{name}</Text>
               <Text fz={'0.825rem'}>{role}</Text>

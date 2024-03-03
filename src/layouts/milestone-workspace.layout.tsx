@@ -60,8 +60,6 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
 
       <Stack spacing={30}>
         {milestones?.data?.map((milestone: IMilestoneProjectResponseData) => {
-          console.log(milestone.status);
-
           return (
             <div
               key={milestone.id}
