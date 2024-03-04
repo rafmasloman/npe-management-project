@@ -58,8 +58,6 @@ const CrewCard = ({
   });
 
   const handleDeleteMemberProject = () => {
-    console.log('member id : ', memberId);
-
     removeMember({ memberId, projectId: query.id as string });
   };
 

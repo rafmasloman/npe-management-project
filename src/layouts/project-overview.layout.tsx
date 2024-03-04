@@ -261,6 +261,8 @@ const ProjectOverview = (projectDetail: any) => {
 
       <Title order={2}>Crew</Title>
 
+      <Space h={30} />
+
       <SimpleGrid
         breakpoints={[
           { cols: 1, minWidth: 'sm' },

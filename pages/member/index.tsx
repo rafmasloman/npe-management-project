@@ -257,7 +257,7 @@ const MemberPage = () => {
                             opacity={'0.7'}
                             size={'lg'}
                             onClick={() => {
-                              push(`/member/edit-member/${member.id}`);
+                              push(`/member/${member.id}/edit-member`);
                             }}
                           >
                             <IconPencilCode size={'1rem'} />
