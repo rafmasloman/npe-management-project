@@ -20,7 +20,6 @@ export interface IMilestoneDataParams {
   projectId: string;
   startedDate: Date;
   endDate: Date;
-  status: string;
   member: any[];
 }
 
