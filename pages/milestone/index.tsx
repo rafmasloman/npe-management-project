@@ -64,26 +64,10 @@ const MilestonePages = () => {
 
   const rows = milestones?.data?.map((milestone: any, index: number) => {
     return (
-      <tr
-        key={index}
-        className="border-solid border-[1px] border-gray-300 "
-      >
+      <tr key={index} className="border-solid border-[1px] border-gray-300 ">
         <td>{index}</td>
         <td>{milestone.milestoneName}</td>
-        <td>
-          <div className="flex space-x-2.5 items-center">
-            <div
-              className={`w-2 h-2 rounded-full ${
-                milestone.status.toLowerCase().includes('todo')
-                  ? 'bg-blue-950'
-                  : milestone.status.toLowerCase().includes('on_progress')
-                  ? 'bg-primary'
-                  : 'bg-green-600'
-              }`}
-            ></div>
-            <Text>{milestone.status}</Text>
-          </div>
-        </td>
+
         <td>{milestone.description}</td>
         {/* <td>
           <Text>{moment(milestone.startedDate).format('DD MMMM YYYY')}</Text>
@@ -213,11 +197,6 @@ const MilestonePages = () => {
                   <Text c={'white'} fw={600}>
                     {' '}
                     Milestone{' '}
-                  </Text>
-                </th>
-                <th>
-                  <Text c={'white'} fw={600}>
-                    Status
                   </Text>
                 </th>
                 <th>

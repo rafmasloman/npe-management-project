@@ -26,6 +26,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 const EditMilestone = ({ milestoneDetail }: any) => {
   const { pathname } = useRouter();
 
+  console.log('milestone : ', milestoneDetail?.data);
+
   return (
     <MainLayout>
       <FormLayout

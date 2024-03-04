@@ -55,7 +55,6 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       projectId: initValue?.projectId || '',
       startedDate: initValue?.startedDate || '',
       endDate: initValue?.endDate || '',
-      status: initValue?.status || 'TO DO',
       member:
         initValue?.member?.map((member: any) => {
           return member.id;
@@ -92,7 +91,6 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
       projectId: values.projectId,
       startedDate: values.startedDate as string,
       endDate: values.endDate as string,
-      status: values.status,
       member: values.member,
     };
 
@@ -170,28 +168,6 @@ const MilestoneForm = ({ initValue }: IMilestoneFormProps) => {
               {...form.getInputProps('endDate')}
             />
           </Group>
-        </Grid.Col>
-
-        <Grid.Col lg={12} md={1}>
-          <Select
-            withAsterisk
-            placeholder="Pilih Status"
-            label="Status"
-            radius={'md'}
-            // data={projects?.data}
-            data={[
-              { value: 'TODO', label: 'To Do' },
-              { value: 'ON_PROGRESS', label: 'On_Progress' },
-              { value: 'COMPLETED', label: 'Completed' },
-            ]}
-            styles={{
-              input: {
-                padding: 24,
-                marginTop: 10,
-              },
-            }}
-            {...form.getInputProps('status')}
-          />
         </Grid.Col>
 
         <Grid.Col span={12} mt={30}>
