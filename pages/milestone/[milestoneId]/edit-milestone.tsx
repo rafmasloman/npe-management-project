@@ -40,6 +40,7 @@ const EditMilestone = ({ milestoneDetail }: any) => {
             endDate: new Date(milestoneDetail.data?.endDate),
             projectId: milestoneDetail.data?.projectId,
             status: milestoneDetail.data?.status,
+            member: milestoneDetail.data?.member,
           }}
         />
       </FormLayout>
