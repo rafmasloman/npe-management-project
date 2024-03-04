@@ -24,7 +24,7 @@ export const ICProfile = ({ width, height }: IconInterfaceProps) => {
         height="31.5"
         rx="15.75"
         stroke="#005BD8"
-        stroke-width="2.5"
+        strokeWidth="2.5"
       />
       <ellipse cx="17" cy="14.5" rx="3" ry="1.5" fill="#FFD600" />
       <path

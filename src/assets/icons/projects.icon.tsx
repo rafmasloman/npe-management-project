@@ -17,7 +17,7 @@ export const ICProjects = ({ width, height }: IconInterfaceProps) => {
         height="28.1429"
         rx="5"
         stroke="#005BD8"
-        stroke-width="4"
+        strokeWidth="4"
       />
       <rect
         x="26"

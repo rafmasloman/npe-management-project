@@ -78,6 +78,34 @@ class ProjectMutationApi {
       return error;
     }
   }
+
+  static async deleteMemberFromProject(payload: {
+    memberId: string;
+    projectId: string;
+  }) {
+    console.log('member : ', { memberId: payload.memberId });
+
+    try {
+      const response = await fetch(
+        `${this.routesName}/removeMember/${payload.projectId}/${payload.memberId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+            // body: JSON.stringify(payload.memberId),
+          },
+        },
+      );
+
+      const data = await response.json();
+      return data;
+    } catch (error: any) {
+      console.log('error : ', error);
+
+      throw error;
+    }
+  }
 }
 
 export default ProjectMutationApi;

@@ -12,6 +12,7 @@ import {
   Divider,
   Avatar,
   RingProgress,
+  SimpleGrid,
 } from '@mantine/core';
 import PersonCard from '../components/card/person-card.component';
 import SubDetail from '../components/project/project-sub-detail.component';
@@ -32,6 +33,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { IconCircleFilled } from '@tabler/icons-react';
 import moment from 'moment';
 import { useCountStatusTaskData } from '../hooks/task/useTotalTaskData';
+import CrewCard from '../components/card/crew-card.component';
 
 interface IProjectDetailResponse {
   id: number;
@@ -89,7 +91,7 @@ const ProjectOverview = (projectDetail: any) => {
     <>
       <Space h={'xl'} />
 
-      <Title order={2}>Project Summary</Title>
+      <Title order={2}>Summary</Title>
 
       <Space h={30} />
 
@@ -254,6 +256,32 @@ const ProjectOverview = (projectDetail: any) => {
           </div>
         </Group>
       </div>
+
+      <Space h={30} />
+
+      <Title order={2}>Crew</Title>
+
+      <SimpleGrid
+        breakpoints={[
+          { cols: 1, minWidth: 'sm' },
+          { cols: 2, minWidth: 'md' },
+          { cols: 3, minWidth: 'lg' },
+        ]}
+      >
+        {projectDetail?.projectDetail?.member?.map((crew: any) => {
+          return (
+            <CrewCard
+              key={crew.id}
+              id={crew.id}
+              name={`${crew?.user?.firstname} ${crew?.user?.lastname}`}
+              position={crew?.position}
+              profilePicture={`${
+                process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
+              }/members/${crew?.profilePicture!}`}
+            />
+          );
+        })}
+      </SimpleGrid>
     </>
   );
 };
