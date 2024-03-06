@@ -78,6 +78,8 @@ const ProjectDetail = ({ projectDetail }: any) => {
 
   const project = projects?.data?.project!;
 
+  console.log('progress : ', project?.progress);
+
   return (
     <MainLayout>
       <SEO title="detail project" description="" />
@@ -95,13 +97,12 @@ const ProjectDetail = ({ projectDetail }: any) => {
         <Group position="apart" align="center">
           <Stack spacing={30}>
             <Group>
-              <Image
+              <Avatar
                 src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${project?.projectIcon}`}
                 alt={'Project Showcase'}
-                width={60}
-                height={70}
-                quality={100}
-                priority={true}
+                // size={70}
+                className="w-16 h-fit"
+                radius={'100%'}
               />
 
               <Text fz={'2.5rem'} fw={600}>
@@ -139,8 +140,8 @@ const ProjectDetail = ({ projectDetail }: any) => {
             <Group>
               <Text className="text-gray-400">Project Progress : </Text>
               <Progress
-                value={project?.progress}
-                label={`${project?.progress}%`}
+                value={!project?.progress ? 0 : project?.progress}
+                label={`${!project?.progress ? 0 : project?.progress}%`}
                 radius={'lg'}
                 size={'lg'}
                 className="w-[300px] h-[18px]"
