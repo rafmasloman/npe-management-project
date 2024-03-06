@@ -54,15 +54,18 @@ const ProjectLayout = ({ pathname, children }: ILayoutProps) => {
 
         <Space h={50} />
 
-        <Group position="apart" className="">
-          {user.user?.role.includes('STAFF') ? null : (
+        <Group
+          position={user.user?.role === 'ADMIN' ? 'apart' : 'right'}
+          className=""
+        >
+          {user.user?.role === 'ADMIN' ? (
             <ButtonNavigate
               icon={<IconPlus />}
               url={`/${getCurrentPage(pathname)}/add-project`}
             >
               Tambah Project
             </ButtonNavigate>
-          )}
+          ) : null}
           <form onSubmit={handleSearchSubmit} className="w-fit ">
             <Group className="w-full " position="right">
               <TextInput
@@ -76,15 +79,6 @@ const ProjectLayout = ({ pathname, children }: ILayoutProps) => {
                   },
                 }}
               />
-
-              {/* <Button
-                bg={COLORS.PRIMARY}
-                type="submit"
-                className="font-medium text-base"
-                rightIcon={<IconSearch size={20} />}
-              >
-                Cari
-              </Button> */}
 
               <button
                 type="submit"

@@ -4,10 +4,12 @@ import {
   Button,
   Card,
   Flex,
+  Grid,
   Group,
   Image,
   Menu,
   Modal,
+  SimpleGrid,
   Stack,
   Text,
   Tooltip,
@@ -30,6 +32,7 @@ import { IconPencil, IconTrash, IconX } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
 import ActionMenu from '../menu/action-menu.component';
+import moment from 'moment';
 
 const ProjectCard = ({
   platform,
@@ -49,12 +52,7 @@ const ProjectCard = ({
   const [opened, { open, close }] = useDisclosure(false);
   const { pathname } = useRouter();
 
-  // const platformServices = platform
-  //   ?.slice(1, -1)
-  //   .split(', ')
-  //   .map((item) => item.replace(/'/g, ''));
-
-  console.log('task : ', task);
+  const platformServices = platform?.split(',');
 
   const completedTask = task?.filter(
     (task) => task.status.toLowerCase() === 'Completed'.toLowerCase(),
@@ -69,6 +67,8 @@ const ProjectCard = ({
 
     close();
   };
+
+  console.log('deadline : ', platformServices);
 
   return (
     <div className="relative w-full  lg:w-[350px] ">
@@ -108,7 +108,7 @@ const ProjectCard = ({
 
       <div className="absolute z-10 right-6 top-2.5 cursor-pointer">
         <ActionMenu
-          position="top"
+          position="bottom"
           opened={isProjectMenuOpen}
           setOpened={setProjectMenuOpen}
         >
@@ -143,8 +143,12 @@ const ProjectCard = ({
           shadow="lg"
           p={24}
         >
-          <Flex direction={'column'} gap={'xl'}>
-            <Group position="apart">
+          <Flex
+            direction={'column'}
+            gap={'xl'}
+            className="h-full justify-between"
+          >
+            <Group position="apart" align="center">
               <Avatar
                 src={`${
                   process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL
@@ -154,34 +158,32 @@ const ProjectCard = ({
                 className="h-fit"
               />
 
-              {/* <Group mt={10}>
+              <Grid mt={10}>
                 {platformServices.map((platform, index) => {
                   return (
-                    <Text
-                      key={platform}
-                      fz={'0.75rem'}
-                      bg={index % 2 === 0 ? COLORS.SECONDARY : COLORS.THIRD}
-                      px={10}
-                      py={4}
-                      color="white"
-                      style={{
-                        borderRadius: '7px',
-                      }}
+                    <Grid.Col
+                      span={platformServices.length > 1 ? 6 : 12}
+                      key={index}
                     >
-                      {platform}
-                    </Text>
+                      <Box
+                        className="text-xs text-center px-2.5 py-0.5"
+                        bg={index % 2 === 0 ? COLORS.THIRD : COLORS.SECONDARY}
+                        style={{
+                          borderRadius: '7px',
+                        }}
+                      >
+                        <Text color="white">{platform}</Text>
+                      </Box>
+                    </Grid.Col>
                   );
                 })}
-              </Group> */}
+              </Grid>
             </Group>
             <Stack>
               <Text fz={'1.75rem'} fw={600}>
                 {projectName}
               </Text>
-              <Text
-                display={description ? 'block' : 'none'}
-                color={COLORS.GRAY}
-              >
+              <Text color={COLORS.GRAY} className="line-clamp-3">
                 {description}
               </Text>
               <Text>
@@ -202,8 +204,6 @@ const ProjectCard = ({
               <Group style={{ position: 'relative' }}>
                 <Avatar.Group spacing={'sm'}>
                   {member?.map((m, index) => {
-                    console.log('picture : ', m);
-
                     return (
                       <Tooltip
                         key={m.id}
@@ -220,32 +220,17 @@ const ProjectCard = ({
                     );
                   })}
                 </Avatar.Group>
-                {/* <Tooltip>
-              <Avatar
-                style={{ zIndex: 3 }}
-                radius={'xl'}
-                size={30}
-                src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${member?.profilePicture}`}
-              />
-              </Tooltip>
-              <Avatar
-                style={{ position: 'absolute', left: 16, zIndex: 2 }}
-                radius={'xl'}
-                size={30}
-              />
-              <Avatar
-                style={{ position: 'absolute', left: 32, zIndex: 1 }}
-                radius={'xl'}
-                size={30}
-              /> */}
               </Group>
 
-              <Group spacing={'sm'}>
-                <ICDeadline width={20} height={20} />
-                <Text color="red" fz={'0.875rem'}>
-                  {/* {deadline.split(' ')[0]} days left */}
-                </Text>
-              </Group>
+              <Stack spacing={5}>
+                <Text className="text-xs md:text-sm">Deadline</Text>
+                <Group spacing={'sm'}>
+                  <ICDeadline width={20} height={20} />
+                  <Text color="red" className="text-xs md:text-sm">
+                    {moment(deadline).format('DD MMM YYYY')}
+                  </Text>
+                </Group>
+              </Stack>
             </Group>
           </Flex>
         </Card>
