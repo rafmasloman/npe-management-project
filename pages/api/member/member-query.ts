@@ -23,6 +23,24 @@ class MemberQueryAPI {
     }
   }
 
+  static async getMemberProjectManager() {
+    try {
+      const response = await fetch(`${this.routesName}/project-manager`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
+        },
+      });
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async getAllMemberProject(userId: string) {
     try {
       const response = await fetch(`${this.routesName}/projects/${userId}`, {

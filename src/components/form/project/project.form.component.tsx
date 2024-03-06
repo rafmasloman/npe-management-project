@@ -22,6 +22,7 @@ import { useGetMemberQuery } from '@/src/hooks/member/useGetQueryMember';
 import { useRouter } from 'next/router';
 import { usePutProject } from '@/src/hooks/project/usePutProjectMutation';
 import { useGetClientsQuery } from '@/src/hooks/client/useGetClient';
+import { useGetMemberPM } from '@/src/hooks/member/useGetMemberPM';
 
 interface IProjectFormProps {
   initValue?: IProjectDataParams;
@@ -36,22 +37,20 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
   const [membersData, setMembersData] = useState<ISelectMemberDataStateProps[]>(
     [{ value: '', label: '' }],
   );
-  const [clientsData, setClientsData] = useState<ISelectMemberDataStateProps[]>(
-    [{ value: '', label: '' }],
-  );
 
   const { mutate: createProject } = usePostProject();
   const { mutate: updateProject } = usePutProject();
   const { data: members } = useGetMemberQuery();
-  const { data: clients } = useGetClientsQuery();
+  const { data: projectManager } = useGetMemberPM();
 
   const { pathname, query } = useRouter();
+
+  console.log('project manager : ', projectManager);
 
   const form = useForm({
     // validate: yupResolver(schema),
     initialValues: {
       projectName: initValue?.projectName || '',
-      client: initValue?.client || '',
       platform:
         initValue?.platform?.split(',').map((platform: any) => {
           return platform;
@@ -69,15 +68,6 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
     },
   });
 
-  console.log(
-    'project icon initial values : ',
-    form.getInputProps('projectIcon'),
-  );
-
-  initValue?.platform?.split(',').map((platform: any) => {
-    console.log('init value name : ', platform);
-  });
-
   const handleSubmit = form.onSubmit((values) => {
     const formData = new FormData();
 
@@ -89,7 +79,6 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
     formData.set('endDate', values.endDate as string);
     formData.set('projectIcon', values.projectIcon);
     formData.set('price', values.price.toString());
-    formData.set('client', values.client);
 
     if (!initValue) {
       console.log('data : ', formData.get('projectIcon'));
@@ -103,29 +92,17 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
   });
 
   useEffect(() => {
-    const selectMembers = !members
+    const seletProjectManager = !projectManager
       ? []
-      : members?.data?.map((member: any) => {
+      : projectManager?.data?.map((member: any) => {
           return {
             value: member.id,
             label: `${member.user?.firstname} ${member.user?.lastname}`,
           };
         });
 
-    const selectClient = !clients
-      ? []
-      : clients?.data?.map((client: any) => {
-          return {
-            value: client.id,
-            label: client.name,
-          };
-        });
-
-    setMembersData(selectMembers);
-    setClientsData(selectClient);
-  }, [members, clients]);
-
-  console.log('members : ', form.getInputProps('projectIcon').value);
+    setMembersData(seletProjectManager);
+  }, [projectManager, members]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -146,16 +123,8 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
           />
         </Grid.Col>
         <Grid.Col lg={6} md={1}>
-          <Select
-            data={clientsData}
-            placeholder="Pilih Client"
-            label="Clients"
-            {...form.getInputProps('client')}
-          />
-        </Grid.Col>
-        <Grid.Col lg={6} md={1}>
           <MultiSelect
-            data={['Website', 'Mobile']}
+            data={['Website', 'Mobile', 'Desktop']}
             placeholder="Pilih Platform"
             label="Platform"
             radius={'md'}
@@ -165,10 +134,10 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
           />
         </Grid.Col>
         <Grid.Col lg={6} md={1}>
-          <MultiSelect
+          <Select
             data={membersData}
-            placeholder="Pilih Member"
-            label="Member"
+            placeholder="Pilih Project Manager"
+            label="Project Manager"
             radius={'md'}
             withAsterisk
             {...form.getInputProps('member')}
@@ -211,7 +180,7 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
 
         <Grid.Col lg={6} md={1}>
           <FileInput
-            placeholder="Pilih Logo"
+            // placeholder="Pilih Logo"
             label="Logo Project"
             icon={<IconFileTypeSvg size={20} color={COLORS.GRAY} />}
             {...form.getInputProps('projectIcon')}

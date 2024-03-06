@@ -48,6 +48,7 @@ class UserQueryApi {
       throw error;
     }
   }
+
   static async getUserQueryById(
     userId: string,
   ): Promise<IApiBaseResponse<IApiGetUserQueryResponse>> {

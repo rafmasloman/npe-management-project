@@ -28,7 +28,11 @@ const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
             <Avatar
               radius="xl"
               size={'md'}
-              src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${profilePicture}`}
+              src={
+                !!profilePicture
+                  ? `${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/members/${profilePicture}`
+                  : ''
+              }
             />
             <Stack spacing={0}>
               <Text>{name}</Text>
