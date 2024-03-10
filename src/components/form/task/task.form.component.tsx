@@ -43,8 +43,6 @@ interface ITaskFormInitialValuesProps {
 }
 
 const TaskForm = ({ initialValues }: ITaskFormInitialValuePropsType) => {
-  console.log('task id : ', initialValues?.taskId!);
-
   const [memberOption, setMemberOption] = useState([]);
   const [milestoneOption, setMilestoneOption] = useState([]);
   const { query } = useRouter();
@@ -55,7 +53,7 @@ const TaskForm = ({ initialValues }: ITaskFormInitialValuePropsType) => {
   const { mutate: updateTask } = useUpdateTask();
 
   const form = useForm({
-    // validate: yupResolver(TaskFormSchema),
+    validate: yupResolver(TaskFormSchema),
     initialValues: {
       name: initialValues?.name || '',
       projectId: '',

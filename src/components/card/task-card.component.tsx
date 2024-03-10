@@ -177,8 +177,6 @@ const TaskCard = ({
     setStatusColor(TODO_UTILS.STATUS_COLOR(status)!);
   }, [status]);
 
-  console.log('milestone : ', milestone);
-
   return (
     <Card
       radius={'md'}
