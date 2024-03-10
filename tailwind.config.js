@@ -16,6 +16,7 @@ module.exports = {
         onprogress: '#0891B2',
         completed: '#16a34a',
         yellow: '#FFD600',
+        maroon: '#DF135C',
       },
       fontFamily: {
         poppins: 'poppins',

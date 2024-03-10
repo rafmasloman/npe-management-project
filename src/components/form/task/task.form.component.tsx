@@ -24,13 +24,26 @@ import { useGetMilestonesByProject } from '@/src/hooks/milestone/useGetMilestone
 import { TaskFormSchema } from './task.schema';
 import Link from 'next/link';
 import { useGetTaskDetailQuery } from '@/src/hooks/task/useGetTaskDetailQuery';
+import { useUpdateTask } from '@/src/hooks/task/useUpdateTask';
 
-const TaskForm = ({ taskId }: any) => {
-  // const queryMembers = members.map((member) => ({
-  //   member,
-  // }));
+interface ITaskFormInitialValuePropsType {
+  initialValues?: ITaskFormInitialValuesProps;
+}
+interface ITaskFormInitialValuesProps {
+  taskId?: string;
+  name?: string;
+  status?: string;
+  milestone?: {
+    id?: string;
+    milestoneName?: string;
+  };
+  member?: any[];
+  deadline?: Date;
+  priority?: string;
+}
 
-  console.log('task id : ', taskId);
+const TaskForm = ({ initialValues }: ITaskFormInitialValuePropsType) => {
+  console.log('task id : ', initialValues?.taskId!);
 
   const [memberOption, setMemberOption] = useState([]);
   const [milestoneOption, setMilestoneOption] = useState([]);
@@ -38,19 +51,22 @@ const TaskForm = ({ taskId }: any) => {
 
   const { data: milestones } = useGetMilestonesByProject(query.id as string);
   const { data: members } = useGetMemberQuery();
-  const { data: taskDetail, isSuccess } = useGetTaskDetailQuery(taskId);
   const { mutate: createTask } = usePostTask();
+  const { mutate: updateTask } = useUpdateTask();
 
   const form = useForm({
     // validate: yupResolver(TaskFormSchema),
     initialValues: {
-      name: taskDetail?.data?.name || '',
-      projectId: taskDetail?.data?.projectId || '',
-      milestoneId: taskDetail?.data?.milestoneId || '',
-      member: taskDetail?.data?.member || '',
-      priority: taskDetail?.data?.priority || '',
-      endDate: '',
-      status: taskDetail?.data?.status || '',
+      name: initialValues?.name || '',
+      projectId: '',
+      milestoneId: initialValues?.milestone?.id || '',
+      member:
+        initialValues?.member?.map((m) => {
+          return m.id;
+        }) || '',
+      priority: initialValues?.priority || '',
+      endDate: initialValues?.deadline || null,
+      status: initialValues?.status || '',
     },
   });
 
@@ -91,7 +107,11 @@ const TaskForm = ({ taskId }: any) => {
 
     console.log('task : ', payload);
 
-    createTask(payload);
+    if (!initialValues) {
+      createTask(payload);
+    } else if (!!initialValues) {
+      updateTask({ taskId: initialValues?.taskId!, payload });
+    }
   });
 
   return (
@@ -184,6 +204,7 @@ const TaskForm = ({ taskId }: any) => {
             // itemComponent={ItemSelect}
             label="Tugaskan ke-"
             placeholder="Tambahkan tugas ke member"
+            withAsterisk
             // searchable
             // valueComponent={ItemValue}
 

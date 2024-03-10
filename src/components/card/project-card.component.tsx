@@ -33,6 +33,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { ICAlert } from '@/src/assets/icons/alert_delete.icon';
 import ActionMenu from '../menu/action-menu.component';
 import moment from 'moment';
+import { useRandomColor } from '@/src/shared/hooks/random-color.hooks';
 
 const ProjectCard = ({
   platform,
@@ -47,6 +48,8 @@ const ProjectCard = ({
   projectId,
 }: IProjectCardProps) => {
   const [isProjectMenuOpen, setProjectMenuOpen] = useState(false);
+  const [isCardHover, setIsCardHover] = useState(false);
+  const { color, updateRandomColor } = useRandomColor();
 
   const { mutate: deleteProject } = useDeleteProject();
   const [opened, { open, close }] = useDisclosure(false);
@@ -66,6 +69,15 @@ const ProjectCard = ({
     deleteProject(projectId!);
 
     close();
+  };
+
+  const handleMouseEnter = () => {
+    setIsCardHover(true);
+    updateRandomColor();
+  };
+
+  const handleMouseLeave = () => {
+    setIsCardHover(false);
   };
 
   console.log('deadline : ', platformServices);
@@ -106,7 +118,7 @@ const ProjectCard = ({
         </Group>
       </ModalAction>
 
-      <div className="absolute z-10 right-6 top-2.5 cursor-pointer">
+      <div className="absolute z-30 right-6 top-2.5 cursor-pointer">
         <ActionMenu
           position="bottom"
           opened={isProjectMenuOpen}
@@ -136,12 +148,14 @@ const ProjectCard = ({
         style={ListStyleDefaultTheme.default}
       >
         <Card
-          className="w-full mb-10 lg:md-0 border border-solid border-transparent hover:border hover:border-solid hover:border-sky-800"
+          className={`w-full z-20  h-full bg-white  mb-10 lg:md-0 border-2 border-solid border-transparent hover:border-2 hover:border-solid ${`hover:border-${color}`} `}
           // w={300}
           h={height}
           radius={'lg'}
           shadow="lg"
           p={24}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <Flex
             direction={'column'}
@@ -234,6 +248,15 @@ const ProjectCard = ({
             </Group>
           </Flex>
         </Card>
+
+        <div
+          className={`${
+            isCardHover ? 'block ' : 'hidden '
+          } transition duration-700 rounded-2xl w-full h-full absolute inset-x-1.5 inset-y-1`}
+          style={{
+            backgroundColor: color,
+          }}
+        ></div>
       </Link>
     </div>
   );

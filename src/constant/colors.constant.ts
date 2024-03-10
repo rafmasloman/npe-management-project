@@ -13,4 +13,5 @@ export const COLORS = {
   ON_PROGRESS: '#0891B2',
   TODO: '#F79F1A',
   COMPLETED: '#16a34a',
+  MAROON: '#DF135C',
 };

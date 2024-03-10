@@ -44,14 +44,6 @@ import { GetServerSidePropsContext } from 'next';
 import { __setSSRAuthCookie } from '@/src/utils/cookie.util';
 import { initializingSocket } from '@/src/utils/socket.util';
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const { req } = ctx;
-
-  const cookieToken = cookie.parse(req.headers.cookie!) as any;
-
-  return { props: { cookieToken } };
-}
-
 export default function Home() {
   return (
     <>

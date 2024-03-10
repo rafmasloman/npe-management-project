@@ -96,9 +96,9 @@ const ProjectAdmin = () => {
           mx={largeScreen ? 0 : '1rem'}
           spacing={'xl'}
         >
-          {projects?.map((project: any) => (
+          {projects?.map((project: any, index: number) => (
             <ProjectCard
-              key={project.id}
+              key={index}
               width={340}
               height={340}
               member={project.member}

@@ -65,7 +65,7 @@ interface ITaskCardProps {
   comment?: any;
   status: string;
   priority: string;
-  milestone?: { milestoneName: string };
+  milestone?: { id: string; milestoneName: string };
 }
 
 interface IMemberTaskCardProps {
@@ -177,6 +177,8 @@ const TaskCard = ({
     setStatusColor(TODO_UTILS.STATUS_COLOR(status)!);
   }, [status]);
 
+  console.log('milestone : ', milestone);
+
   return (
     <Card
       radius={'md'}
@@ -241,7 +243,17 @@ const TaskCard = ({
           },
         }}
       >
-        <TaskForm taskId={taskId} />
+        <TaskForm
+          initialValues={{
+            taskId: id,
+            name: text,
+            priority,
+            deadline: new Date(deadline),
+            member,
+            milestone,
+            status,
+          }}
+        />
       </Modal>
 
       <Drawer

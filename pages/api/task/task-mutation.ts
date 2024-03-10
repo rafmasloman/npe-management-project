@@ -30,6 +30,8 @@ class TaskMutationAPI {
   }
 
   static async updateTask(taskId: string, payload: IApiTaskMutationParams) {
+    console.log('task id : ', taskId);
+
     try {
       const response = await fetch(`${this.routesName}/${taskId}`, {
         method: 'PUT',

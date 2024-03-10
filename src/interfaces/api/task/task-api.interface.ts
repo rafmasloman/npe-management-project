@@ -1,7 +1,7 @@
 export interface IApiTaskMutationParams {
   name: string;
   projectId: string;
-  endDate: string;
+  endDate: any;
   status: string;
   member: any;
 }
