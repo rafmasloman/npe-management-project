@@ -26,7 +26,7 @@ import PageLoading from '@/src/components/loading/page-loading.component';
 import useRouteLoader from '@/src/utils/routes.event';
 import { projects } from '@/pages/api/dummy/project.dummy.api';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { COLORS } from '@/src/constant/colors.constant';
 import SEO from '@/src/components/SEO/seo.component';
@@ -52,6 +52,7 @@ import { UserContext } from '@/src/context/user-credential.context';
 import MilestoneSpace from '@/src/layouts/milestone-workspace.layout';
 import TabList from '@/src/components/tab/tab-list.component';
 import InviteMemberForm from '@/src/components/form/project/invite-member.form.component';
+import { useGetProjectTeamMember } from '@/src/hooks/project/useGetProjectTeamMember';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { params, req } = ctx;
@@ -72,13 +73,20 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 const ProjectDetail = ({ projectDetail }: any) => {
   const isLoading = useRouteLoader();
   const { query, pathname } = useRouter();
-  const [openMenu, setOpenMenu] = useState(false);
+  const [isHaveTeamMembers, setIsHaveTeamMembers] = useState(false);
 
   const { data: projects } = useGetProjectDetailQuery(query.id as string);
+  const { data: teamMembers } = useGetProjectTeamMember(query.id as string);
 
   const project = projects?.data?.project!;
 
-  console.log('progress : ', project?.progress);
+  useEffect(() => {
+    if (teamMembers?.data?.member?.length > 0) {
+      setIsHaveTeamMembers(true);
+    } else if (teamMembers?.data?.member?.length <= 0) {
+      setIsHaveTeamMembers(false);
+    }
+  }, [teamMembers?.data?.member?.length]);
 
   return (
     <MainLayout>
@@ -210,7 +218,10 @@ const ProjectDetail = ({ projectDetail }: any) => {
           </Tabs.Panel>
 
           <Tabs.Panel value="tasks" pt={rem(50)}>
-            <TaskWorkSpace todos={projects?.data?.todos} />
+            <TaskWorkSpace
+              todos={projects?.data?.todos}
+              isHaveTeamMembers={isHaveTeamMembers}
+            />
           </Tabs.Panel>
 
           <Tabs.Panel value="milestone">

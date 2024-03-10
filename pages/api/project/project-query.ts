@@ -50,6 +50,26 @@ class ProjectsQueryApi {
       throw error;
     }
   }
+
+  static async getProjectTeamMember(projectId: string) {
+    try {
+      const response = await fetch(`${this.routesName}/teams/${projectId}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${
+            __getBrowserAuthCookie(TOKEN_NAME) || __getSSRAuthCookie()
+          }`,
+        },
+      });
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default ProjectsQueryApi;

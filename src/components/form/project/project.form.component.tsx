@@ -68,6 +68,8 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
     },
   });
 
+  console.log('pm : ', initValue?.member);
+
   const handleSubmit = form.onSubmit((values) => {
     const formData = new FormData();
 

@@ -47,6 +47,8 @@ const EditProject = ({ projectDetail }: any) => {
     price,
   } = projectDetail.data?.project;
 
+  console.log('member pro : ', member);
+
   return (
     <MainLayout>
       {isLoading ? (

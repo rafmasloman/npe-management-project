@@ -1,21 +1,14 @@
-import { Box, Space, SimpleGrid, rem, Stack, Menu, Group } from '@mantine/core';
-import {
-  IconCircle,
-  IconCircle0Filled,
-  IconCircleFilled,
-  IconTrash,
-} from '@tabler/icons-react';
+import { Box, Space, SimpleGrid, rem, Stack, Alert } from '@mantine/core';
 import TaskForm from '../components/form/task/task.form.component';
 import HeaderStatus from '../components/header/header-task-status.component';
 import ModalForm from '../components/modal/modal-form.component';
 import { COLORS } from '../constant/colors.constant';
 import TaskCard from '../components/card/task-card.component';
-import { useDrop } from 'react-dnd';
 import { usePutStatusTask } from '../hooks/task/usePutStatusTaskMutation';
-import { useState } from 'react';
 import { useDropItem } from '../hooks/common/drop/useDropItem';
+import { IconAlertHexagon } from '@tabler/icons-react';
 
-const TaskWorkSpace = ({ todos }: any) => {
+const TaskWorkSpace = ({ todos, isHaveTeamMembers }: any) => {
   const { mutate: updateStatus } = usePutStatusTask();
 
   const handleOnDrop = (text: string, id: number, status: string) => {
@@ -51,9 +44,35 @@ const TaskWorkSpace = ({ todos }: any) => {
 
   return (
     <Box className="">
-      <ModalForm btnText="Tambah Task" title="Create Task">
+      <ModalForm
+        btnText="Tambah Task"
+        title="Create Task"
+        disable={!isHaveTeamMembers}
+      >
         <TaskForm />
       </ModalForm>
+
+      <Alert
+        icon={<IconAlertHexagon />}
+        title="Oops Kamu belum mempunyai crew!"
+        color="orange"
+        radius={'md'}
+        styles={{
+          title: {
+            fontSize: rem(16),
+          },
+          root: {
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: COLORS.DEEPGRAY,
+            display: isHaveTeamMembers ? 'none' : 'block',
+            marginTop: 20,
+          },
+        }}
+      >
+        Saat ini belum ada member pada project ini mohon undang member ke
+        project terlebih dahulu sebelum memberikan task
+      </Alert>
 
       <Space h={50} />
 

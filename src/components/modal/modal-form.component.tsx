@@ -10,6 +10,7 @@ interface IModalFormProps {
   children: React.ReactNode;
   radiusBtn?: string;
   variant?: string;
+  disable?: boolean;
   colorBtn?: string;
 }
 
@@ -20,6 +21,7 @@ const ModalForm = ({
   variant,
   radiusBtn,
   colorBtn,
+  disable,
 }: IModalFormProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
@@ -64,6 +66,7 @@ const ModalForm = ({
           bg={colorBtn || COLORS.PRIMARY}
           radius={radiusBtn}
           variant={variant}
+          disabled={disable}
         >
           {btnText}
         </Button>

@@ -251,6 +251,7 @@ const TaskCard = ({
             milestone,
             status,
           }}
+          close={closeEdit}
         />
       </Modal>
 

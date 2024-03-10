@@ -25,9 +25,11 @@ import { TaskFormSchema } from './task.schema';
 import Link from 'next/link';
 import { useGetTaskDetailQuery } from '@/src/hooks/task/useGetTaskDetailQuery';
 import { useUpdateTask } from '@/src/hooks/task/useUpdateTask';
+import { useGetProjectTeamMember } from '@/src/hooks/project/useGetProjectTeamMember';
 
 interface ITaskFormInitialValuePropsType {
   initialValues?: ITaskFormInitialValuesProps;
+  close?: () => void;
 }
 interface ITaskFormInitialValuesProps {
   taskId?: string;
@@ -42,15 +44,16 @@ interface ITaskFormInitialValuesProps {
   priority?: string;
 }
 
-const TaskForm = ({ initialValues }: ITaskFormInitialValuePropsType) => {
+const TaskForm = ({ initialValues, close }: ITaskFormInitialValuePropsType) => {
   const [memberOption, setMemberOption] = useState([]);
   const [milestoneOption, setMilestoneOption] = useState([]);
   const { query } = useRouter();
 
   const { data: milestones } = useGetMilestonesByProject(query.id as string);
-  const { data: members } = useGetMemberQuery();
+  // const { data: members } = useGetMemberQuery();
+  const { data: members } = useGetProjectTeamMember(query.id as string);
   const { mutate: createTask } = usePostTask();
-  const { mutate: updateTask } = useUpdateTask();
+  const { mutate: updateTask, isSuccess } = useUpdateTask();
 
   const form = useForm({
     validate: yupResolver(TaskFormSchema),
@@ -69,8 +72,8 @@ const TaskForm = ({ initialValues }: ITaskFormInitialValuePropsType) => {
   });
 
   useEffect(() => {
-    if (members?.data && members?.data.length > 0) {
-      const selectedMember = members?.data?.map((member: any) => {
+    if (members?.data && members?.data?.member?.length > 0) {
+      const selectedMember = members?.data?.member?.map((member: any) => {
         return {
           value: member.id,
           label: `${member.user?.firstname} ${member.user?.lastname}`,
@@ -103,13 +106,13 @@ const TaskForm = ({ initialValues }: ITaskFormInitialValuePropsType) => {
       priority: values.priority,
     };
 
-    console.log('task : ', payload);
-
     if (!initialValues) {
       createTask(payload);
     } else if (!!initialValues) {
       updateTask({ taskId: initialValues?.taskId!, payload });
     }
+
+    // close!();
   });
 
   return (
