@@ -36,7 +36,6 @@ const MainLayout = ({ children }: IMainLayout) => {
       navbar={
         <Navbar
           width={{ sm: 200, lg: 300 }}
-          // height={'100vh'}
           pt={50}
           pl={30}
           hiddenBreakpoint={'sm'}

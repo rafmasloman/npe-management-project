@@ -14,13 +14,13 @@ interface TabListDataType {
 const TabListData: TabListDataType[] = [
   {
     id: 1,
-    value: 'overview',
-    text: 'Overview',
+    value: 'tasks',
+    text: 'Task',
   },
   {
     id: 2,
-    value: 'tasks',
-    text: 'Task',
+    value: 'overview',
+    text: 'Overview',
   },
   {
     id: 3,
