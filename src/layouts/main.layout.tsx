@@ -11,6 +11,7 @@ import {
   Group,
   Stack,
   Text,
+  Avatar,
 } from '@mantine/core';
 import React, { ReactNode, useState } from 'react';
 import NavList from '../components/navbar/navbar-list.component';
@@ -50,7 +51,7 @@ const MainLayout = ({ children }: IMainLayout) => {
       header={
         <Header
           w={{ lg: 300 }}
-          height={{ base: 60, md: 80, sm: 100 }}
+          height={{ base: 60, sm: 100, md: 80 }}
           pl={40}
           pt={'lg'}
           style={{ borderWidth: 0 }}
@@ -66,10 +67,9 @@ const MainLayout = ({ children }: IMainLayout) => {
           </MediaQuery>
           <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
             <Group spacing={10}>
-              <Image
+              <Avatar
                 src={NPEProLogo.src}
-                width={50}
-                height={50}
+                size={'md'}
                 alt="NPE Management Project Logo"
               />
 
@@ -83,10 +83,7 @@ const MainLayout = ({ children }: IMainLayout) => {
       }
       styles={(theme) => ({
         main: {
-          backgroundColor:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+          backgroundColor: 'transparent',
         },
       })}
     >

@@ -182,8 +182,8 @@ const TaskCard = ({
   return (
     <Card
       radius={'md'}
-      // shadow="md"
-      // withBorder
+      shadow="md"
+      withBorder
       ref={dragRef}
       bg={'dark'}
       className={`${

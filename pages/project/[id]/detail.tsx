@@ -84,7 +84,7 @@ const ProjectDetail = ({ projectDetail }: any) => {
     <MainLayout>
       <SEO title="detail project" description="" />
 
-      <Container size={'xl'} className="px-4 md:px-10 lg:px-14" px={0}>
+      <Container size={'xl'} className="px-4 md:px-10 lg:px-14 h-screen" px={0}>
         <HeaderPage
           pageTitle={getCurrentPage(pathname)}
           role={getCurrentRole(pathname)}
