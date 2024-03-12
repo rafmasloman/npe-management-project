@@ -19,6 +19,11 @@ export const usePostTask = () => {
       queryClient.invalidateQueries({
         queryKey: ['get-project-detail-id-key'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['get-project-milestones-id-key'],
+      });
+
       Notifications({
         title: 'Task Ditambah',
         message: 'Berhasil menambah task',

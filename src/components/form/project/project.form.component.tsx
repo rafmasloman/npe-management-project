@@ -45,7 +45,6 @@ const ProjectForm = ({ initValue }: IProjectFormProps) => {
 
   const { pathname, query } = useRouter();
 
-  console.log('project manager : ', projectManager);
 
   const form = useForm({
     // validate: yupResolver(schema),

@@ -155,11 +155,23 @@ const ProjectOverview = (projectDetail: any) => {
         <Divider w={2} h={'100%'} className="bg-neutral-200" />
 
         <Group spacing={50} align="center" position="center">
-          <div className="w-fit h-fit flex justify-center items-center">
+          <div className="w-fit h-fit flex justify-center items-center ">
             {projectDetail?.projectDetail?.task.length <= 0 ? (
-              <div className="bg-neutral-300 w-full h-full rounded-[100%] flex justify-center items-center">
-                <Text className="text-lg text-neutral-500">Belum ada task</Text>
-              </div>
+              <RingProgress
+                size={200}
+                thickness={20}
+                label={
+                  <Text
+                    className="text-xl font-medium text-neutral-300"
+                    align="center"
+                    px="xs"
+                    sx={{ pointerEvents: 'none' }}
+                  >
+                    Belum ada task
+                  </Text>
+                }
+                sections={[{ value: 0, color: 'gray' }]}
+              />
             ) : (
               <RingProgress
                 size={200}

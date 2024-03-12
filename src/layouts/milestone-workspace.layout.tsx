@@ -60,11 +60,15 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
 
       <Stack spacing={30}>
         {milestones?.data?.map((milestone: IMilestoneProjectResponseData) => {
+          console.log('progress : ', milestone.progress);
+
           return (
             <div
               key={milestone.id}
               className={`bg-white border-l-[12px] rounded-xl border border-gray-200 border-solid ${
-                milestone.status === 'To Do'
+                milestone.status === 'No task yet'
+                  ? 'border-l-gray-300'
+                  : milestone.status === 'To Do'
                   ? 'border-l-todo'
                   : milestone.status === 'On Progress'
                   ? 'border-l-onprogress'
@@ -84,7 +88,9 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
 
                 <Badge
                   color={
-                    milestone.status === 'To Do'
+                    milestone.status === 'No task yet'
+                      ? 'gray'
+                      : milestone.status === 'To Do'
                       ? 'orange'
                       : milestone.status === 'On Progress'
                       ? 'indigo'
@@ -146,13 +152,19 @@ const MilestoneSpace = ({ project }: IMilestoneSpaceProps) => {
                   />
 
                   <Progress
-                    value={milestone.progress}
-                    label={`${milestone.progress}%`}
+                    value={!milestone.progress ? 100 : milestone.progress}
+                    label={`${
+                      !milestone.progress && milestone.status === 'No task yet'
+                        ? 'Belum ada task'
+                        : `${milestone.progress}%`
+                    }`}
                     radius={'lg'}
                     size={'lg'}
                     className="w-[300px] h-[18px]"
                     color={
-                      milestone.status === 'On Progress'
+                      milestone.status === 'No task yet'
+                        ? 'gray'
+                        : milestone.status === 'On Progress'
                         ? 'indigo'
                         : milestone.status === 'Completed'
                         ? 'green'
