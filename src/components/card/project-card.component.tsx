@@ -80,8 +80,6 @@ const ProjectCard = ({
     setIsCardHover(false);
   };
 
-  console.log('deadline : ', platformServices);
-
   return (
     <div className="relative w-full  lg:w-[350px] ">
       <ModalAction
@@ -220,7 +218,7 @@ const ProjectCard = ({
                   {member?.map((m, index) => {
                     return (
                       <Tooltip
-                        key={m.id}
+                        key={index}
                         label={`${m.user?.firstname} ${m.user?.lastname}`}
                       >
                         <Avatar

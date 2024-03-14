@@ -1,40 +1,22 @@
 import SEO from '@/src/components/SEO/seo.component';
-import UserProfile from '@/src/components/profile/user-profile.component';
 import MainLayout from '@/src/layouts/main.layout';
 import {
   Box,
   Container,
-  Flex,
   Grid,
   Group,
-  ScrollArea,
   SimpleGrid,
   Space,
   Stack,
-  Text,
 } from '@mantine/core';
-import NPEProLogo from '../../../src/assets/images/npe_pm_logo.png';
-import Image from 'next/image';
 import ProjectCard from '@/src/components/card/project-card.component';
-import { members } from '@/pages/api/dummy/member.dummy.api';
-import { platformService } from '@/pages/api/dummy/platform-service.dummy.api';
-import { tasks } from '@/pages/api/dummy/task.dummy.api';
-import MenuComp from '@/src/components/menu/menu.component';
-import TestMenu from '@/src/components/profile/user-profile.component';
 import HeaderTitle from '@/src/components/header/header-title.component';
 import DashboardCard from '@/src/components/card/dashboard-card.component';
 import TeamCard from '@/src/components/card/team-card.component';
 import { useRouter } from 'next/router';
-import TaskCard from '@/src/components/card/task-progress-card.component';
 import MilestoneCard from '@/src/components/card/milestone-card.component';
 import HeaderPage from '@/src/components/header/header-page.component';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
-import PageLoading from '@/src/components/loading/page-loading.component';
-import useRouteLoader from '@/src/utils/routes.event';
-import { projects } from '@/pages/api/dummy/project.dummy.api';
-import { useAuth } from '@/src/hooks/useAuth';
-import { ROUTES } from '@/src/constant/routes.constant';
-import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import {
   __deleteBrowserCookie,
   __setSSRAuthCookie,
@@ -48,17 +30,11 @@ import { GetServerSidePropsContext } from 'next';
 import cookie from 'cookie';
 import UserQueryApi from '../api/user/user-query';
 import { IAuthUserCredentialQuery } from '../api/auth/auth-query';
-import { COLORS } from '@/src/constant/colors.constant';
-import { ICSalary } from '@/src/assets/icons/salary.icon';
-import { ICProject } from '@/src/assets/icons/nav-icon/project.icon';
-import { ICProjects } from '@/src/assets/icons/projects.icon';
-import { ICInvoices } from '@/src/assets/icons/nav-icon/invoices.icon';
-import { ICUser } from '@/src/assets/icons/nav-icon/user.icon';
-import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
-import { ICClient } from '@/src/assets/icons/nav-icon/client.icon';
 import DataCard from '@/src/components/card/data-card.component';
 import { DASHBOARD_DATA_FEATURE } from '@/src/utils/dashboard.util';
 import { useGetAllTaskQuery } from '@/src/hooks/task/useGetAllTaskQuery';
+import TaskCard from '@/src/components/card/task-card.component';
+import TaskCardDashboard from '@/src/shared/card/components/task-card.component';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req } = ctx;
@@ -77,6 +53,7 @@ const Dashboard = ({ userCredential }: any) => {
   const user = useContext(UserContext);
 
   const [projects, setProjects] = useState<any>([]);
+  const [tasks, setTasks] = useState<any>([]);
 
   const { data: getMembers } = useGetMemberQuery(2);
   const { data: userProjects, isSuccess } = useGetQueryUserProjects(
@@ -93,6 +70,7 @@ const Dashboard = ({ userCredential }: any) => {
 
     if (user?.user?.role === 'ADMIN') {
       setProjects(allProjects?.data);
+      setTasks(allTasks?.data);
     } else {
       setProjects(userProjects?.data?.member?.project);
     }
@@ -100,19 +78,20 @@ const Dashboard = ({ userCredential }: any) => {
     user?.user?.role,
     allProjects?.data,
     userProjects?.data?.member?.project,
+    allTasks?.data,
   ]);
 
   projects?.task?.map((t: any) => {
     console.log('projects : ', t);
   });
 
-  console.log('task : ', allTasks);
+  console.log('task : ', tasks);
 
   return (
     <MainLayout>
       <SEO title="Dashboard" description="dashboard npe management projects" />
 
-      <Container size={'xl'} className="px-4 mt-0 md:px-12 lg:-mt-16">
+      <Container size={'lg'} className="px-4 mt-0  overflow-hidden lg:-mt-16 ">
         <HeaderPage
           userId={user.user?.id!}
           pageTitle={getCurrentPage(pathname)}
@@ -185,9 +164,9 @@ const Dashboard = ({ userCredential }: any) => {
 
           {/* <ScrollArea className="w-screen sm:w-full"> */}
           <div className="w-full  flex flex-col md:flex-row  gap-10">
-            {projects?.map((project: any) => (
+            {projects?.map((project: any, index: number) => (
               <ProjectCard
-                key={project.id}
+                key={index}
                 projectId={project.id}
                 width={340}
                 height={340}
@@ -234,6 +213,7 @@ const Dashboard = ({ userCredential }: any) => {
               />
             </Group>
           </Box>
+
           <Box>
             <HeaderTitle
               href={`/${getCurrentRole(pathname)}/tasks`}
@@ -241,31 +221,22 @@ const Dashboard = ({ userCredential }: any) => {
             />
             <Space h={'xl'} />
 
-            <Group>
-              {/* <TaskCard
-                title="Slicing Homepage"
-                progressValue={56}
-                projectName="Kartjis"
-              />
-              <TaskCard
-                title="Slicing Homepage"
-                progressValue={56}
-                projectName="Kartjis"
-              /> */}
-              {projects?.task?.map((task: any) => {
+            <Stack>
+              {tasks?.map((task: any, index: number) => {
                 console.log('task : ', projects);
 
-                // return (
-                //   <TaskCard
-                //     key={task.name}
-                //     title={task.name}
-                //     progressValue={56}
-                //     projectName={task.project.projectName}
-                //     projectIcon={task.project.projectIcon}
-                //   />
-                // );
+                return (
+                  <TaskCardDashboard
+                    key={index}
+                    projectIcon={task.project.projectIcon}
+                    projectName={task.project.projectName}
+                    status={task.status}
+                    title={task.name}
+                    priority={task.priority}
+                  />
+                );
               })}
-            </Group>
+            </Stack>
           </Box>
         </SimpleGrid>
       </Container>
