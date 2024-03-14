@@ -75,20 +75,34 @@ const Dashboard = ({ userCredential }: any) => {
   const { pathname } = useRouter();
   const user = useContext(UserContext);
 
-  const [userProject, setUserProject] = useState<any>([]);
+  const [projects, setProjects] = useState<any>([]);
 
   const { data: getMembers } = useGetMemberQuery(2);
   const { data: userProjects, isSuccess } = useGetQueryUserProjects(
     user.user?.id!,
   );
 
-  const { data: allProjects } = useGetProjectQuery();
-  useEffect(() => {
-    if (userProjects?.data) {
-      setUserProject(userProjects?.data?.member);
-    }
-  }, [isSuccess, userProjects?.data]);
+  const { data: allProjects } = useGetProjectQuery(undefined, '');
 
+  useEffect(() => {
+    // if (userProjects?.data) {
+    //   setProjects(userProjects?.data?.member);
+    // }
+
+    if (user?.user?.role === 'ADMIN') {
+      setProjects(allProjects?.data);
+    } else {
+      setProjects(userProjects?.data?.member?.project);
+    }
+  }, [
+    user?.user?.role,
+    allProjects?.data,
+    userProjects?.data?.member?.project,
+  ]);
+
+  projects?.task?.map((t: any) => {
+    console.log('projects : ', t);
+  });
   return (
     <MainLayout>
       <SEO title="Dashboard" description="dashboard npe management projects" />
@@ -166,7 +180,7 @@ const Dashboard = ({ userCredential }: any) => {
 
           {/* <ScrollArea className="w-screen sm:w-full"> */}
           <div className="w-full  flex flex-col md:flex-row  gap-10">
-            {userProject?.project?.map((project: any) => (
+            {projects?.map((project: any) => (
               <ProjectCard
                 key={project.id}
                 projectId={project.id}
@@ -233,16 +247,18 @@ const Dashboard = ({ userCredential }: any) => {
                 progressValue={56}
                 projectName="Kartjis"
               /> */}
-              {userProject?.task?.map((task: any) => {
-                return (
-                  <TaskCard
-                    key={task.name}
-                    title={task.name}
-                    progressValue={56}
-                    projectName={task.project.projectName}
-                    projectIcon={task.project.projectIcon}
-                  />
-                );
+              {projects?.task?.map((task: any) => {
+                console.log('task : ', projects);
+
+                // return (
+                //   <TaskCard
+                //     key={task.name}
+                //     title={task.name}
+                //     progressValue={56}
+                //     projectName={task.project.projectName}
+                //     projectIcon={task.project.projectIcon}
+                //   />
+                // );
               })}
             </Group>
           </Box>

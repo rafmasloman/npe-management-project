@@ -58,12 +58,11 @@ const LoginForm = () => {
       maw={400}
       bg={'white'}
       mx={'auto'}
-      // pt={42}
-      className=" "
+      className="bg-white lg:p-10 rounded-3xl border border-solid border-neutral-300 shadow-sm"
     >
       <form onSubmit={handleSubmit}>
-        <Stack h={'100%'} spacing={'50px'}>
-          <Text fz={'1.25rem'} fw={700} ta="left">
+        <Stack h={'100%'} spacing={'40px'}>
+          <Text fz={'1.25rem'} fw={700} ta="center">
             Login
           </Text>
           <Stack w={'100%'}>

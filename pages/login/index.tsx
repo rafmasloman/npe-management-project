@@ -18,9 +18,9 @@ import { COLORS } from '@/src/constant/colors.constant';
 
 const Login = () => {
   return (
-    <div>
+    <div className="">
       {/* <div
-        style={{
+        style={
           height: '100vh',
           background: `linear-gradient(to right top, rgba(0, 32, 96, 1), rgba(0, 48, 115, 1))`, // Gradient dari kiri bawah ke kanan atas,
         }}
@@ -41,7 +41,7 @@ const Login = () => {
 
       <SEO title="Login Page" />
 
-      <Group className="  absolute left-10 top-10">
+      <Group className="  absolute left-10 top-10 ">
         <Image src={NPELogo.src} width={50} height={50} alt="Logo" />
         <Text fw={600} fz={'1.25rem'} color={COLORS.SECONDARY}>
           NPE Ngatur
@@ -56,7 +56,6 @@ const Login = () => {
         className="h-screen"
       >
         <div className=" flex flex-col justify-center">
-          {/* <Space h={50} /> */}
           <LoginForm />
         </div>
 
