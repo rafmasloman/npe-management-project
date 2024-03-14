@@ -58,6 +58,7 @@ import { ICTeams } from '@/src/assets/icons/nav-icon/teams.icon';
 import { ICClient } from '@/src/assets/icons/nav-icon/client.icon';
 import DataCard from '@/src/components/card/data-card.component';
 import { DASHBOARD_DATA_FEATURE } from '@/src/utils/dashboard.util';
+import { useGetAllTaskQuery } from '@/src/hooks/task/useGetAllTaskQuery';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req } = ctx;
@@ -83,6 +84,7 @@ const Dashboard = ({ userCredential }: any) => {
   );
 
   const { data: allProjects } = useGetProjectQuery(undefined, '');
+  const { data: allTasks } = useGetAllTaskQuery();
 
   useEffect(() => {
     // if (userProjects?.data) {
@@ -103,6 +105,9 @@ const Dashboard = ({ userCredential }: any) => {
   projects?.task?.map((t: any) => {
     console.log('projects : ', t);
   });
+
+  console.log('task : ', allTasks);
+
   return (
     <MainLayout>
       <SEO title="Dashboard" description="dashboard npe management projects" />
