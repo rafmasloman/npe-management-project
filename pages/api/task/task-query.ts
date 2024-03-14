@@ -8,7 +8,11 @@ class TaskQueryAPI {
 
   static async getAllTask() {
     try {
-      const response = await http.get(API_ROUTES.TASK);
+      const response = await http.get(API_ROUTES.TASK, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       const data = response.data;
 
