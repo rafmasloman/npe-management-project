@@ -1,6 +1,7 @@
 import { API_ROUTES } from '@/src/constant/api-routes.constant';
 import { TOKEN_NAME } from '@/src/constant/variables.constant';
 import { IProjectDataParams } from '@/src/interfaces/project.interface';
+import { http } from '@/src/libs/http';
 import {
   __getBrowserAuthCookie,
   __getSSRAuthCookie,
@@ -18,20 +19,16 @@ class MilestoneQueryAPI {
 
   static async getAllMilestone() {
     try {
-      const response = await fetch(this.routesName, {
-        method: 'GET',
+      const response = await http.get(API_ROUTES.MILESTONE, {
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${__getBrowserAuthCookie(TOKEN_NAME)}`,
         },
       });
 
-      const data = await response.json();
+      const data = await response.data;
 
       return data;
     } catch (error) {
-      console.log(error);
-
       throw error;
     }
   }
