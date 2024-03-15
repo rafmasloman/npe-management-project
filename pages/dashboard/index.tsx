@@ -2,12 +2,14 @@ import SEO from '@/src/components/SEO/seo.component';
 import MainLayout from '@/src/layouts/main.layout';
 import {
   Box,
+  Card,
   Container,
   Grid,
   Group,
   SimpleGrid,
   Space,
   Stack,
+  Text,
 } from '@mantine/core';
 import ProjectCard from '@/src/components/card/project-card.component';
 import HeaderTitle from '@/src/components/header/header-title.component';
@@ -200,21 +202,32 @@ const Dashboard = ({ userCredential }: any) => {
             <Space h={'xl'} />
 
             <Group>
-              {milestones?.map((milestone: any, index: number) => {
-                return (
-                  <MilestoneCard
-                    key={index}
-                    title={milestone.milestoneName}
-                    description={
-                      !milestone.description
-                        ? 'No Description for this milestone'
-                        : milestone.description
-                    }
-                    projectIcon={milestone.project.projectIcon}
-                    projectName={milestone.project.projectName}
-                  />
-                );
-              })}
+              {milestones.length <= 0 ? (
+                <Card
+                  withBorder
+                  shadow="sm"
+                  radius={'md'}
+                  className="bg-gray-200"
+                >
+                  <Text className="text-gray-400">No Milestone for now</Text>
+                </Card>
+              ) : (
+                milestones?.map((milestone: any, index: number) => {
+                  return (
+                    <MilestoneCard
+                      key={index}
+                      title={milestone.milestoneName}
+                      description={
+                        !milestone.description
+                          ? 'No Description for this milestone'
+                          : milestone.description
+                      }
+                      projectIcon={milestone.project.projectIcon}
+                      projectName={milestone.project.projectName}
+                    />
+                  );
+                })
+              )}
             </Group>
           </Box>
 
