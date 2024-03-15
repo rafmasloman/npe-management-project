@@ -35,6 +35,7 @@ import { DASHBOARD_DATA_FEATURE } from '@/src/utils/dashboard.util';
 import { useGetAllTaskQuery } from '@/src/hooks/task/useGetAllTaskQuery';
 import TaskCard from '@/src/components/card/task-card.component';
 import TaskCardDashboard from '@/src/shared/card/components/task-card.component';
+import { useGetAllMilestone } from '@/src/hooks/milestone/useGetAllMilestones';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req } = ctx;
@@ -54,6 +55,7 @@ const Dashboard = ({ userCredential }: any) => {
 
   const [projects, setProjects] = useState<any>([]);
   const [tasks, setTasks] = useState<any>([]);
+  const [milestones, setMilestones] = useState<any>([]);
 
   const { data: getMembers } = useGetMemberQuery(2);
   const { data: userProjects, isSuccess } = useGetQueryUserProjects(
@@ -62,36 +64,31 @@ const Dashboard = ({ userCredential }: any) => {
 
   const { data: allProjects } = useGetProjectQuery(undefined, '');
   const { data: allTasks } = useGetAllTaskQuery();
+  const { data: allMilestones } = useGetAllMilestone();
 
   useEffect(() => {
-    // if (userProjects?.data) {
-    //   setProjects(userProjects?.data?.member);
-    // }
-
     if (user?.user?.role === 'ADMIN') {
       setProjects(allProjects?.data);
       setTasks(allTasks?.data);
+      setMilestones(allMilestones?.data);
     } else {
       setProjects(userProjects?.data?.member?.project);
     }
   }, [
     user?.user?.role,
-    allProjects?.data,
     userProjects?.data?.member?.project,
+    allProjects?.data,
     allTasks?.data,
+    allMilestones?.data,
   ]);
 
-  projects?.task?.map((t: any) => {
-    console.log('projects : ', t);
-  });
-
-  console.log('task : ', tasks);
+  console.log('milestones all : ', milestones);
 
   return (
     <MainLayout>
       <SEO title="Dashboard" description="dashboard npe management projects" />
 
-      <Container size={'lg'} className="px-4 mt-0  overflow-hidden lg:-mt-16 ">
+      <Container size={'lg'} className="px-4 mt-0 overflow-hidden lg:-mt-16 ">
         <HeaderPage
           userId={user.user?.id!}
           pageTitle={getCurrentPage(pathname)}
@@ -203,14 +200,21 @@ const Dashboard = ({ userCredential }: any) => {
             <Space h={'xl'} />
 
             <Group>
-              <MilestoneCard
-                title="Integrasi API dari Back End"
-                description="Front End Melakukan Integrasi API yang sudah dibuat oleh back end "
-              />
-              <MilestoneCard
-                title="Integrasi API dari Back End"
-                description="Front End Melakukan Integrasi API yang sudah dibuat oleh back end "
-              />
+              {milestones?.map((milestone: any, index: number) => {
+                return (
+                  <MilestoneCard
+                    key={index}
+                    title={milestone.milestoneName}
+                    description={
+                      !milestone.description
+                        ? 'No Description for this milestone'
+                        : milestone.description
+                    }
+                    projectIcon={milestone.project.projectIcon}
+                    projectName={milestone.project.projectName}
+                  />
+                );
+              })}
             </Group>
           </Box>
 
