@@ -84,8 +84,6 @@ const TaskPage = () => {
 
   if (isLoading) return <PageLoading />;
 
-  console.log('tasks : ', taskData);
-
   return (
     <MainLayout>
       <SEO title="Ngatur Task" description="Task Management" />
@@ -133,7 +131,9 @@ const TaskPage = () => {
         <Space h={50} />
 
         <TableLayout
-          layoutTitle={`${tasks?.data?.length} Task`}
+          layoutTitle={`${
+            isSuccess ? `${tasks?.data?.length} Task` : 'Loading...'
+          } `}
           addUrl="add-task"
           icon={<ICTask width={30} height={30} />}
         >

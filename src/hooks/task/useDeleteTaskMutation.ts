@@ -23,6 +23,10 @@ export const useDeleteTask = () => {
         queryKey: ['get-project-milestones-id-key'],
       });
 
+      queryClient.invalidateQueries({
+        queryKey: ['get-all-tasks-id-key'],
+      });
+
       Notifications({
         title: 'Task Terhapus',
         message: 'Berhasil menghapus task',
