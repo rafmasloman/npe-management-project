@@ -5,4 +5,5 @@ export interface IUserProfileBadgeProps
   name: string;
   role: string;
   profilePicture?: string;
+  isSuccess?: boolean;
 }

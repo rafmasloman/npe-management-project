@@ -8,6 +8,7 @@ import {
   Stack,
   TextInput,
   MediaQuery,
+  Skeleton,
 } from '@mantine/core';
 import { IUserProfileBadgeProps } from '@/src/interfaces/user.interface';
 
@@ -20,7 +21,16 @@ interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
 
 // eslint-disable-next-line react/display-name
 const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
-  ({ name, role, profilePicture, ...others }: IUserProfileBadgeProps, ref) => (
+  (
+    {
+      name,
+      role,
+      profilePicture,
+      isSuccess,
+      ...others
+    }: IUserProfileBadgeProps,
+    ref,
+  ) => (
     <UnstyledButton ref={ref} {...others}>
       <Group>
         <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
@@ -34,6 +44,7 @@ const UserProfile = forwardRef<HTMLButtonElement, IUserProfileBadgeProps>(
                   : ''
               }
             />
+
             <Stack spacing={0}>
               <Text>{name}</Text>
               <Text>{role}</Text>

@@ -29,6 +29,7 @@ import { UserContext } from '@/src/context/user-credential.context';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import ModalAction from '../modal/modal-action.component';
 import { useGetQueryProfilePicture } from '@/src/hooks/profile/useGetQueryProfilePicture';
+import UserProfileSkeleton from '../skeleton/user-profile.skeleton';
 
 interface IHeaderPageProps {
   userId?: string;
@@ -57,9 +58,12 @@ const HeaderPage = ({
   const largeScreen = useMediaQuery('(min-width: 60em)');
 
   const user = useContext(UserContext);
-  const { data: userProfilePicture } = useGetQueryProfilePicture(
-    currentUserId!,
-  );
+
+  const {
+    data: userProfilePicture,
+    isSuccess,
+    isFetching,
+  } = useGetQueryProfilePicture(currentUserId!);
 
   const { logout } = useAuth();
 
@@ -88,6 +92,8 @@ const HeaderPage = ({
       setUserProfilePictureDisplay(null);
     }
   }, [userProfilePicture?.data]);
+
+  console.log('success : ', isFetching);
 
   return (
     <Box
@@ -146,27 +152,35 @@ const HeaderPage = ({
 
       {children}
 
-      <MenuComp
-        button={
-          <UserProfile
-            name={`${user.user?.firstname!} ${user.user?.lastname!}`}
-            role={user.user?.role.toLowerCase()!}
-            profilePicture={userProfilePictureDisplay!}
-          />
-        }
-      >
-        <Menu.Item
-          icon={<IconUser size={14} />}
-          component="a"
-          href="/"
-          style={{ width: '180px' }}
+      {isFetching ? (
+        <UserProfileSkeleton />
+      ) : (
+        <MenuComp
+          button={
+            <UserProfile
+              name={
+                isSuccess
+                  ? `${user.user?.firstname!} ${user.user?.lastname!}`
+                  : 'Loading...'
+              }
+              role={user.user?.role.toLowerCase()!}
+              profilePicture={userProfilePictureDisplay!}
+            />
+          }
         >
-          Profile
-        </Menu.Item>
-        <Menu.Item onClick={open} icon={<IconLogout size={14} />}>
-          Logout
-        </Menu.Item>
-      </MenuComp>
+          <Menu.Item
+            icon={<IconUser size={14} />}
+            component="a"
+            href="/"
+            style={{ width: '180px' }}
+          >
+            Profile
+          </Menu.Item>
+          <Menu.Item onClick={open} icon={<IconLogout size={14} />}>
+            Logout
+          </Menu.Item>
+        </MenuComp>
+      )}
     </Box>
   );
 };
