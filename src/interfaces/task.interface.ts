@@ -17,3 +17,18 @@ export interface ITasksMilestoneResponseData {
   milestoneId: number;
   priority: string;
 }
+
+export interface IQueryAllResponseTaskData {
+  id: 36;
+  name: string;
+  status: string;
+  projectId: string;
+  priority: string;
+  createdAt: Date;
+  endDate: Date;
+  updatedAt: Date;
+  project: {
+    projectIcon: string;
+    projectName: string;
+  };
+}

@@ -202,7 +202,7 @@ const Dashboard = ({ userCredential }: any) => {
             <Space h={'xl'} />
 
             <Group>
-              {milestones.length <= 0 ? (
+              {milestones?.length <= 0 ? (
                 <Card
                   withBorder
                   shadow="sm"
@@ -239,20 +239,29 @@ const Dashboard = ({ userCredential }: any) => {
             <Space h={'xl'} />
 
             <Stack>
-              {tasks?.map((task: any, index: number) => {
-                console.log('task : ', projects);
-
-                return (
-                  <TaskCardDashboard
-                    key={index}
-                    projectIcon={task.project.projectIcon}
-                    projectName={task.project.projectName}
-                    status={task.status}
-                    title={task.name}
-                    priority={task.priority}
-                  />
-                );
-              })}
+              {tasks?.length <= 0 ? (
+                <Card
+                  withBorder
+                  shadow="sm"
+                  radius={'md'}
+                  className="bg-gray-200"
+                >
+                  <Text className="text-gray-400">No Tasks for now</Text>
+                </Card>
+              ) : (
+                tasks?.map((task: any, index: number) => {
+                  return (
+                    <TaskCardDashboard
+                      key={index}
+                      projectIcon={task.project.projectIcon}
+                      projectName={task.project.projectName}
+                      status={task.status}
+                      title={task.name}
+                      priority={task.priority}
+                    />
+                  );
+                })
+              )}
             </Stack>
           </Box>
         </SimpleGrid>

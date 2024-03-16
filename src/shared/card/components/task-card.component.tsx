@@ -9,8 +9,6 @@ const TaskCardDashboard = ({
   projectName,
   status,
 }: ITaskCardDataProps) => {
-  console.log('icon : ', status);
-
   const generateStatus = status.toLowerCase().includes('ToDo'.toLowerCase())
     ? 'yellow'
     : status.toLowerCase().includes('On_Progress'.toLowerCase())
@@ -27,7 +25,8 @@ const TaskCardDashboard = ({
     <Card
       withBorder
       radius={'sm'}
-      shadow="sm"
+      shadow="xs"
+      className=" border-neutral-100 hover:border hover:border-solid hover:border-secondary"
       style={{
         borderStyle: 'solid',
         borderWidth: '0 0 0 12px',
