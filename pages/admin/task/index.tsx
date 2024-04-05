@@ -124,7 +124,7 @@ const TaskPage = () => {
 
       <Container size={'xl'}>
         <HeaderPage
-          pageTitle={getCurrentPage(pathname) + ' Management'}
+          pageTitle={'Task Management'}
           role={getCurrentRole(pathname)}
         />
 
