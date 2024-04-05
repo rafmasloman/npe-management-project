@@ -194,7 +194,7 @@ const Client = () => {
           addUrl="/add-client"
           icon={<ICClient width={30} height={30} />}
         >
-          {clients?.data?.length < 0 ? (
+          {clients?.data?.length <= 0 ? (
             <div className="flex  w-full justify-center mt-[70px]">
               <NoDataCard
                 icon={<ICTeams width={50} height={50} />}
