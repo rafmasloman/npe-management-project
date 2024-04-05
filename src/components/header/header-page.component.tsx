@@ -93,8 +93,6 @@ const HeaderPage = ({
     }
   }, [userProfilePicture?.data]);
 
-  console.log('success : ', isFetching);
-
   return (
     <Box
       mt={0}
