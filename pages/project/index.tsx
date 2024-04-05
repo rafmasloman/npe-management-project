@@ -13,7 +13,14 @@ import MainLayout from '@/src/layouts/main.layout';
 import ProjectLayout from '@/src/layouts/project.layout';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
 import useRouteLoader from '@/src/utils/routes.event';
-import { Button, Loader, SimpleGrid, Space, TextInput } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Loader,
+  SimpleGrid,
+  Space,
+  TextInput,
+} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconPlus, IconSearch } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
@@ -30,6 +37,8 @@ import { UserContext } from '@/src/context/user-credential.context';
 import { useGetMemberProjectQuery } from '@/src/hooks/member/useGetQueryMemberProject';
 import { useGetQueryUserProjects } from '@/src/hooks/user/useGetUserProjectQuery';
 import { useGetQueryUserMemberProjects } from '@/src/hooks/user/useGetUserMemberProjectQuery';
+import { ICProjects } from '@/src/assets/icons/projects.icon';
+import NoDataCard from '@/src/components/card/no_data-card.component';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req, query } = ctx;
@@ -51,6 +60,7 @@ const ProjectAdmin = () => {
   const user = useContext(UserContext);
   const largeScreen = useMediaQuery('(min-width: 60em)');
   const [iconFilename, setIconFilename] = useState('');
+  const [isProjectAvaiable, setIsProjectAvaiable] = useState(false);
 
   const [projects, setProjects] = useState([]);
 
@@ -71,47 +81,68 @@ const ProjectAdmin = () => {
       : setProjects(getMemberProjects?.data?.project);
   }, [getProjects, getMemberProjects, user?.user?.role, isSuccess]);
 
+  useEffect(() => {
+    if (getProjects?.data?.length > 0) {
+      setIsProjectAvaiable(!isProjectAvaiable);
+    }
+  }, [getProjects, isProjectAvaiable]);
+
   if (isLoading) {
     return <PageLoading />;
   }
-
-  console.log('user : ', projects);
 
   return (
     <MainLayout>
       <ProjectLayout pathname={pathname}>
         <Space h={50} />
 
-        <SimpleGrid
-          breakpoints={[
-            {
-              minWidth: 'sm',
-              cols: 1,
-            },
-            {
-              minWidth: 'lg',
-              cols: 3,
-            },
-          ]}
-          mx={largeScreen ? 0 : '1rem'}
-          spacing={'xl'}
-        >
-          {projects?.map((project: any, index: number) => (
-            <ProjectCard
-              key={index}
-              width={340}
-              height={340}
-              member={project.member}
-              platform={project.platform}
-              projectName={project.projectName}
-              deadline={project.endDate}
-              description={project.description}
-              projectIcon={project.projectIcon}
-              task={project.task}
-              projectId={project.id}
-            />
-          ))}
-        </SimpleGrid>
+        {!isProjectAvaiable ? (
+          <Box className="flex justify-center">
+            <NoDataCard
+              icon={<ICProjects width={50} height={50} />}
+              description="Untuk memulai pengelolaan project anda silahkan tambahkan project terlebih dulu"
+              title="Project"
+            >
+              <ButtonNavigate
+                icon={<IconPlus />}
+                url={`/${getCurrentPage(pathname)}/add-project`}
+              >
+                Tambah Project
+              </ButtonNavigate>
+            </NoDataCard>
+          </Box>
+        ) : (
+          <SimpleGrid
+            breakpoints={[
+              {
+                minWidth: 'sm',
+                cols: 1,
+              },
+              {
+                minWidth: 'lg',
+                cols: 3,
+              },
+            ]}
+            mx={largeScreen ? 0 : '1rem'}
+            spacing={'xl'}
+          >
+            {projects?.map((project: any, index: number) => (
+              <ProjectCard
+                key={index}
+                width={340}
+                height={340}
+                member={project.member}
+                platform={project.platform}
+                projectName={project.projectName}
+                deadline={project.endDate}
+                description={project.description}
+                projectIcon={project.projectIcon}
+                task={project.task}
+                projectId={project.id}
+              />
+            ))}
+          </SimpleGrid>
+        )}
       </ProjectLayout>
     </MainLayout>
   );
