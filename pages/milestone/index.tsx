@@ -1,18 +1,9 @@
-import { platformService } from '@/pages/api/dummy/platform-service.dummy.api';
-import { projects } from '@/pages/api/dummy/project.dummy.api';
-import { tasks } from '@/pages/api/dummy/task.dummy.api';
-import SEO from '@/src/components/SEO/seo.component';
 import ButtonNavigate from '@/src/components/button/button-link.component';
-import ProjectCard from '@/src/components/card/project-card.component';
 import HeaderPage from '@/src/components/header/header-page.component';
 import PageLoading from '@/src/components/loading/page-loading.component';
 import { COLORS } from '@/src/constant/colors.constant';
-import { useGetProjectQuery } from '@/src/hooks/project/useGetProjectQuery';
-import { IProjectCardProps } from '@/src/interfaces/project.interface';
 import MainLayout from '@/src/layouts/main.layout';
-import ProjectLayout from '@/src/layouts/project.layout';
 import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
-import useRouteLoader from '@/src/utils/routes.event';
 import {
   ActionIcon,
   Avatar,
@@ -26,19 +17,14 @@ import {
   Space,
   Text,
 } from '@mantine/core';
-import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { IconPencilCode, IconPlus, IconTrash } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+
 import { useRouter } from 'next/router';
 import { Suspense, useEffect, useState } from 'react';
-import DownloadFileAPI from '../api/file/file-query';
-import MilestoneLayout from '@/src/layouts/milestone.layout';
+
 import { useGetAllMilestone } from '@/src/hooks/milestone/useGetAllMilestones';
 import MilestoneCard from '@/src/components/card/milestone-card.component';
-import Image from 'next/image';
-import moment from 'moment';
-import { ICDeadline } from '@/src/assets/icons/deadlin.icon';
+
 import { useDeleteMilestone } from '@/src/hooks/milestone/useDeleteMilestone';
 import ModalAction from '@/src/components/modal/modal-action.component';
 import TableLayout from '@/src/layouts/form/table.layout';
