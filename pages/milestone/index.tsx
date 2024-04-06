@@ -15,6 +15,8 @@ import { getCurrentPage, getCurrentRole } from '@/src/utils/page.util';
 import useRouteLoader from '@/src/utils/routes.event';
 import {
   ActionIcon,
+  Avatar,
+  Box,
   Button,
   Container,
   Group,
@@ -22,7 +24,6 @@ import {
   Pagination,
   SimpleGrid,
   Space,
-  Table,
   Text,
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
@@ -40,16 +41,32 @@ import moment from 'moment';
 import { ICDeadline } from '@/src/assets/icons/deadlin.icon';
 import { useDeleteMilestone } from '@/src/hooks/milestone/useDeleteMilestone';
 import ModalAction from '@/src/components/modal/modal-action.component';
+import TableLayout from '@/src/layouts/form/table.layout';
+import { ICMilestone } from '@/src/assets/icons/nav-icon/milestone.icon';
+import NoDataCard from '@/src/components/card/no_data-card.component';
+import Table from '@/src/components/table/table.component';
+import { useModal } from '@/src/hooks/useModal';
 
 const MilestonePages = () => {
   const { pathname, replace } = useRouter();
 
   const { data: milestones, isLoading } = useGetAllMilestone();
   const { mutate: deleteMilestone } = useDeleteMilestone();
-  const [opened, { open, close }] = useDisclosure(false);
+
+  const { opened, open, close, itemId, handleConfirm } = useModal();
 
   const [activePage, setPage] = useState(1);
   const [milestoneId, setMilestoneId] = useState('');
+  const [isMilestoneAvaiable, setIsMilestoneAvaiable] = useState(false);
+
+  const tableHead = [
+    { title: 'Name' },
+    { title: 'Project' },
+    { title: 'Tanggal Mulai' },
+    { title: 'Deadline' },
+    { title: 'Status' },
+    { title: 'Action' },
+  ];
 
   const openModalConfirmationDelete = (milestoneId: string) => {
     setMilestoneId(milestoneId);
@@ -62,70 +79,11 @@ const MilestonePages = () => {
     close();
   };
 
-  const rows = milestones?.data?.map((milestone: any, index: number) => {
-    return (
-      <tr key={index} className="border-solid border-[1px] border-gray-300 ">
-        <td>{index}</td>
-        <td>{milestone.milestoneName}</td>
-
-        <td>{milestone.description}</td>
-        {/* <td>
-          <Text>{moment(milestone.startedDate).format('DD MMMM YYYY')}</Text>
-        </td> */}
-        <td>
-          <Group spacing={10}>
-            <ICDeadline width={16} height={16} />
-            {moment(milestone.endDate).format('DD MMMM YYYY')}
-          </Group>
-        </td>
-        <td>
-          <div className="flex items-center space-x-2.5">
-            <Image
-              alt={milestone.project?.projectName}
-              width={16}
-              height={16}
-              quality={100}
-              src={`${process.env.NEXT_PUBLIC_API_DOWNLOAD_FILES_URL}/projects/${milestone.project?.projectIcon}`}
-            />
-
-            <Text>{milestone.project?.projectName}</Text>
-          </div>
-        </td>
-        <td>{milestone.task?.length}</td>
-        <td>
-          <Group>
-            <ActionIcon
-              variant="outline"
-              radius={'xl'}
-              color={'red'}
-              c={COLORS.DANGER}
-              opacity={'0.7'}
-              size={'lg'}
-              onClick={() => {
-                openModalConfirmationDelete(milestone.id);
-              }}
-            >
-              <IconTrash size={'1.125rem'} />
-            </ActionIcon>
-
-            <ActionIcon
-              variant="outline"
-              radius={'xl'}
-              color={'gray'}
-              c={COLORS.SECONDARY}
-              opacity={'0.7'}
-              size={'lg'}
-              onClick={() => {
-                replace(`/milestone/${milestone.id.toString()}/edit-milestone`);
-              }}
-            >
-              <IconPencilCode size={'1.125rem'} />
-            </ActionIcon>
-          </Group>
-        </td>
-      </tr>
-    );
-  });
+  useEffect(() => {
+    if (milestones?.data?.length > 0) {
+      setIsMilestoneAvaiable(!isMilestoneAvaiable);
+    }
+  }, [milestones, isMilestoneAvaiable]);
 
   if (isLoading) {
     return <PageLoading />;
@@ -167,80 +125,86 @@ const MilestonePages = () => {
         </Group>
       </ModalAction>
 
-      <MilestoneLayout pathname={pathname}>
-        <Container size={'100%'} px={60}>
-          {/* <SimpleGrid cols={3} spacing={40}>
-            {!milestones?.data
-              ? null
-              : milestones.data?.map((milestone: any) => {
+      <Container size={'lg'}>
+        <HeaderPage
+          pageTitle={getCurrentPage(pathname)}
+          role={getCurrentRole(pathname)}
+        />
+
+        <Space h={50} />
+
+        <TableLayout
+          layoutTitle={`${milestones?.data?.length} Milestone`}
+          addUrl="/add-milestone"
+          icon={<ICMilestone width={30} height={30} />}
+        >
+          {!isMilestoneAvaiable ? (
+            <Box className="flex justify-center">
+              <NoDataCard
+                icon={<ICMilestone width={50} height={50} />}
+                description="Untuk mengetahui checkpoint dari task yang telah dikerjakan harap tambahkan milestone terlebih dahulu"
+                title="Milestones"
+              >
+                <ButtonNavigate
+                  icon={<IconPlus />}
+                  url={`/${getCurrentPage(pathname)}/add-milestone`}
+                >
+                  Tambah Milestone
+                </ButtonNavigate>
+              </NoDataCard>
+            </Box>
+          ) : (
+            <>
+              <Table
+                tableHead={tableHead}
+                tableRow={milestones?.data?.map((milestone: any) => {
                   return (
-                    <MilestoneCard
-                      key={milestone.id}
-                      title={milestone.milestoneName}
-                      description=""
-                    />
+                    <tr key={milestone.id} className="">
+                      <td className="md:w-1/6  ">{`${milestone.milestoneName}`}</td>
+
+                      <td className=" ">
+                        <Group position="left">
+                          <ActionIcon
+                            variant="outline"
+                            radius={'xl'}
+                            color={'red'}
+                            c={COLORS.DANGER}
+                            opacity={'0.7'}
+                            size={'lg'}
+                            onClick={() => handleConfirm(milestone.id)}
+                          >
+                            <IconTrash size={'1.125rem'} />
+                          </ActionIcon>
+
+                          <ActionIcon
+                            variant="outline"
+                            radius={'xl'}
+                            color={'gray'}
+                            c={COLORS.SECONDARY}
+                            opacity={'0.7'}
+                            size={'lg'}
+                            // onClick={() => {
+                            //   replace(`/admin/payroll-management/${user.id}/edit-user`);
+                            // }}
+                          >
+                            <IconPencilCode size={'1.125rem'} />
+                          </ActionIcon>
+                        </Group>
+                      </td>
+                    </tr>
                   );
                 })}
-          </SimpleGrid> */}
+              />
 
-          <Space h={50} />
+              <Space h={30} />
 
-          <Table className="" verticalSpacing={14}>
-            <thead className="">
-              <tr className="bg-primary ">
-                <th className="rounded-tl-lg ">
-                  <Text c={'white'} fw={600}>
-                    No.
-                  </Text>
-                </th>
-                <th>
-                  <Text c={'white'} fw={600}>
-                    {' '}
-                    Milestone{' '}
-                  </Text>
-                </th>
-                <th>
-                  <Text c={'white'} fw={600}>
-                    Deskripsi
-                  </Text>
-                </th>
-                {/* <th>
-                  <Text c={'white'} fw={600}>
-                    Tanggal Mulai
-                  </Text>
-                </th> */}
-                <th>
-                  <Text c={'white'} fw={600}>
-                    Deadline
-                  </Text>
-                </th>
-                <th>
-                  <Text c={'white'} fw={600}>
-                    Projects
-                  </Text>
-                </th>
-                <th>
-                  <Text c={'white'}>Jumlah Task</Text>
-                </th>
-                <th className="rounded-tr-lg">
-                  <Text c={'white'}>Action</Text>
-                </th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </Table>
-
-          <Space h={50} />
-
-          <div className="flex justify-center">
-            <Pagination
-              value={activePage}
-              onChange={setPage}
-              total={milestones?.data?.length / 10}
-            />
-          </div>
-        </Container>
-      </MilestoneLayout>
+              <div className="flex justify-center ">
+                <Pagination total={10} />
+              </div>
+            </>
+          )}
+        </TableLayout>
+      </Container>
     </MainLayout>
   );
 };
