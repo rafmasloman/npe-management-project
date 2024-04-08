@@ -138,7 +138,7 @@ const AdminPayroll = () => {
 
         <TableLayout
           layoutTitle={`${payrolls?.data?.length} Payroll`}
-          addUrl="/add-client"
+          addUrl="/add-payroll"
           icon={<ICPayroll width={30} height={30} />}
         >
           {!isPayrollAvaiable ? (
